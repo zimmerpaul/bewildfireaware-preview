@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "update-map": "node scripts/update-map.mjs"
+    "update-map": "node scripts/update-map.mjs",
+    "derive-counties": "node scripts/derive-counties.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0"

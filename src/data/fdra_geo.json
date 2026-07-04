@@ -1,0 +1,146 @@
+{
+  "grand_junction_high": {
+    "counties": [
+      "Eagle",
+      "Garfield",
+      "Pitkin",
+      "Summit",
+      "Mesa",
+      "Rio Blanco",
+      "Gunnison",
+      "Routt",
+      "Lake",
+      "Park",
+      "Delta",
+      "Grand",
+      "Chaffee",
+      "Clear Creek"
+    ],
+    "centroid": [
+      39.5485,
+      -106.9948
+    ]
+  },
+  "grand_junction_middle": {
+    "counties": [
+      "Garfield",
+      "Eagle",
+      "Mesa",
+      "Pitkin",
+      "Summit",
+      "Rio Blanco",
+      "Routt",
+      "Gunnison",
+      "Delta",
+      "Montrose",
+      "Grand"
+    ],
+    "centroid": [
+      39.5295,
+      -107.3087
+    ]
+  },
+  "grand_junction_low": {
+    "counties": [
+      "Garfield",
+      "Eagle",
+      "Mesa",
+      "Pitkin",
+      "Routt",
+      "Montrose",
+      "Delta"
+    ],
+    "centroid": [
+      39.4543,
+      -107.6613
+    ]
+  },
+  "durango_lower": {
+    "counties": [
+      "San Miguel",
+      "Montrose",
+      "Montezuma",
+      "La Plata",
+      "Dolores"
+    ],
+    "centroid": [
+      37.805,
+      -108.6083
+    ]
+  },
+  "durango_upper": {
+    "counties": [
+      "San Miguel",
+      "Hinsdale",
+      "Mineral",
+      "La Plata",
+      "Montezuma",
+      "San Juan",
+      "Dolores",
+      "Conejos",
+      "Archuleta",
+      "Rio Grande"
+    ],
+    "centroid": [
+      37.6326,
+      -107.7981
+    ]
+  },
+  "montrose_montrose": {
+    "counties": [
+      "Delta",
+      "Montrose",
+      "Ouray",
+      "Mesa",
+      "Gunnison"
+    ],
+    "centroid": [
+      38.599,
+      -107.8621
+    ]
+  },
+  "montrose_uncompaghre": {
+    "counties": [
+      "San Miguel",
+      "Montrose",
+      "Ouray",
+      "Mesa"
+    ],
+    "centroid": [
+      38.21,
+      -108.2066
+    ]
+  },
+  "montrose_west": {
+    "counties": [
+      "Montrose",
+      "San Miguel",
+      "Mesa"
+    ],
+    "centroid": [
+      38.2066,
+      -108.7228
+    ]
+  },
+  "montrose_high": {
+    "counties": [
+      "Gunnison",
+      "Saguache",
+      "San Miguel",
+      "Hinsdale",
+      "Chaffee",
+      "Pitkin",
+      "Mesa",
+      "Delta",
+      "Ouray",
+      "Montrose",
+      "San Juan",
+      "Mineral",
+      "Dolores"
+    ],
+    "centroid": [
+      38.4999,
+      -107.2465
+    ]
+  }
+}

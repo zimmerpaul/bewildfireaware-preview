@@ -1,7 +1,6 @@
 {
   "slug": "durango_lower",
   "name": "Durango (Lower)",
-  "fetchedAt": "2026-07-04T14:31:12.776Z",
   "dispatchTitle": "Durango Interagency Dispatch Area",
   "dateLabel": "Saturday, July 04",
   "areaTitle": "DRC Lower",
@@ -94,6 +93,15 @@
           "97%",
           "98%",
           "99%"
+        ],
+        "hits": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         ]
       },
       {
@@ -106,6 +114,15 @@
           "100%",
           "100%",
           "99%"
+        ],
+        "hits": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         ]
       },
       {
@@ -118,6 +135,15 @@
           "86",
           "86",
           "87"
+        ],
+        "hits": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
@@ -130,6 +156,15 @@
           "14",
           "12",
           "12"
+        ],
+        "hits": [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
@@ -142,6 +177,15 @@
           "14",
           "14",
           "13"
+        ],
+        "hits": [
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
         ]
       },
       {
@@ -178,6 +222,15 @@
           "8",
           "8",
           "8"
+        ],
+        "hits": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
         ]
       },
       {
@@ -190,6 +243,15 @@
           "41",
           "31",
           "29"
+        ],
+        "hits": [
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true
         ]
       },
       {

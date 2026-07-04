@@ -39,7 +39,9 @@
     fetch('/map-data.json').then(function (r) { return r.json(); }).then(function (geojson) {
       var map = L.map(el, { scrollWheelZoom: false });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      // Voyager basemap: towns, roads, and terrain labels so people can find
+      // themselves, while staying muted enough for danger colors to read.
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 18,
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="https://carto.com/attributions">CARTO</a>',
       }).addTo(map);

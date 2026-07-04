@@ -104,7 +104,7 @@ header nav ul li .dropdown-toggle.active { color: var(--flame-dark); }
 }
 
 .dropdown-content a:hover { background: #f1efe9; color: var(--flame-dark); }
-.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
 .dropdown .dropdown-toggle::after { content: " ▾"; font-size: 0.8em; }
 
 /* hamburger */
@@ -577,10 +577,6 @@ footer p { margin: 10px 0 0; font-size: 0.9em; }
     header nav ul li a, header nav ul li .dropdown-toggle { display: block; padding: 12px 14px; }
 
     .dropdown-content { position: static; box-shadow: none; border: none; min-width: 0; padding-left: 16px; }
-    .dropdown .dropdown-content { display: none; }
-    .dropdown.open .dropdown-content { display: block; }
-    .dropdown:hover .dropdown-content { display: none; }
-    .dropdown.open:hover .dropdown-content { display: block; }
 
     footer ul { flex-direction: column; align-items: center; gap: 10px; }
     footer .dropdown-content { position: static; text-align: center; }
@@ -588,4 +584,11 @@ footer p { margin: 10px 0 0; font-size: 0.9em; }
     .hero { padding: 64px 20px 58px; }
     #danger-map { height: 62vh; margin: 0 12px 28px; }
     .team-card img { height: 280px; }
+}
+
+/* forecast cells exceeding local watchout thresholds */
+.forecast-table td.cell-hit {
+    background: #fdecea;
+    color: var(--danger-extreme);
+    font-weight: 700;
 }

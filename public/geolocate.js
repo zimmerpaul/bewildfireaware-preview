@@ -1,12 +1,15 @@
 // "Your local fire danger": browser geolocation matched against FDRA polygons.
 // Entirely client-side — coordinates never leave the visitor's device except
 // for an optional National Weather Service alert lookup (api.weather.gov).
+// The matched area (never the coordinates) is remembered in localStorage so
+// returning visitors see their area immediately.
 (function () {
+  var STORE_KEY = 'bwa-my-area';
+
   function dangerClass(level) {
     return 'danger-' + String(level || 'unknown').toLowerCase().replace(/\s+/g, '-');
   }
 
-  // Ray-casting point-in-ring test
   function inRing(pt, ring) {
     var x = pt[0], y = pt[1], inside = false;
     for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -28,7 +31,7 @@
         var rf = (alerts.features || []).find(function (a) {
           return /red flag|fire weather/i.test(a.properties.event);
         });
-        if (rf) {
+        if (rf && container) {
           var b = document.createElement('span');
           b.className = 'redflag-badge';
           b.textContent = '⚠ ' + rf.properties.event + ' in effect (NWS)';
@@ -38,11 +41,40 @@
       .catch(function () {});
   }
 
+  function save(slug) { try { localStorage.setItem(STORE_KEY, slug); } catch (e) {} }
+  function saved() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
+  function clearSaved() { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+
+  function renderHit(out, p, opts) {
+    out.innerHTML =
+      '<div class="locate-hit">' +
+      '<strong>' + p.name + '</strong>' +
+      '<span class="danger-chip ' + dangerClass(p.danger) + '">' + p.danger + '</span>' +
+      (p.watchout && p.watchout.isWatchout
+        ? '<span class="locate-note">▲ ' + p.watchout.met + ' of ' + p.watchout.total + ' watchout thresholds met</span>' : '') +
+      '<a class="btn" style="margin-top:0" href="' + p.url + '">Your full forecast &rarr;</a>' +
+      (opts && opts.remembered
+        ? '<span class="locate-note">Remembered from last visit · <a href="#" id="locate-clear">forget</a></span>' : '') +
+      '</div>';
+    var clear = document.getElementById('locate-clear');
+    if (clear) clear.addEventListener('click', function (e) { e.preventDefault(); clearSaved(); out.innerHTML = ''; });
+  }
+
   function init() {
     var btn = document.getElementById('locate-btn');
     var out = document.getElementById('locate-result');
     if (!btn || !out) return;
     if (!('geolocation' in navigator)) { btn.style.display = 'none'; return; }
+
+    // Returning visitor: show the remembered area with today's fresh data
+    var rem = saved();
+    if (rem) {
+      fetch('/map-data.json').then(function (r) { return r.json(); }).then(function (geojson) {
+        var f = geojson.features.find(function (x) { return x.properties.slug === rem; });
+        if (f) renderHit(out, f.properties, { remembered: true });
+        else clearSaved();
+      });
+    }
 
     btn.addEventListener('click', function () {
       btn.disabled = true;
@@ -54,15 +86,8 @@
           btn.textContent = 'Use my location';
           btn.disabled = false;
           if (hit) {
-            var p = hit.properties;
-            out.innerHTML =
-              '<div class="locate-hit">' +
-              '<strong>' + p.name + '</strong>' +
-              '<span class="danger-chip ' + dangerClass(p.danger) + '">' + p.danger + '</span>' +
-              (p.watchout && p.watchout.isWatchout
-                ? '<span class="locate-note">▲ ' + p.watchout.met + ' of ' + p.watchout.total + ' watchout thresholds met</span>' : '') +
-              '<a class="btn" style="margin-top:0" href="' + p.url + '">Your full forecast &rarr;</a>' +
-              '</div>';
+            save(hit.properties.slug);
+            renderHit(out, hit.properties);
             checkRedFlag(lat, lon, out.querySelector('.locate-hit'));
           } else {
             out.innerHTML =

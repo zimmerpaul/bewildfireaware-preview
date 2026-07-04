@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PocketCard from '../../components/PocketCard.astro';
 import areas from '../../data/dispatch_areas.json';
+import fdraGeo from '../../data/fdra_geo.json';
 
 export function getStaticPaths() {
   const dataFiles = import.meta.glob('../../data/areas/*.json', { eager: true });
@@ -19,15 +20,22 @@ const dangerClass = (level) =>
 
 const DANGER_LEVELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme'];
 
-// Local fire information linkouts. Same core set for all areas today;
-// add a `links` array to an area in dispatch_areas.json to extend/override.
+// Per-FDRA geography (derived from boundary polygons by scripts/derive-counties.mjs)
+const geo = fdraGeo[area.slug] ?? {};
+const [lat, lon] = geo.centroid ?? [];
+const counties = geo.counties ?? [];
+
+// Local fire information linkouts, geo-targeted to this FDRA where the
+// destination supports it. Add a `links` array to an area in
+// dispatch_areas.json to extend/override.
 const localLinks = [
   { name: 'Watch Duty', url: 'https://app.watchduty.org/', desc: 'Live wildfire tracking and real-time incident updates.' },
-  { name: 'Fire Restrictions', url: data.restrictions?.url ?? 'https://westslopefireinfo.com/', desc: 'Current restrictions across the Western Slope — check before you burn.' },
-  { name: 'NWS Fire Weather', url: 'https://www.weather.gov/wrh/fire?wfo=gjt', desc: 'Red flag warnings and fire weather forecasts for Western Colorado.' },
+  { name: 'Fire Restrictions', url: data.restrictions?.url ?? 'https://westslopefireinfo.com/', desc: `Current restrictions${counties.length ? ` — this area spans ${counties.slice(0, 4).join(', ')}${counties.length > 4 ? ' and nearby' : ''} counties` : ' across the Western Slope'}. Check before you burn.` },
+  { name: 'NWS Forecast Here', url: lat ? `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lon}` : 'https://www.weather.gov/wrh/fire?wfo=gjt', desc: 'National Weather Service point forecast for this rating area.' },
+  { name: 'NWS Fire Weather', url: 'https://www.weather.gov/wrh/fire?wfo=gjt', desc: 'Red flag warnings and fire weather for Western Colorado.' },
+  { name: 'AirNow Fire & Smoke', url: lat ? `https://fire.airnow.gov/#9/${lat}/${lon}` : 'https://fire.airnow.gov/', desc: 'Smoke plumes and air quality, centered on this area.' },
   { name: 'Protect Your Property', url: 'https://csfs.colostate.edu/wildfire-mitigation/', desc: 'Wildfire mitigation guidance from the Colorado State Forest Service.' },
   { name: 'InciWeb', url: 'https://inciweb.wildfire.gov/', desc: 'Official interagency information on active large incidents.' },
-  { name: 'AirNow Fire & Smoke', url: 'https://fire.airnow.gov/', desc: 'Smoke plumes and air quality near you.' },
   ...(area.links ?? []),
 ];
 ---
@@ -44,6 +52,7 @@ const localLinks = [
 
     <div class="area-meta">
       {data.lastUpdated && <span>Last updated: {data.lastUpdated}</span>}
+      {counties.length > 0 && <span>Covers parts of: {counties.join(', ')} {counties.length === 1 ? 'county' : 'counties'}</span>}
       {data.restrictions?.url && (
         <span>
           {(data.restrictions.text ?? 'Fire restrictions info:').replace(/:$/, '')}:
@@ -98,8 +107,10 @@ const localLinks = [
               {data.forecast.rows.map((row) => (
                 <tr>
                   <th scope="row">{row.label}</th>
-                  {row.values.map((v) => (
-                    <td class={DANGER_LEVELS.includes(v) ? dangerClass(v) : undefined}>{v}</td>
+                  {row.values.map((v, i) => (
+                    <td class={DANGER_LEVELS.includes(v) ? dangerClass(v) : (row.hits?.[i] ? 'cell-hit' : undefined)}>
+                      {v}{row.hits?.[i] ? ' ▲' : ''}
+                    </td>
                   ))}
                 </tr>
               ))}

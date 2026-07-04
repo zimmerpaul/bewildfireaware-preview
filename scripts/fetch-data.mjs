@@ -181,6 +181,30 @@ function computeWatchouts(data) {
     if (obs.triggered) met++;
   }
   data.watchout = { met, total: rules.length, isWatchout: met >= 3 };
+
+  // Also flag threshold exceedances per cell in the extended forecast table.
+  // Forecast row labels differ from observation labels, so match separately.
+  const FORECAST_RULES = [
+    { match: /^ERC.*Percentile/i, key: 'erc' },
+    { match: /^BI.*Percentile/i, key: 'bi' },
+    { match: /^Winds?$/i, key: 'wind' },
+    { match: /^(Max )?Temperature$/i, key: 'maxT' },
+    { match: /^(Min )?Relative Humidity$/i, key: 'minRh' },
+    { match: /^1000/i, key: 'fuels' },
+    { match: /^Max R/i, key: 'maxRh' },
+  ];
+  if (data.forecast?.rows) {
+    for (const row of data.forecast.rows) {
+      const fr = FORECAST_RULES.find((r) => r.match.test(row.label));
+      const rule = fr && rules.find((r) => r.key === fr.key);
+      if (!rule) continue;
+      row.hits = row.values.map((val) => {
+        const v = parseFloat(String(val).replace('%', ''));
+        if (!Number.isFinite(v)) return false;
+        return rule.op === '>' ? v > rule.limit : v < rule.limit;
+      });
+    }
+  }
 }
 
 // ---- Pocket card chart data (FireFamilyPlus-style export tab) ----
