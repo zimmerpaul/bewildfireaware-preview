@@ -31,30 +31,35 @@
     "slug": "durango_upper",
     "name": "Durango (Upper)",
     "spreadsheet": "2PACX-1vR1hZIIzKdVITmFSCoxqvBCLpm9qKhNHFS0SjQIl-PMr5_gPs5n410DkIWOvUSben8h5zjVAYjw2rEb",
-    "gid": "1112725686"
+    "gid": "1112725686",
+    "chartGid": "960955117"
   },
   {
     "slug": "durango_lower",
     "name": "Durango (Lower)",
     "spreadsheet": "2PACX-1vR1hZIIzKdVITmFSCoxqvBCLpm9qKhNHFS0SjQIl-PMr5_gPs5n410DkIWOvUSben8h5zjVAYjw2rEb",
-    "gid": "1941363798"
+    "gid": "1941363798",
+    "chartGid": "49500234"
   },
   {
     "slug": "grand_junction_low",
     "name": "Grand Junction (Low)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
-    "gid": "1129321330"
+    "gid": "1129321330",
+    "chartGid": "196728521"
   },
   {
     "slug": "grand_junction_middle",
     "name": "Grand Junction (Middle)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
-    "gid": "342921535"
+    "gid": "342921535",
+    "chartGid": "331173421"
   },
   {
     "slug": "grand_junction_high",
     "name": "Grand Junction (High)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
-    "gid": "893073120"
+    "gid": "893073120",
+    "chartGid": "1652435952"
   }
 ]

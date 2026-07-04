@@ -196,24 +196,38 @@ const num = (s) => {
 };
 
 function parseChart(rows, area) {
-  const hIdx = rows.findIndex((r) => clean(r[0]) === 'Period');
+  // The daily table can start at any column (Durango nests it beside a
+  // frequency-distribution table), so locate the 'Period' cell anywhere.
+  let hIdx = -1, pCol = -1;
+  for (let i = 0; i < rows.length; i++) {
+    const j = rows[i].findIndex((c) => clean(c) === 'Period');
+    if (j !== -1) { hIdx = i; pCol = j; break; }
+  }
   if (hIdx === -1) throw new Error('chart header row not found');
   const hdr = rows[hIdx].map(clean);
 
-  const col = { max: hdr.indexOf('Max'), p90: hdr.indexOf('90th'), years: [], observed: -1, forecasted: -1 };
+  // Column labels vary between sheets:
+  //   Max | Max Actual;  90th | 90th % | 90th Actual;
+  //   2026 Observed;  2026 Forecasted | 2026 Forcasted;  2018 | 2025 a (comparison years)
+  const col = { max: -1, p90: -1, years: [], observed: -1, forecasted: -1 };
   hdr.forEach((label, j) => {
-    if (/^\d{4}$/.test(label)) col.years.push({ label, j });
-    else if (/^\d{4} Observed$/i.test(label)) col.observed = j;
-    else if (/^\d{4} Forecasted$/i.test(label)) col.forecasted = j;
+    if (j < pCol || !label) return;
+    let m;
+    if (/^Max( Actual)?$/i.test(label)) col.max = j;
+    else if (/^90th( %| Actual)?$/i.test(label)) col.p90 = j;
+    else if ((m = /^(\d{4})\s*Observed$/i.exec(label))) col.observed = j;
+    else if (/^\d{4}\s*For\w*casted$/i.test(label)) col.forecasted = j;
+    else if ((m = /^(\d{4})\b/.exec(label))) col.years.push({ label: m[1], j });
   });
-  if (col.max === -1 || col.observed === -1) throw new Error('chart columns not recognized');
+  if (col.max === -1 || col.observed === -1)
+    throw new Error(`chart columns not recognized (header: ${hdr.filter(Boolean).join(', ')})`);
 
   const series = { max: [], observed: [], forecasted: [] };
   const comparisons = col.years.map((y) => ({ label: y.label, points: [] }));
   let p90 = null;
 
   for (let i = hIdx + 1; i < rows.length; i++) {
-    const day = dayOfYear(rows[i][0]);
+    const day = dayOfYear(rows[i][pCol]);
     if (day === null) continue;
     const push = (arr, j) => { const v = num(rows[i][j]); if (v !== null) arr.push([day, v]); };
     push(series.max, col.max);
@@ -222,9 +236,28 @@ function parseChart(rows, area) {
     col.years.forEach((y, k) => push(comparisons[k].points, y.j));
     if (p90 === null && col.p90 !== -1) p90 = num(rows[i][col.p90]);
   }
-  if (series.max.length < 300) throw new Error(`chart Max series too short (${series.max.length})`);
+  if (series.max.length < 250) throw new Error(`chart Max series too short (${series.max.length})`);
 
-  const allVals = [series.max, series.observed, series.forecasted, ...comparisons.map((c) => c.points)]
+  // Sanity guard: some sheet tabs contain corrupt comparison-year columns
+  // (values in the hundreds when ERC actuals run 0–80). Drop out-of-range
+  // points; drop the whole series if most of it is bad.
+  const maxPeak = Math.max(...series.max.map(([, v]) => v));
+  const cap = maxPeak * 2;
+  const cleanComparisons = comparisons.filter((c) => {
+    const good = c.points.filter(([, v]) => v <= cap);
+    const dropped = c.points.length - good.length;
+    if (dropped > c.points.length * 0.3) {
+      console.error(`WARN ${area.slug} chart: dropping "${c.label}" series (${dropped}/${c.points.length} values out of range — check the sheet)`);
+      return false;
+    }
+    if (dropped > 0) {
+      console.error(`WARN ${area.slug} chart: dropped ${dropped} out-of-range point(s) from "${c.label}"`);
+      c.points = good;
+    }
+    return c.points.length > 0;
+  });
+
+  const allVals = [series.max, series.observed, series.forecasted, ...cleanComparisons.map((c) => c.points)]
     .flat().map(([, v]) => v);
   const yMax = Math.max(20, Math.ceil(Math.max(...allVals, p90 ?? 0) / 20) * 20);
 
@@ -235,7 +268,7 @@ function parseChart(rows, area) {
     p90,
     observedYear: obsLabel,
     series,
-    comparisons: comparisons.filter((c) => c.points.length),
+    comparisons: cleanComparisons,
   };
 }
 
