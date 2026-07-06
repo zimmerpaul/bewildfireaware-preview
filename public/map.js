@@ -14,6 +14,32 @@
     return 'danger-' + String(level || 'unknown').toLowerCase().replace(/\s+/g, '-');
   }
 
+  // Western Colorado towns, always labeled regardless of zoom so people can
+  // orient themselves (basemap labels drop out at region-wide zoom levels).
+  var TOWNS = [
+    ['Grand Junction', 39.0639, -108.5506],
+    ['Montrose', 38.4783, -107.8762],
+    ['Gunnison', 38.5458, -106.9253],
+    ['Crested Butte', 38.8697, -106.9878],
+    ['Durango', 37.2753, -107.8801],
+    ['Telluride', 37.9375, -107.8123],
+    ['Ouray', 38.0228, -107.6714],
+    ['Ridgway', 38.1525, -107.7568],
+    ['Delta', 38.7422, -108.0690],
+    ['Paonia', 38.8683, -107.5920],
+    ['Cortez', 37.3489, -108.5859],
+    ['Pagosa Springs', 37.2694, -107.0098],
+    ['Silverton', 37.8117, -107.6645],
+    ['Lake City', 38.0300, -107.3150],
+    ['Glenwood Springs', 39.5505, -107.3248],
+    ['Aspen', 39.1911, -106.8175],
+    ['Rifle', 39.5347, -107.7831],
+    ['Carbondale', 39.4022, -107.2112],
+    ['Norwood', 38.1319, -108.2929],
+    ['Nucla', 38.2678, -108.5484],
+    ['Hotchkiss', 38.7994, -107.7176],
+  ];
+
   function popupHtml(p) {
     var html = '<div class="map-popup">' +
       '<div class="map-popup-title">' + p.name + '</div>' +
@@ -67,6 +93,15 @@
       map.fitBounds(layer.getBounds(), { padding: [6, 6] });
       map.setMinZoom(map.getZoom() - 1); // keep people from getting lost zooming out
       L.control.scale({ imperial: true, metric: false }).addTo(map);
+
+      // town dots + labels (non-interactive so polygon clicks pass through)
+      TOWNS.forEach(function (t) {
+        L.circleMarker([t[1], t[2]], {
+          radius: 3.5, color: '#333', weight: 1.5, fillColor: '#fff', fillOpacity: 1, interactive: false,
+        }).addTo(map).bindTooltip(t[0], {
+          permanent: true, direction: 'right', offset: [6, 0], className: 'town-label', interactive: false,
+        }).openTooltip();
+      });
 
       var legend = L.control({ position: 'bottomleft' });
       legend.onAdd = function () {

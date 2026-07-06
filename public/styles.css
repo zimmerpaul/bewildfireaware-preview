@@ -630,3 +630,22 @@ footer p { margin: 10px 0 0; font-size: 0.9em; }
     line-height: 1.6;
     color: var(--ink);
 }
+
+/* town labels on the danger map */
+.town-label {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    font-weight: 700;
+    font-size: 11.5px;
+    color: #2b2b2b;
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 4px #fff;
+    padding: 0;
+}
+.town-label::before { display: none; }
+
+/* overview body (markdown-lite rendering) */
+.overview-body p { margin: 0 0 10px; line-height: 1.6; }
+.overview-body p strong { font-size: 1.05em; }
+.overview-body ul { margin: 0 0 12px; padding-left: 22px; }
+.overview-body li { margin-bottom: 6px; line-height: 1.55; }

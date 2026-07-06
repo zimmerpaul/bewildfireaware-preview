@@ -8,7 +8,7 @@
 //
 // Output: src/data/overviews/<slug>.json { overview, sources[], generated }
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -18,7 +18,9 @@ if (!API_KEY) {
   process.exit(0);
 }
 
-const MODEL = 'claude-sonnet-5';
+// Model is switchable via env (e.g. OVERVIEW_MODEL=claude-sonnet-5 for
+// higher-quality prose). Haiku default keeps the trial cheap.
+const MODEL = process.env.OVERVIEW_MODEL || 'claude-haiku-4-5-20251001';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const AREAS = JSON.parse(readFileSync(join(__dirname, '../src/data/dispatch_areas.json'), 'utf8'));
 const GEO = JSON.parse(readFileSync(join(__dirname, '../src/data/fdra_geo.json'), 'utf8'));
@@ -65,12 +67,13 @@ This area spans parts of these Colorado counties: ${geo.counties?.join(', ') ?? 
 
 You may use web search (up to 3 searches) to check for current fire restrictions in those counties, active wildfires near this area, or notable local fire news from the past few days.
 
-Write 3–5 sentences for the general public. Rules:
+Write for the general public. Rules:
 - Use ONLY the data above and what your searches actually return. Never invent numbers, fires, or restrictions.
-- Lead with today's danger level and what is driving it.
-- Note the week-ahead trend, any Red Flag Warning, and watchout status if it applies.
-- If search finds current restrictions or nearby incidents, mention them briefly.
-- Calm, plain, useful language. No headers, bullets, or preamble — just the paragraph.`;
+- Calm, plain, useful language.
+
+FORMAT (exactly this structure, under 120 words total, no preamble or headers):
+- First line: one bold sentence (**like this**) stating today's danger level and its headline driver.
+- Then 3–5 lines each starting with "- ": one short fact per line, drawn from: the week-ahead trend, the key weather driver (wind / humidity / temperature), any Red Flag Warning or watchout status, and any current restrictions or nearby incidents your searches found.`;
 }
 
 async function generate(area, data, geo) {
@@ -108,8 +111,13 @@ async function generate(area, data, geo) {
     ...[...cited].slice(0, 4).map(([url, name]) => ({ name, url })),
   ];
 
+  // Plain-text lead line for compact placements (homepage locate card)
+  const lead = text.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('- '))
+    ?.replace(/\*\*/g, '') ?? null;
+
   return {
     overview: text,
+    lead,
     sources,
     generated: data.dateLabel ?? new Date().toLocaleDateString('en-US', { timeZone: 'America/Denver', month: 'long', day: 'numeric' }),
   };
@@ -118,6 +126,12 @@ async function generate(area, data, geo) {
 let ok = 0;
 for (const area of AREAS) {
   const outPath = join(OUT_DIR, `${area.slug}.json`);
+  // Per-area toggle: "overview": true in dispatch_areas.json
+  if (!area.overview) {
+    if (existsSync(outPath)) { unlinkSync(outPath); console.log(`OFF ${area.slug}: overview disabled — removed stale file`); }
+    else console.log(`OFF ${area.slug}: overview disabled`);
+    continue;
+  }
   try {
     const data = JSON.parse(readFileSync(join(__dirname, `../src/data/areas/${area.slug}.json`), 'utf8'));
     const geo = GEO[area.slug] ?? {};

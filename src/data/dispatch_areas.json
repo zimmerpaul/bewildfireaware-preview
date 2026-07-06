@@ -4,62 +4,71 @@
     "name": "Montrose (Montrose)",
     "spreadsheet": "2PACX-1vRJsRFMyTeh04GxSnE2ZN8lZTfGhYWPN4H58no4q_2pEEggxHBK2K_v0S5iZVAzoZ_8joAqUCMTXWyx",
     "gid": "258922850",
-    "chartGid": "1300890780"
+    "chartGid": "1300890780",
+    "overview": false
   },
   {
     "slug": "montrose_high",
     "name": "Montrose (High Elevation)",
     "spreadsheet": "2PACX-1vRJsRFMyTeh04GxSnE2ZN8lZTfGhYWPN4H58no4q_2pEEggxHBK2K_v0S5iZVAzoZ_8joAqUCMTXWyx",
     "gid": "574342440",
-    "chartGid": "723872175"
+    "chartGid": "723872175",
+    "overview": true
   },
   {
     "slug": "montrose_west",
     "name": "Montrose (West)",
     "spreadsheet": "2PACX-1vRJsRFMyTeh04GxSnE2ZN8lZTfGhYWPN4H58no4q_2pEEggxHBK2K_v0S5iZVAzoZ_8joAqUCMTXWyx",
     "gid": "726840426",
-    "chartGid": "1755425807"
+    "chartGid": "1755425807",
+    "overview": false
   },
   {
     "slug": "montrose_uncompaghre",
     "name": "Montrose (Uncompaghre)",
     "spreadsheet": "2PACX-1vRJsRFMyTeh04GxSnE2ZN8lZTfGhYWPN4H58no4q_2pEEggxHBK2K_v0S5iZVAzoZ_8joAqUCMTXWyx",
     "gid": "1834194603",
-    "chartGid": "18167592"
+    "chartGid": "18167592",
+    "overview": false
   },
   {
     "slug": "durango_upper",
     "name": "Durango (Upper)",
     "spreadsheet": "2PACX-1vR1hZIIzKdVITmFSCoxqvBCLpm9qKhNHFS0SjQIl-PMr5_gPs5n410DkIWOvUSben8h5zjVAYjw2rEb",
     "gid": "1112725686",
-    "chartGid": "960955117"
+    "chartGid": "960955117",
+    "overview": false
   },
   {
     "slug": "durango_lower",
     "name": "Durango (Lower)",
     "spreadsheet": "2PACX-1vR1hZIIzKdVITmFSCoxqvBCLpm9qKhNHFS0SjQIl-PMr5_gPs5n410DkIWOvUSben8h5zjVAYjw2rEb",
     "gid": "1941363798",
-    "chartGid": "49500234"
+    "chartGid": "49500234",
+    "overview": false
   },
   {
     "slug": "grand_junction_low",
     "name": "Grand Junction (Low)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
     "gid": "1129321330",
-    "chartGid": "196728521"
+    "chartGid": "196728521",
+    "overview": false
   },
   {
     "slug": "grand_junction_middle",
     "name": "Grand Junction (Middle)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
     "gid": "342921535",
-    "chartGid": "331173421"
+    "chartGid": "331173421",
+    "overview": false
   },
   {
     "slug": "grand_junction_high",
     "name": "Grand Junction (High)",
     "spreadsheet": "2PACX-1vRI0QzXfvwpYnRcLkjlLwBvtnQmIIQcjXSGa1C0a6ECcZJ6URQwDRP6hPxDq2Y76ueuoUtbMTZusYkI",
     "gid": "893073120",
-    "chartGid": "1652435952"
+    "chartGid": "1652435952",
+    "overview": false
   }
 ]
