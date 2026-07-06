@@ -22,6 +22,12 @@ if (!API_KEY) {
 // narration-prone output).
 const MODEL = process.env.OVERVIEW_MODEL || 'claude-sonnet-5';
 const MAX_SEARCHES = Number(process.env.OVERVIEW_MAX_SEARCHES || 5);
+
+// Optional: NICC sit report context (produced by fetch-sitrep.mjs)
+let SITREP = null;
+try {
+  SITREP = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../src/data/sitrep.json'), 'utf8'));
+} catch {}
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const AREAS = JSON.parse(readFileSync(join(__dirname, '../src/data/dispatch_areas.json'), 'utf8'));
 const GEO = JSON.parse(readFileSync(join(__dirname, '../src/data/fdra_geo.json'), 'utf8'));
@@ -65,6 +71,12 @@ ${nws.forecast}
 Active alerts: ${nws.alerts}
 
 This area spans parts of these Colorado counties: ${geo.counties?.join(', ') ?? 'unknown'}.
+${SITREP ? `
+NATIONAL INTERAGENCY SITUATION REPORT (NICC${SITREP.reportDate ? `, ${SITREP.reportDate}` : ''}):
+National Preparedness Level ${SITREP.nationalPL ?? 'n/a'}${SITREP.rmaPL ? `; Rocky Mountain Area PL ${SITREP.rmaPL}` : ''}.
+${SITREP.excerpt}
+(Mention sit-report incidents only if they are in or near this area's counties.)
+` : ''}
 
 Use web search (several searches as needed) to find: current fire restrictions and their stage/jurisdiction in those counties, active wildfires near this area (name, size, containment), and notable local fire developments from the past few days.
 
@@ -133,6 +145,7 @@ async function generate(area, data, geo) {
   const sources = [
     { name: 'FEMS / NFDRS via BeWildfireAware', url: null },
     { name: 'National Weather Service', url: 'https://www.weather.gov/' },
+    ...(SITREP ? [{ name: 'NICC Incident Management Situation Report', url: 'https://www.nifc.gov/nicc-files/sitreprt.pdf' }] : []),
     ...[...cited].slice(0, 4).map(([url, name]) => ({ name, url })),
   ];
 

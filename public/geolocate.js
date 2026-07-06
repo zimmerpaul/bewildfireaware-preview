@@ -87,7 +87,7 @@
   function saved() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
   function clearSaved() { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
 
-  function renderHit(out, p, opts) {
+  function renderHit(out, p, opts, coords) {
     out.innerHTML =
       '<div class="locate-hit">' +
       '<strong>' + p.name + '</strong>' +
@@ -96,11 +96,18 @@
         ? '<span class="locate-note">▲ ' + p.watchout.met + ' of ' + p.watchout.total + ' watchout thresholds met</span>' : '') +
       '<a class="btn" style="margin-top:0" href="' + p.url + '">Your full forecast &rarr;</a>' +
       (p.overview ? overviewHtml(p) : '') +
+      '<div class="wx-strip wx-strip-home"></div>' +
       (opts && opts.remembered
         ? '<span class="locate-note">Remembered from last visit · <a href="#" id="locate-clear">forget</a></span>' : '') +
       '</div>';
     var clear = document.getElementById('locate-clear');
     if (clear) clear.addEventListener('click', function (e) { e.preventDefault(); clearSaved(); out.innerHTML = ''; });
+
+    // Live weather + AQI: at the visitor's precise location when available,
+    // otherwise the area centroid (remembered visits).
+    var wx = out.querySelector('.wx-strip');
+    var ll = coords || p.centroid;
+    if (wx && ll && window.bwaWeather) window.bwaWeather.render(wx, ll[0], ll[1]);
   }
 
   function init() {
@@ -130,7 +137,7 @@
           btn.disabled = false;
           if (hit) {
             save(hit.properties.slug);
-            renderHit(out, hit.properties);
+            renderHit(out, hit.properties, null, [lat, lon]);
             checkRedFlag(lat, lon, out.querySelector('.locate-hit'));
           } else {
             out.innerHTML =

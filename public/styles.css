@@ -735,3 +735,39 @@ footer p { margin: 10px 0 0; font-size: 0.9em; }
 .town-label { font-weight: 600; font-size: 11px; }
 .town-label-minor { display: none; font-weight: 500; font-size: 10.5px; color: #444; }
 .show-minor-towns .town-label-minor { display: block; }
+
+/* --- live weather + air quality strip --- */
+.wx-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 14px 0 6px;
+    width: 100%;
+}
+
+.wx-chip {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.wx-name { font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+.wx-temp { font-size: 1.5em; font-weight: 800; color: var(--pine-deep); }
+.wx-desc { font-size: 0.88em; line-height: 1.35; }
+.wx-wind { font-size: 0.78em; color: var(--ink-soft); }
+.wx-loading { color: var(--ink-soft); font-size: 0.9em; }
+.wx-credit { font-size: 0.75em; color: var(--ink-soft); margin: 4px 0 0; }
+
+/* AQI category coloring (EPA scale) */
+.wx-aqi.aqi-good          { border-left: 5px solid #2e7d32; }
+.wx-aqi.aqi-moderate      { border-left: 5px solid #f9a825; }
+.wx-aqi.aqi-usg           { border-left: 5px solid #ef6c00; }
+.wx-aqi.aqi-unhealthy     { border-left: 5px solid #c62828; }
+.wx-aqi.aqi-veryunhealthy { border-left: 5px solid #7b1fa2; }
+.wx-aqi.aqi-hazardous     { border-left: 5px solid #6d1a1a; }
+.wx-aqi .wx-temp { color: var(--ink); }

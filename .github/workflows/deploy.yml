@@ -33,6 +33,9 @@ jobs:
       - name: Fetch latest fire danger data
         run: npm run fetch-data
 
+      - name: Fetch NICC situation report (non-fatal enrichment)
+        run: npm run fetch-sitrep
+
       - name: Generate AI overviews (script self-skips when no API key is configured)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -45,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/areas src/data/overviews 2>/dev/null || git add src/data/areas
+          for p in src/data/areas src/data/overviews src/data/sitrep.json; do git add "$p" 2>/dev/null || true; done
           if ! git diff --cached --quiet; then
             git commit -m "Daily data refresh"
             # Re-runs/manual runs may have checked out an older commit; rebase onto

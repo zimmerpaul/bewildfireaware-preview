@@ -4,6 +4,7 @@
 // boundary geometry is downloaded once and only on pages that need it.
 import areas from '../data/dispatch_areas.json';
 import boundaries from '../data/fdra_boundaries.json';
+import fdraGeo from '../data/fdra_geo.json';
 
 const dataFiles = import.meta.glob('../data/areas/*.json', { eager: true });
 const overviewFiles = import.meta.glob('../data/overviews/*.json', { eager: true });
@@ -34,6 +35,7 @@ export function GET() {
         overview: ov?.overview ?? null,
         overviewSources: ov?.sources ?? null,
         overviewGenerated: ov?.generated ?? null,
+        centroid: fdraGeo[slug]?.centroid ?? null,
         url: `/dispatch_areas/${slug}.html`,
       },
     };

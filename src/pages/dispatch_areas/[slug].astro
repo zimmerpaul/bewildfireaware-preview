@@ -89,6 +89,13 @@ const localLinks = [
       ))}
     </div>
 
+    {lat && (
+      <>
+        <h2>Weather &amp; Air Quality</h2>
+        <div class="wx-strip" data-wx data-lat={lat} data-lon={lon}></div>
+      </>
+    )}
+
     {data.thresholds && (
       <>
         <h2>Local Thresholds</h2>
@@ -166,4 +173,5 @@ const localLinks = [
       <a href="mailto:38north.llc@gmail.com"> 38north.llc@gmail.com</a>
     </p>
   </main>
+  <script is:inline src="/weather.js" defer></script>
 </Base>
