@@ -18,9 +18,10 @@ if (!API_KEY) {
   process.exit(0);
 }
 
-// Model is switchable via env (e.g. OVERVIEW_MODEL=claude-sonnet-5 for
-// higher-quality prose). Haiku default keeps the trial cheap.
-const MODEL = process.env.OVERVIEW_MODEL || 'claude-haiku-4-5-20251001';
+// Model is switchable via env; Sonnet default (Haiku trial produced weaker,
+// narration-prone output).
+const MODEL = process.env.OVERVIEW_MODEL || 'claude-sonnet-5';
+const MAX_SEARCHES = Number(process.env.OVERVIEW_MAX_SEARCHES || 5);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const AREAS = JSON.parse(readFileSync(join(__dirname, '../src/data/dispatch_areas.json'), 'utf8'));
 const GEO = JSON.parse(readFileSync(join(__dirname, '../src/data/fdra_geo.json'), 'utf8'));
@@ -65,15 +66,17 @@ Active alerts: ${nws.alerts}
 
 This area spans parts of these Colorado counties: ${geo.counties?.join(', ') ?? 'unknown'}.
 
-You may use web search (up to 3 searches) to check for current fire restrictions in those counties, active wildfires near this area, or notable local fire news from the past few days.
+Use web search (several searches as needed) to find: current fire restrictions and their stage/jurisdiction in those counties, active wildfires near this area (name, size, containment), and notable local fire developments from the past few days.
 
 Write for the general public. Rules:
 - Use ONLY the data above and what your searches actually return. Never invent numbers, fires, or restrictions.
+- Be specific: name fires with acreage and containment, name restriction stages and who imposed them, give Red Flag Warning timing.
 - Calm, plain, useful language.
 
-FORMAT (exactly this structure, under 120 words total, no preamble or headers):
+FORMAT (exactly this structure, under 150 words total):
 - First line: one bold sentence (**like this**) stating today's danger level and its headline driver.
-- Then 3–5 lines each starting with "- ": one short fact per line, drawn from: the week-ahead trend, the key weather driver (wind / humidity / temperature), any Red Flag Warning or watchout status, and any current restrictions or nearby incidents your searches found.`;
+- Then 3–6 lines each starting with "- ": one concrete fact per line — week-ahead trend, key weather driver, Red Flag Warning or watchout status, restrictions, nearby incidents.
+- Output ONLY the overview itself. No preamble, no narration (never "I'll search…"), no headers, nothing after the last bullet.`;
 }
 
 async function generate(area, data, geo) {
@@ -87,15 +90,23 @@ async function generate(area, data, geo) {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 800,
-      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
+      max_tokens: 1200,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: MAX_SEARCHES }],
       messages: [{ role: 'user', content: buildPrompt(area, data, geo, nws) }],
     }),
   });
   if (!res.ok) throw new Error(`API ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const msg = await res.json();
 
-  const text = msg.content.filter((b) => b.type === 'text').map((b) => b.text).join(' ').trim();
+  // The final answer is the text after the last tool interaction — earlier
+  // text blocks are "I'll search for…" narration and must not be published.
+  let lastToolIdx = -1;
+  msg.content.forEach((b, i) => { if (b.type !== 'text') lastToolIdx = i; });
+  let text = msg.content.slice(lastToolIdx + 1)
+    .filter((b) => b.type === 'text').map((b) => b.text).join('\n').trim();
+  // Extra guard: drop any lines before the bold lead sentence.
+  const boldStart = text.indexOf('**');
+  if (boldStart > 0) text = text.slice(boldStart).trim();
   if (text.length < 80) throw new Error(`overview too short (${text.length} chars)`);
 
   // Sources: the structured inputs, plus any web pages Claude actually cited
@@ -111,9 +122,12 @@ async function generate(area, data, geo) {
     ...[...cited].slice(0, 4).map(([url, name]) => ({ name, url })),
   ];
 
-  // Plain-text lead line for compact placements (homepage locate card)
-  const lead = text.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('- '))
-    ?.replace(/\*\*/g, '') ?? null;
+  // Plain-text lead for compact placements (homepage locate card):
+  // prefer the bold lead sentence, fall back to the first non-bullet line.
+  const boldMatch = /\*\*([^*]+)\*\*/.exec(text);
+  const lead = (boldMatch?.[1]
+    ?? text.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('- '))?.replace(/\*\*/g, ''))
+    ?.trim() ?? null;
 
   return {
     overview: text,

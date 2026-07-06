@@ -94,11 +94,18 @@
       map.setMinZoom(map.getZoom() - 1); // keep people from getting lost zooming out
       L.control.scale({ imperial: true, metric: false }).addTo(map);
 
-      // town dots + labels (non-interactive so polygon clicks pass through)
+      // Town dots + labels, rendered in a pane BELOW the FDRA polygons
+      // (tiles are z200, our pane z350, overlay polygons z400) so the danger
+      // colors and hover effects sit on top of the labels.
+      map.createPane('towns');
+      map.getPane('towns').style.zIndex = 350;
+      map.getPane('towns').style.pointerEvents = 'none';
       TOWNS.forEach(function (t) {
         L.circleMarker([t[1], t[2]], {
+          pane: 'towns',
           radius: 3.5, color: '#333', weight: 1.5, fillColor: '#fff', fillOpacity: 1, interactive: false,
         }).addTo(map).bindTooltip(t[0], {
+          pane: 'towns',
           permanent: true, direction: 'right', offset: [6, 0], className: 'town-label', interactive: false,
         }).openTooltip();
       });
