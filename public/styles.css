@@ -771,3 +771,11 @@ footer p { margin: 10px 0 0; font-size: 0.9em; }
 .wx-aqi.aqi-veryunhealthy { border-left: 5px solid #7b1fa2; }
 .wx-aqi.aqi-hazardous     { border-left: 5px solid #6d1a1a; }
 .wx-aqi .wx-temp { color: var(--ink); }
+
+/* weather chips are linkouts */
+a.wx-chip { text-decoration: none; color: inherit; transition: transform 0.12s; }
+a.wx-chip:hover { transform: translateY(-2px); }
+.wx-ext { color: var(--flame-dark); font-size: 0.9em; opacity: 0; transition: opacity 0.12s; }
+a.wx-chip:hover .wx-ext { opacity: 1; }
+.wx-credit a { color: var(--ink-soft); }
+.wx-credit a:hover { color: var(--flame-dark); }

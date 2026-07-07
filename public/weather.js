@@ -37,6 +37,11 @@
       .then(function (r) { return r.json(); })
       .then(function (a) { return a.current; });
 
+    // Card + credit destinations: NWS point-forecast page for weather,
+    // AirNow's Fire & Smoke map for air quality.
+    var nwsUrl = 'https://forecast.weather.gov/MapClick.php?lat=' + lat + '&lon=' + lon;
+    var airnowUrl = 'https://fire.airnow.gov/#9/' + lat + '/' + lon;
+
     Promise.allSettled([nws, aqi]).then(function (results) {
       var periods = results[0].status === 'fulfilled' ? results[0].value : null;
       var air = results[1].status === 'fulfilled' ? results[1].value : null;
@@ -44,22 +49,22 @@
 
       if (periods) {
         periods.forEach(function (p) {
-          html += '<div class="wx-chip">' +
-            '<span class="wx-name">' + esc(p.name) + '</span>' +
+          html += '<a class="wx-chip" href="' + nwsUrl + '" target="_blank" rel="noopener" title="Full NWS forecast for this spot">' +
+            '<span class="wx-name">' + esc(p.name) + ' <span class="wx-ext">↗</span></span>' +
             '<span class="wx-temp">' + esc(p.temperature) + '°' + esc(p.temperatureUnit) + '</span>' +
             '<span class="wx-desc">' + esc(p.shortForecast) + '</span>' +
             '<span class="wx-wind">Wind ' + esc(p.windDirection || '') + ' ' + esc(p.windSpeed || '') + '</span>' +
-            '</div>';
+            '</a>';
         });
       }
       if (air && typeof air.us_aqi === 'number') {
         var cat = aqiCat(air.us_aqi);
-        html += '<div class="wx-chip wx-aqi ' + cat[2] + '">' +
-          '<span class="wx-name">Air Quality</span>' +
+        html += '<a class="wx-chip wx-aqi ' + cat[2] + '" href="' + airnowUrl + '" target="_blank" rel="noopener" title="AirNow Fire & Smoke map for this spot">' +
+          '<span class="wx-name">Air Quality <span class="wx-ext">↗</span></span>' +
           '<span class="wx-temp">' + esc(air.us_aqi) + '</span>' +
           '<span class="wx-desc">' + cat[1] + '</span>' +
           (typeof air.pm2_5 === 'number' ? '<span class="wx-wind">PM2.5 ' + esc(air.pm2_5) + ' µg/m³</span>' : '') +
-          '</div>';
+          '</a>';
       }
 
       el.innerHTML = html ||
@@ -67,7 +72,9 @@
       if (html) {
         el.insertAdjacentHTML('afterend',
           el.nextElementSibling && el.nextElementSibling.classList.contains('wx-credit') ? '' :
-          '<p class="wx-credit">Live: forecast from the National Weather Service · air quality via Open-Meteo</p>');
+          '<p class="wx-credit">Live: forecast from the <a href="' + nwsUrl + '" target="_blank" rel="noopener">National Weather Service</a> · ' +
+          'air quality data via <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · ' +
+          'smoke map at <a href="' + airnowUrl + '" target="_blank" rel="noopener">AirNow</a></p>');
       }
     });
   }
