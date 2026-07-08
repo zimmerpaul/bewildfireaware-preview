@@ -1,5 +1,7 @@
-// Interactive dispatch area danger map (Leaflet + CARTO basemap).
-// Boundaries + today's data come from /map-data.json (generated at build time).
+// Danger maps (Leaflet + CARTO Voyager basemap, boundaries + daily data from
+// /map-data.json):
+//   #danger-map — interactive region map (homepage, dispatch areas page)
+//   #area-map[data-slug] — non-interactive locator map on each FDRA page
 (function () {
   var DANGER_COLORS = {
     'Low': '#2e7d32',
@@ -10,13 +12,6 @@
     'Unknown': '#9e9e9e',
   };
 
-  function dangerClass(level) {
-    return 'danger-' + String(level || 'unknown').toLowerCase().replace(/\s+/g, '-');
-  }
-
-  // Western Colorado towns for orientation. Tier 1 is always labeled;
-  // tier 2 labels appear once zoomed past MINOR_LABEL_ZOOM (declutters the
-  // region-wide view where 21 labels collide).
   var MINOR_LABEL_ZOOM = 9;
   var TOWNS = [
     ['Grand Junction', 39.0639, -108.5506, 1],
@@ -42,6 +37,44 @@
     ['Hotchkiss', 38.7994, -107.7176, 2],
   ];
 
+  function dangerClass(level) {
+    return 'danger-' + String(level || 'unknown').toLowerCase().replace(/\s+/g, '-');
+  }
+
+  function baseTiles() {
+    return L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      maxZoom: 18,
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
+    });
+  }
+
+  // Town dots + labels in a pane ABOVE the polygon fills (z450: above the
+  // overlay pane at 400, below markers at 600) so the white-halo text stays
+  // crisp instead of being tinted by the danger colors. Minor towns label
+  // only when zoomed in.
+  function addTowns(map) {
+    map.createPane('towns');
+    var pane = map.getPane('towns');
+    pane.style.zIndex = 450;
+    pane.style.pointerEvents = 'none';
+    TOWNS.forEach(function (t) {
+      L.circleMarker([t[1], t[2]], {
+        pane: 'towns',
+        radius: t[3] === 1 ? 3 : 2.25,
+        color: '#3a3a3a', weight: 1.25, fillColor: '#fff', fillOpacity: 1, interactive: false,
+      }).addTo(map).bindTooltip(t[0], {
+        pane: 'towns',
+        permanent: true, direction: 'right', offset: [6, 0], interactive: false,
+        className: t[3] === 1 ? 'town-label' : 'town-label town-label-minor',
+      }).openTooltip();
+    });
+    function update() {
+      pane.classList.toggle('show-minor-towns', map.getZoom() >= MINOR_LABEL_ZOOM);
+    }
+    map.on('zoomend', update);
+    update();
+  }
+
   function popupHtml(p) {
     var html = '<div class="map-popup">' +
       '<div class="map-popup-title">' + p.name + '</div>' +
@@ -60,77 +93,76 @@
     return html;
   }
 
-  function init() {
-    var el = document.getElementById('danger-map');
-    if (!el || typeof L === 'undefined') return;
+  function initRegionMap(el, geojson) {
+    var map = L.map(el, { scrollWheelZoom: false, zoomSnap: 0.25, zoomDelta: 0.5 });
+    baseTiles().addTo(map);
 
-    fetch('/map-data.json').then(function (r) { return r.json(); }).then(function (geojson) {
-      // zoomSnap 0.25 lets fitBounds land much closer to the areas instead of
-      // rounding down to a distant whole zoom level
-      var map = L.map(el, { scrollWheelZoom: false, zoomSnap: 0.25, zoomDelta: 0.5 });
+    var layer = L.geoJSON(geojson, {
+      style: function (f) {
+        return {
+          color: '#ffffff',
+          weight: 1.5,
+          fillColor: DANGER_COLORS[f.properties.danger] || DANGER_COLORS.Unknown,
+          fillOpacity: 0.4,
+        };
+      },
+      onEachFeature: function (f, lyr) {
+        lyr.bindPopup(popupHtml(f.properties));
+        lyr.on('mouseover', function () { lyr.setStyle({ fillOpacity: 0.62, weight: 2.5 }); });
+        lyr.on('mouseout', function () { lyr.setStyle({ fillOpacity: 0.4, weight: 1.5 }); });
+      },
+    }).addTo(map);
 
-      // Voyager basemap: towns, roads, and terrain labels so people can find
-      // themselves, while staying muted enough for danger colors to read.
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="https://carto.com/attributions">CARTO</a>',
-      }).addTo(map);
+    map.fitBounds(layer.getBounds(), { padding: [6, 6] });
+    map.setMinZoom(map.getZoom() - 1);
+    L.control.scale({ imperial: true, metric: false }).addTo(map);
+    addTowns(map);
 
-      var layer = L.geoJSON(geojson, {
-        style: function (f) {
-          return {
-            color: '#ffffff',
-            weight: 1.5,
-            fillColor: DANGER_COLORS[f.properties.danger] || DANGER_COLORS.Unknown,
-            fillOpacity: 0.55,
-          };
-        },
-        onEachFeature: function (f, lyr) {
-          lyr.bindPopup(popupHtml(f.properties));
-          lyr.on('mouseover', function () { lyr.setStyle({ fillOpacity: 0.78, weight: 2.5 }); });
-          lyr.on('mouseout', function () { lyr.setStyle({ fillOpacity: 0.55, weight: 1.5 }); });
-        },
-      }).addTo(map);
-
-      map.fitBounds(layer.getBounds(), { padding: [6, 6] });
-      map.setMinZoom(map.getZoom() - 1); // keep people from getting lost zooming out
-      L.control.scale({ imperial: true, metric: false }).addTo(map);
-
-      // Town dots + labels, rendered in a pane BELOW the FDRA polygons
-      // (tiles are z200, our pane z350, overlay polygons z400) so the danger
-      // colors and hover effects sit on top of the labels.
-      map.createPane('towns');
-      var townsPane = map.getPane('towns');
-      townsPane.style.zIndex = 350;
-      townsPane.style.pointerEvents = 'none';
-      TOWNS.forEach(function (t) {
-        L.circleMarker([t[1], t[2]], {
-          pane: 'towns',
-          radius: t[3] === 1 ? 3.5 : 2.5,
-          color: '#444', weight: 1.25, fillColor: '#fff', fillOpacity: 1, interactive: false,
-        }).addTo(map).bindTooltip(t[0], {
-          pane: 'towns',
-          permanent: true, direction: 'right', offset: [6, 0], interactive: false,
-          className: t[3] === 1 ? 'town-label' : 'town-label town-label-minor',
-        }).openTooltip();
+    var legend = L.control({ position: 'bottomleft' });
+    legend.onAdd = function () {
+      var div = L.DomUtil.create('div', 'map-legend');
+      var html = '<strong>Fire Danger</strong>';
+      ['Low', 'Moderate', 'High', 'Very High', 'Extreme'].forEach(function (lvl) {
+        html += '<div><span class="map-legend-swatch" style="background:' + DANGER_COLORS[lvl] + '"></span>' + lvl + '</div>';
       });
-      function updateTownLabels() {
-        townsPane.classList.toggle('show-minor-towns', map.getZoom() >= MINOR_LABEL_ZOOM);
-      }
-      map.on('zoomend', updateTownLabels);
-      updateTownLabels();
+      div.innerHTML = html;
+      return div;
+    };
+    legend.addTo(map);
+  }
 
-      var legend = L.control({ position: 'bottomleft' });
-      legend.onAdd = function () {
-        var div = L.DomUtil.create('div', 'map-legend');
-        var html = '<strong>Fire Danger</strong>';
-        ['Low', 'Moderate', 'High', 'Very High', 'Extreme'].forEach(function (lvl) {
-          html += '<div><span class="map-legend-swatch" style="background:' + DANGER_COLORS[lvl] + '"></span>' + lvl + '</div>';
-        });
-        div.innerHTML = html;
-        return div;
-      };
-      legend.addTo(map);
+  function initAreaMap(el, geojson) {
+    var slug = el.getAttribute('data-slug');
+    var map = L.map(el, {
+      dragging: false, zoomControl: false, scrollWheelZoom: false, doubleClickZoom: false,
+      boxZoom: false, keyboard: false, touchZoom: false,
+    });
+    baseTiles().addTo(map);
+
+    var target = null;
+    L.geoJSON(geojson, {
+      interactive: false,
+      style: function (f) {
+        return f.properties.slug === slug
+          ? { color: '#ffffff', weight: 2.5, fillColor: DANGER_COLORS[f.properties.danger] || DANGER_COLORS.Unknown, fillOpacity: 0.45 }
+          : { color: '#aab2ab', weight: 1, fillColor: '#8a8f8a', fillOpacity: 0.12 };
+      },
+      onEachFeature: function (f, lyr) { if (f.properties.slug === slug) target = lyr; },
+    }).addTo(map);
+
+    if (target) map.fitBounds(target.getBounds().pad(0.4));
+    L.control.scale({ imperial: true, metric: false }).addTo(map);
+    addTowns(map);
+  }
+
+  function init() {
+    if (typeof L === 'undefined') return;
+    var region = document.getElementById('danger-map');
+    var area = document.getElementById('area-map');
+    if (!region && !area) return;
+    fetch('/map-data.json').then(function (r) { return r.json(); }).then(function (geojson) {
+      if (region) initRegionMap(region, geojson);
+      if (area) initAreaMap(area, geojson);
     });
   }
 

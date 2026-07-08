@@ -30,12 +30,20 @@
       .then(function (r) { return r.json(); })
       .then(function (p) { return fetch(p.properties.forecast); })
       .then(function (r) { return r.json(); })
-      .then(function (f) { return f.properties.periods.slice(0, 3); });
+      .then(function (f) { return { periods: f.properties.periods.slice(0, 3), updated: f.properties.updateTime || f.properties.updated }; });
 
     var aqi = fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + lat +
         '&longitude=' + lon + '&current=us_aqi,pm2_5&timezone=America%2FDenver')
       .then(function (r) { return r.json(); })
       .then(function (a) { return a.current; });
+
+    function fmtMT(iso) {
+      try {
+        return new Date(iso).toLocaleString('en-US', {
+          timeZone: 'America/Denver', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+        }) + ' MT';
+      } catch (e) { return null; }
+    }
 
     // Card + credit destinations: NWS point-forecast page for weather,
     // AirNow's Fire & Smoke map for air quality.
@@ -43,7 +51,8 @@
     var airnowUrl = 'https://fire.airnow.gov/#9/' + lat + '/' + lon;
 
     Promise.allSettled([nws, aqi]).then(function (results) {
-      var periods = results[0].status === 'fulfilled' ? results[0].value : null;
+      var wx = results[0].status === 'fulfilled' ? results[0].value : null;
+      var periods = wx ? wx.periods : null;
       var air = results[1].status === 'fulfilled' ? results[1].value : null;
       var html = '';
 
@@ -70,11 +79,16 @@
       el.innerHTML = html ||
         '<span class="wx-loading">Live weather is unavailable right now.</span>';
       if (html) {
+        var nwsStamp = wx && wx.updated ? fmtMT(wx.updated) : null;
+        // Open-Meteo returns local (America/Denver) time without an offset
+        var aqiStamp = air && air.time ? air.time.slice(11) + ' MT' : null;
         el.insertAdjacentHTML('afterend',
           el.nextElementSibling && el.nextElementSibling.classList.contains('wx-credit') ? '' :
-          '<p class="wx-credit">Live: forecast from the <a href="' + nwsUrl + '" target="_blank" rel="noopener">National Weather Service</a> · ' +
-          'air quality data via <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · ' +
-          'smoke map at <a href="' + airnowUrl + '" target="_blank" rel="noopener">AirNow</a></p>');
+          '<p class="wx-credit">Forecast from the <a href="' + nwsUrl + '" target="_blank" rel="noopener">National Weather Service</a>' +
+          (nwsStamp ? ' (updated ' + nwsStamp + ')' : '') +
+          ' · air quality via <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>' +
+          (aqiStamp ? ' (as of ' + aqiStamp + ')' : '') +
+          ' · smoke map at <a href="' + airnowUrl + '" target="_blank" rel="noopener">AirNow</a></p>');
       }
     });
   }

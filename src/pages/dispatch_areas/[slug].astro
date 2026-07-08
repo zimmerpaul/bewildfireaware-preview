@@ -23,6 +23,17 @@ const dangerClass = (level) =>
 
 const DANGER_LEVELS = ['Low', 'Moderate', 'High', 'Very High', 'Extreme'];
 
+// "?" popover explanations for the condition cards. Outputs (ERC/BI) link to
+// the NFDRS Outputs page; weather/fuel inputs link to the Inputs page.
+const METRIC_INFO = [
+  { match: /^ERC/i, text: "Energy Release Component — the potential heat released per square foot in a fire's flaming front. It tracks long-term fuel dryness, climbing as the season dries out. Shown as a percentile so 90%+ means drier than 9 of 10 historical days.", href: '/learn_more/outputs.html' },
+  { match: /^BI/i, text: 'Burning Index — how intense a fire would likely be if one started, related to expected flame length. Combines fire spread with energy release.', href: '/learn_more/outputs.html' },
+  { match: /^Min R/i, text: "Today's minimum relative humidity. Dry air pulls moisture out of grasses and needles within hours — the lower this number, the more ignitable the fine fuels.", href: '/learn_more/inputs.html' },
+  { match: /^Max R/i, text: 'Overnight maximum humidity — the "recovery." When fuels don\'t regain moisture overnight, they start the next burn period already dry.', href: '/learn_more/inputs.html' },
+  { match: /^1000/i, text: 'Moisture content of the largest dead fuels (3–8 inch logs), as a percent of dry weight. These take weeks to dry, so low values signal deep, persistent drought.', href: '/learn_more/inputs.html' },
+];
+const infoFor = (label) => METRIC_INFO.find((m) => m.match.test(label));
+
 // Per-FDRA geography (derived from boundary polygons by scripts/derive-counties.mjs)
 const geo = fdraGeo[area.slug] ?? {};
 const [lat, lon] = geo.centroid ?? [];
@@ -78,15 +89,25 @@ const localLinks = [
       <p class="watchout-summary">{data.watchout.met} of {data.watchout.total} local thresholds met today</p>
     )}
     <div class="obs-grid">
-      {data.observations.map((o) => (
-        <div class={`obs-card${o.triggered ? ' triggered' : ''}`}>
-          <span class="obs-value">{o.value}</span>
-          <span class="obs-label">{o.label}</span>
-          {o.limit && (
-            <span class="obs-limit">{o.triggered ? '▲ threshold ' : 'threshold '}{o.limit}</span>
-          )}
-        </div>
-      ))}
+      {data.observations.map((o) => {
+        const info = infoFor(o.label);
+        return (
+          <div class={`obs-card${o.triggered ? ' triggered' : ''}`}>
+            {info && <button class="info-btn" type="button" aria-label={`What is ${o.label}?`}>?</button>}
+            {info && (
+              <div class="info-pop" hidden>
+                <p>{info.text}</p>
+                <a href={info.href} target="_blank" rel="noopener">Learn more →</a>
+              </div>
+            )}
+            <span class="obs-value">{o.value}</span>
+            <span class="obs-label">{o.label}</span>
+            {o.limit && (
+              <span class="obs-limit">{o.triggered ? '▲ threshold ' : 'threshold '}{o.limit}</span>
+            )}
+          </div>
+        );
+      })}
     </div>
 
     {lat && (
@@ -156,6 +177,13 @@ const localLinks = [
       </>
     )}
 
+    <h2>Where Is This Area?</h2>
+    <div id="area-map" data-slug={area.slug}></div>
+    <p class="wx-credit">
+      The {data.areaTitle ?? area.name} Fire Danger Rating Area
+      {counties.length > 0 && `, spanning parts of ${counties.join(', ')} ${counties.length === 1 ? 'county' : 'counties'}`}.
+    </p>
+
     <h2>Local Fire Information</h2>
     <div class="local-links">
       {localLinks.map((l) => (
@@ -173,5 +201,24 @@ const localLinks = [
       <a href="mailto:38north.llc@gmail.com"> 38north.llc@gmail.com</a>
     </p>
   </main>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <script is:inline src="/map.js" defer></script>
   <script is:inline src="/weather.js" defer></script>
+  <script is:inline>
+    // "?" info popovers on condition cards
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('.info-pop a')) return;
+      var btn = e.target.closest('.info-btn');
+      document.querySelectorAll('.info-pop:not([hidden])').forEach(function (p) {
+        if (!btn || p !== btn.nextElementSibling) p.hidden = true;
+      });
+      if (btn) {
+        var pop = btn.nextElementSibling;
+        pop.hidden = !pop.hidden;
+      }
+    });
+  </script>
 </Base>

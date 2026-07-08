@@ -78,7 +78,13 @@ ${SITREP.excerpt}
 (Mention sit-report incidents only if they are in or near this area's counties.)
 ` : ''}
 
-Use web search (several searches as needed) to find: current fire restrictions and their stage/jurisdiction in those counties, active wildfires near this area (name, size, containment), and notable local fire developments from the past few days.
+TODAY IS ${new Date().toLocaleDateString('en-US', { timeZone: 'America/Denver', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.
+
+Use web search (several searches as needed) to find: current fire restrictions and their stage/jurisdiction in those counties, active wildfires near this area (name, size, containment), and notable local fire developments.
+
+FRESHNESS RULES:
+- Only state incident sizes, containment, evacuations, or restrictions you can confirm from the last 48 hours. The sit report above is today's official snapshot — prefer it over news articles.
+- Fire facts go stale fast: if a search result is more than ~2 days old, either omit it or find something newer; never present old numbers as current.
 
 Write for the general public. Rules:
 - Use ONLY the data above and what your searches actually return. Never invent numbers, fires, or restrictions.

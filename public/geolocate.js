@@ -98,7 +98,7 @@
       (p.overview ? overviewHtml(p) : '') +
       '<div class="wx-strip wx-strip-home"></div>' +
       (opts && opts.remembered
-        ? '<span class="locate-note">Remembered from last visit · <a href="#" id="locate-clear">forget</a></span>' : '') +
+        ? '<span class="locate-note">Location remembered from last visit · <a href="#" id="locate-clear">forget</a></span>' : '') +
       '</div>';
     var clear = document.getElementById('locate-clear');
     if (clear) clear.addEventListener('click', function (e) { e.preventDefault(); clearSaved(); out.innerHTML = ''; });
