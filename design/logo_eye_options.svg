@@ -1,0 +1,53 @@
+<svg width="1060" height="470" viewBox="0 0 1060 470" xmlns="http://www.w3.org/2000/svg">
+<rect width="1060" height="470" fill="#faf9f6"/>
+<g transform="translate(70,50) scale(1.0)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 18.0 122.0 A 82 82 0 0 1 32.0 76.1 L 60.2 95.2 A 48 48 0 0 0 52.0 122.0 Z" fill="#2e7d32"/>
+<path d="M 35.4 71.5 A 82 82 0 0 1 72.0 44.9 L 83.6 76.9 A 48 48 0 0 0 62.2 92.4 Z" fill="#1565c0"/>
+<path d="M 77.4 43.2 A 82 82 0 0 1 122.6 43.2 L 113.2 75.9 A 48 48 0 0 0 86.8 75.9 Z" fill="#f9a825"/>
+<path d="M 128.0 44.9 A 82 82 0 0 1 164.6 71.5 L 137.8 92.4 A 48 48 0 0 0 116.4 76.9 Z" fill="#ef6c00"/>
+<path d="M 168.0 76.1 A 82 82 0 0 1 182.0 122.0 L 148.0 122.0 A 48 48 0 0 0 139.8 95.2 Z" fill="#c62828"/><line x1="100" y1="122" x2="144.7" y2="60.5" stroke="#f5ecd7" stroke-width="7" stroke-linecap="round"/><path d="M 66 122 Q 100 101 134 122 Q 100 143 66 122 Z" fill="#f5ecd7"/>
+<circle cx="100" cy="122" r="13" fill="#2d6a4f"/>
+<circle cx="100" cy="122" r="6.5" fill="#101914"/>
+<circle cx="97.1" cy="118.8" r="1.8" fill="#fff"/></g>
+<g transform="translate(300,208) scale(0.21)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 18.0 122.0 A 82 82 0 0 1 32.0 76.1 L 60.2 95.2 A 48 48 0 0 0 52.0 122.0 Z" fill="#2e7d32"/>
+<path d="M 35.4 71.5 A 82 82 0 0 1 72.0 44.9 L 83.6 76.9 A 48 48 0 0 0 62.2 92.4 Z" fill="#1565c0"/>
+<path d="M 77.4 43.2 A 82 82 0 0 1 122.6 43.2 L 113.2 75.9 A 48 48 0 0 0 86.8 75.9 Z" fill="#f9a825"/>
+<path d="M 128.0 44.9 A 82 82 0 0 1 164.6 71.5 L 137.8 92.4 A 48 48 0 0 0 116.4 76.9 Z" fill="#ef6c00"/>
+<path d="M 168.0 76.1 A 82 82 0 0 1 182.0 122.0 L 148.0 122.0 A 48 48 0 0 0 139.8 95.2 Z" fill="#c62828"/><line x1="100" y1="122" x2="144.7" y2="60.5" stroke="#f5ecd7" stroke-width="7" stroke-linecap="round"/><path d="M 66 122 Q 100 101 134 122 Q 100 143 66 122 Z" fill="#f5ecd7"/>
+<circle cx="100" cy="122" r="13" fill="#2d6a4f"/>
+<circle cx="100" cy="122" r="6.5" fill="#101914"/>
+<circle cx="97.1" cy="118.8" r="1.8" fill="#fff"/></g>
+<text x="170" y="310" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#21272a">B1 — Watchful Pivot</text>
+<text x="170" y="334" text-anchor="middle" font-family="Arial" font-size="14" fill="#5b6570">the eye anchors the needle</text>
+<g transform="translate(410,50) scale(1.0)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 20.0 96.0 A 80 80 0 0 1 33.7 51.3 L 58.5 68.0 A 50 50 0 0 0 50.0 96.0 Z" fill="#2e7d32"/>
+<path d="M 37.0 46.7 A 80 80 0 0 1 72.6 20.8 L 82.9 49.0 A 50 50 0 0 0 60.6 65.2 Z" fill="#1565c0"/>
+<path d="M 77.9 19.1 A 80 80 0 0 1 122.1 19.1 L 113.8 47.9 A 50 50 0 0 0 86.2 47.9 Z" fill="#f9a825"/>
+<path d="M 127.4 20.8 A 80 80 0 0 1 163.0 46.7 L 139.4 65.2 A 50 50 0 0 0 117.1 49.0 Z" fill="#ef6c00"/>
+<path d="M 166.3 51.3 A 80 80 0 0 1 180.0 96.0 L 150.0 96.0 A 50 50 0 0 0 141.5 68.0 Z" fill="#c62828"/><path d="M 52 138 Q 100 111 148 138 Q 100 165 52 138 Z" fill="#f5ecd7"/>
+<circle cx="100" cy="138" r="17" fill="#2d6a4f"/>
+<circle cx="100" cy="138" r="8.5" fill="#101914"/>
+<circle cx="96.2" cy="133.8" r="2.4" fill="#fff"/></g>
+<g transform="translate(640,208) scale(0.21)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 20.0 96.0 A 80 80 0 0 1 33.7 51.3 L 58.5 68.0 A 50 50 0 0 0 50.0 96.0 Z" fill="#2e7d32"/>
+<path d="M 37.0 46.7 A 80 80 0 0 1 72.6 20.8 L 82.9 49.0 A 50 50 0 0 0 60.6 65.2 Z" fill="#1565c0"/>
+<path d="M 77.9 19.1 A 80 80 0 0 1 122.1 19.1 L 113.8 47.9 A 50 50 0 0 0 86.2 47.9 Z" fill="#f9a825"/>
+<path d="M 127.4 20.8 A 80 80 0 0 1 163.0 46.7 L 139.4 65.2 A 50 50 0 0 0 117.1 49.0 Z" fill="#ef6c00"/>
+<path d="M 166.3 51.3 A 80 80 0 0 1 180.0 96.0 L 150.0 96.0 A 50 50 0 0 0 141.5 68.0 Z" fill="#c62828"/><path d="M 52 138 Q 100 111 148 138 Q 100 165 52 138 Z" fill="#f5ecd7"/>
+<circle cx="100" cy="138" r="17" fill="#2d6a4f"/>
+<circle cx="100" cy="138" r="8.5" fill="#101914"/>
+<circle cx="96.2" cy="133.8" r="2.4" fill="#fff"/></g>
+<text x="510" y="310" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#21272a">B2 — Eye Under the Dial</text>
+<text x="510" y="334" text-anchor="middle" font-family="Arial" font-size="14" fill="#5b6570">the dial as a sheltering arc</text>
+<g transform="translate(750,50) scale(1.0)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 30 104 Q 100 40 170 104 Q 100 168 30 104 Z" fill="#f5ecd7"/><circle cx="100" cy="104" r="30" fill="#2d6a4f"/><path d="M 100 104 L 70.0 104.0 A 30 30 0 0 1 75.7 86.4 Z" fill="#2e7d32"/><path d="M 100 104 L 75.7 86.4 A 30 30 0 0 1 90.7 75.5 Z" fill="#1565c0"/><path d="M 100 104 L 90.7 75.5 A 30 30 0 0 1 109.3 75.5 Z" fill="#f9a825"/><path d="M 100 104 L 109.3 75.5 A 30 30 0 0 1 124.3 86.4 Z" fill="#ef6c00"/><path d="M 100 104 L 124.3 86.4 A 30 30 0 0 1 130.0 104.0 Z" fill="#c62828"/><path d="M 100 104 m -30 0 a 30 30 0 0 0 60 0 z" fill="#2d6a4f"/><circle cx="100" cy="104" r="12" fill="#101914"/><circle cx="95.5" cy="99.5" r="3.4" fill="#fff"/><line x1="100" y1="104" x2="115.9" y2="82.2" stroke="#101914" stroke-width="4" stroke-linecap="round"/></g>
+<g transform="translate(980,208) scale(0.21)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 30 104 Q 100 40 170 104 Q 100 168 30 104 Z" fill="#f5ecd7"/><circle cx="100" cy="104" r="30" fill="#2d6a4f"/><path d="M 100 104 L 70.0 104.0 A 30 30 0 0 1 75.7 86.4 Z" fill="#2e7d32"/><path d="M 100 104 L 75.7 86.4 A 30 30 0 0 1 90.7 75.5 Z" fill="#1565c0"/><path d="M 100 104 L 90.7 75.5 A 30 30 0 0 1 109.3 75.5 Z" fill="#f9a825"/><path d="M 100 104 L 109.3 75.5 A 30 30 0 0 1 124.3 86.4 Z" fill="#ef6c00"/><path d="M 100 104 L 124.3 86.4 A 30 30 0 0 1 130.0 104.0 Z" fill="#c62828"/><path d="M 100 104 m -30 0 a 30 30 0 0 0 60 0 z" fill="#2d6a4f"/><circle cx="100" cy="104" r="12" fill="#101914"/><circle cx="95.5" cy="99.5" r="3.4" fill="#fff"/><line x1="100" y1="104" x2="115.9" y2="82.2" stroke="#101914" stroke-width="4" stroke-linecap="round"/></g>
+<text x="850" y="310" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#21272a">B3 — Iris Dial</text>
+<text x="850" y="334" text-anchor="middle" font-family="Arial" font-size="14" fill="#5b6570">the eye IS the gauge</text>
+<g transform="translate(330,380)"><g transform="translate(0,0) scale(0.28)"><rect width="200" height="200" rx="44" fill="#0f2a1d"/><path d="M 18.0 122.0 A 82 82 0 0 1 32.0 76.1 L 60.2 95.2 A 48 48 0 0 0 52.0 122.0 Z" fill="#2e7d32"/>
+<path d="M 35.4 71.5 A 82 82 0 0 1 72.0 44.9 L 83.6 76.9 A 48 48 0 0 0 62.2 92.4 Z" fill="#1565c0"/>
+<path d="M 77.4 43.2 A 82 82 0 0 1 122.6 43.2 L 113.2 75.9 A 48 48 0 0 0 86.8 75.9 Z" fill="#f9a825"/>
+<path d="M 128.0 44.9 A 82 82 0 0 1 164.6 71.5 L 137.8 92.4 A 48 48 0 0 0 116.4 76.9 Z" fill="#ef6c00"/>
+<path d="M 168.0 76.1 A 82 82 0 0 1 182.0 122.0 L 148.0 122.0 A 48 48 0 0 0 139.8 95.2 Z" fill="#c62828"/><line x1="100" y1="122" x2="144.7" y2="60.5" stroke="#f5ecd7" stroke-width="7" stroke-linecap="round"/><path d="M 66 122 Q 100 101 134 122 Q 100 143 66 122 Z" fill="#f5ecd7"/>
+<circle cx="100" cy="122" r="13" fill="#2d6a4f"/>
+<circle cx="100" cy="122" r="6.5" fill="#101914"/>
+<circle cx="97.1" cy="118.8" r="1.8" fill="#fff"/></g></g>
+<text x="404" y="418" font-family="Arial" font-size="30" font-weight="800" fill="#0f2a1d">Be<tspan fill="#e85d04">Wildfire</tspan>Aware</text>
+<text x="530" y="456" text-anchor="middle" font-family="Arial" font-size="14" fill="#5b6570">header lockup preview · small squares show favicon size · needle can point at today's actual danger</text>
+</svg>
