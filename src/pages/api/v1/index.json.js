@@ -6,6 +6,9 @@ export function GET() {
     endpoints: {
       fireDanger: 'https://bewildfireaware.com/api/v1/fire-danger.json',
       boundaries: 'https://bewildfireaware.com/api/v1/fdra-boundaries.json',
+      historyIndex: 'https://bewildfireaware.com/api/v1/history/index.json',
+      historyDay: 'https://bewildfireaware.com/api/v1/history/{YYYY-MM-DD}.json',
+      timeseries: 'https://bewildfireaware.com/api/v1/timeseries.json',
     },
     updateSchedule: 'fire-danger.json regenerates daily around 03:20 America/Denver, shortly after NFDRS data publishes (~03:11); boundaries change rarely',
     coverage: 'Nine Fire Danger Rating Areas across the Grand Junction, Montrose, and Durango interagency dispatch areas, Western Colorado',

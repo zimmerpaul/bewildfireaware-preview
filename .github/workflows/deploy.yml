@@ -36,6 +36,9 @@ jobs:
       - name: Fetch NICC situation report (non-fatal enrichment)
         run: npm run fetch-sitrep
 
+      - name: Snapshot today's data into the history archive
+        run: npm run snapshot-history
+
       - name: Generate AI overviews (script self-skips when no API key is configured)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -48,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for p in src/data/areas src/data/overviews src/data/sitrep.json; do git add "$p" 2>/dev/null || true; done
+          for p in src/data/areas src/data/overviews src/data/sitrep.json src/data/history; do git add "$p" 2>/dev/null || true; done
           if ! git diff --cached --quiet; then
             git commit -m "Daily data refresh"
             # Re-runs/manual runs may have checked out an older commit; rebase onto

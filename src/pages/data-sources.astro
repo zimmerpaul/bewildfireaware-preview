@@ -28,6 +28,8 @@ import Base from '../layouts/Base.astro';
     <p>
       <a href="/api/v1/fire-danger.json">/api/v1/fire-danger.json</a> — per-FDRA danger rating (with a numeric 1–5 index), indicators with thresholds, watchout status, 7-day forecast, counties, centroid, and the day's overview. Regenerates each morning.<br />
       <a href="/api/v1/fdra-boundaries.json">/api/v1/fdra-boundaries.json</a> — FDRA polygons as GeoJSON (join on <code>slug</code>; changes rarely, cache it).<br />
+      <a href="/api/v1/timeseries.json">/api/v1/timeseries.json</a> — full daily time series (danger index 1–5, ERC/BI, weather indicators) per FDRA, one file for charting.<br />
+      <a href="/api/v1/history/index.json">/api/v1/history/index.json</a> — archive of per-day snapshots (<code>/api/v1/history/YYYY-MM-DD.json</code>).<br />
       <a href="/api/v1/index.json">/api/v1/index.json</a> — discovery document with update schedule.
     </p>
     <p>CORS is open, no key required. Within v1, fields are append-only — we won't rename or remove them. Underlying NFDRS data is U.S. Government work in the public domain; we appreciate attribution to BeWildfireAware. Please don't use this feed for emergency decision-making — verify with official sources.</p>
