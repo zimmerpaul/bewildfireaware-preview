@@ -67,6 +67,7 @@ const counties = geo.counties ?? [];
 // destination supports it. Add a `links` array to an area in
 // dispatch_areas.json to extend/override.
 const localLinks = [
+  { name: 'fire.ai', url: 'https://fire.ai/', desc: 'Live AI-powered wildfire intelligence, including this area\'s daily fire danger.' },
   { name: 'Watch Duty', url: 'https://app.watchduty.org/', desc: 'Live wildfire tracking and real-time incident updates.' },
   { name: 'Fire Restrictions', url: data.restrictions?.url ?? 'https://westslopefireinfo.com/', desc: `Current restrictions${counties.length ? ` — this area spans ${counties.slice(0, 4).join(', ')}${counties.length > 4 ? ' and nearby' : ''} counties` : ' across the Western Slope'}. Check before you burn.` },
   { name: 'NWS Forecast Here', url: lat ? `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lon}` : 'https://www.weather.gov/wrh/fire?wfo=gjt', desc: 'National Weather Service point forecast for this rating area.' },
