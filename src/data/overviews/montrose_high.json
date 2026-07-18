@@ -1,0 +1,27 @@
+{
+  "overview": "**Very High fire danger continues today, driven by critically dry fuels — ERC at 91% and 1000-hour fuels at 11%, both above local thresholds.**\n\n- Danger stays Very High through Monday before easing to High Tuesday-Thursday as rain chances build.\n- Hot, dry pattern persists with afternoon storm chances (40% today) but little meaningful rain until midweek.\n- 2 of 7 local watchout thresholds are currently met (ERC and 1000-hr fuels); no Red Flag Warning is active today, though a Hydrologic Outlook is posted for the area.\n- Montrose and Ouray counties remain under Stage 2 fire restrictions, with BLM lands in Gunnison, Hinsdale, Montrose, Ouray, Saguache, and San Juan counties under Stage 1 restrictions, and the Tres Rios and Gunnison Field Offices under Stage 2.\n- The Gold Mountain Fire, burning in southwest Colorado, originating just two miles north of the City of Ouray, has burned 37,734 acres and remains 13% contained, with closures and evacuations still active in Ouray and Gunnison counties.",
+  "lead": "Very High fire danger continues today, driven by critically dry fuels — ERC at 91% and 1000-hour fuels at 11%, both above local thresholds.",
+  "sources": [
+    {
+      "name": "FEMS / NFDRS via BeWildfireAware",
+      "url": null
+    },
+    {
+      "name": "National Weather Service",
+      "url": "https://www.weather.gov/"
+    },
+    {
+      "name": "NICC Incident Management Situation Report",
+      "url": "https://www.nifc.gov/nicc-files/sitreprt.pdf"
+    },
+    {
+      "name": "Southwest District Fire Restrictions | Bureau of Land Management",
+      "url": "https://www.blm.gov/programs/public-safety-and-fire/fire-and-aviation/regional-information/colorado/southwest-district"
+    },
+    {
+      "name": "Wildfire Map Spotlight: Snyder, Babylon, Ferris, and Gold Mountain Fires in Colorado and Utah | IQAir USA",
+      "url": "https://www.iqair.com/newsroom/wildfire-map-spotlight-snyder-babylon-ferris-and-gold-mountain-wildfires-in-colorado-and-utah"
+    }
+  ],
+  "generated": "Saturday, July 18"
+}

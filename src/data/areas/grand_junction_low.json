@@ -2,10 +2,10 @@
   "slug": "grand_junction_low",
   "name": "Grand Junction (Low)",
   "dispatchTitle": "Grand Junction Interagency Dispatch Area",
-  "dateLabel": "Saturday, July 04",
+  "dateLabel": "Saturday, July 18",
   "areaTitle": "Grand Junction - Low Elevation",
-  "danger": "Very High",
-  "lastUpdated": "7/4/2026 02:38",
+  "danger": "Moderate",
+  "lastUpdated": "7/18/2026 02:38",
   "restrictions": {
     "text": "Fire restrictions may be in place, for up to date info:",
     "url": "https://westslopefireinfo.com/"
@@ -13,219 +13,219 @@
   "observations": [
     {
       "label": "ERC %",
-      "value": "99%",
+      "value": "68%",
       "limit": "> 86%",
-      "triggered": true
+      "triggered": false
     },
     {
       "label": "BI %",
-      "value": "79%",
+      "value": "45%",
       "limit": "> 90%",
       "triggered": false
     },
     {
       "label": "Winds",
-      "value": "9",
+      "value": "6",
       "limit": "> 10",
       "triggered": false
     },
     {
       "label": "Wind Dir",
-      "value": "N"
+      "value": "NE"
     },
     {
       "label": "24hr Rain",
-      "value": "0.00"
+      "value": "0.02"
     },
     {
       "label": "Max Temp",
-      "value": "88",
+      "value": "86",
       "limit": "> 85",
       "triggered": true
     },
     {
       "label": "Min Rh",
-      "value": "7",
+      "value": "30",
       "limit": "< 15",
-      "triggered": true
+      "triggered": false
     },
     {
       "label": "1000hr Fuels",
-      "value": "9",
+      "value": "8",
       "limit": "< 12",
       "triggered": true
     },
     {
       "label": "Max Rh",
-      "value": "23",
+      "value": "60",
       "limit": "< 45",
-      "triggered": true
+      "triggered": false
     }
   ],
   "thresholds": "ERC > 86%, BI > 90%, Wind Speed > 10\nMax Temp > 85, Min Rh < 15, 1000hr Fuels < 12, Max RH < 45\nIf three or more of the seven thresholds are met, consider it a watchout.",
   "forecast": {
     "title": "Low Elevation FDRA Extended Forecast",
     "dates": [
-      "4-Jul",
-      "5-Jul",
-      "6-Jul",
-      "7-Jul",
-      "8-Jul",
-      "9-Jul",
-      "10-Jul"
+      "18-Jul",
+      "19-Jul",
+      "20-Jul",
+      "21-Jul",
+      "22-Jul",
+      "23-Jul",
+      "24-Jul"
     ],
     "rows": [
       {
         "label": "Adjective Fire Danger",
         "values": [
-          "Very High",
-          "Very High",
-          "Extreme",
-          "Extreme",
-          "Extreme",
-          "Extreme",
-          "Extreme"
+          "Moderate",
+          "Moderate",
+          "High",
+          "Moderate",
+          "Moderate",
+          "Moderate",
+          "Moderate"
         ]
       },
       {
         "label": "ERC-X Percentile",
         "values": [
-          "99%",
-          "99%",
-          "97%",
-          "95%",
-          "97%",
-          "98%",
-          "99%"
+          "68%",
+          "74%",
+          "77%",
+          "65%",
+          "58%",
+          "55%",
+          "65%"
         ],
         "hits": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "BI-X Percentile",
         "values": [
-          "79%",
-          "79%",
-          "85%",
-          "96%",
-          "93%",
-          "89%",
-          "94%"
+          "45%",
+          "45%",
+          "58%",
+          "50%",
+          "49%",
+          "44%",
+          "47%"
         ],
         "hits": [
           false,
           false,
           false,
-          true,
-          true,
           false,
-          true
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "Temperature",
         "values": [
+          "86",
+          "87",
           "88",
-          "90",
-          "90",
-          "90",
-          "90",
-          "91",
-          "94"
+          "86",
+          "82",
+          "81",
+          "82"
         ],
         "hits": [
           true,
           true,
           true,
           true,
-          true,
-          true,
-          true
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "Relative Humidity",
         "values": [
-          "7",
-          "7",
-          "12",
-          "13",
-          "11",
-          "9",
-          "8"
+          "30",
+          "28",
+          "26",
+          "31",
+          "36",
+          "38",
+          "32"
         ],
         "hits": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "Winds",
         "values": [
-          "9",
-          "9",
-          "10",
-          "14",
-          "12",
-          "11",
-          "12"
+          "6",
+          "6",
+          "7",
+          "8",
+          "8",
+          "7",
+          "7"
         ],
         "hits": [
           false,
           false,
           false,
-          true,
-          true,
-          true,
-          true
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "Wind Direction",
         "values": [
-          "N",
-          "NNE",
-          "NNE",
-          "NNE",
-          "NNE",
-          "NNE",
-          "N"
+          "NE",
+          "NE",
+          "NE",
+          "ENE",
+          "ENE",
+          "ENE",
+          "NE"
         ]
       },
       {
         "label": "Precipitation 24hr rain",
         "values": [
-          "0.00",
-          "0.00",
-          "0.00",
-          "0.00",
-          "0.00",
-          "0.00",
-          "0.00"
+          "0.02",
+          "0.02",
+          "0.03",
+          "0.15",
+          "0.11",
+          "0.14",
+          "0.06"
         ]
       },
       {
         "label": "1000hr Fuels",
         "values": [
+          "8",
           "9",
-          "8",
-          "8",
-          "8",
-          "8",
-          "8",
-          "8"
+          "9",
+          "9",
+          "10",
+          "10",
+          "10"
         ],
         "hits": [
           true,
@@ -240,54 +240,54 @@
       {
         "label": "Max Rh",
         "values": [
-          "23",
-          "21",
-          "25",
-          "32",
-          "36",
-          "31",
-          "26"
+          "60",
+          "56",
+          "54",
+          "56",
+          "60",
+          "61",
+          "57"
         ],
         "hits": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
         ]
       },
       {
         "label": "ERC-X (Actual Number 1-110)",
         "values": [
-          "101",
-          "101",
-          "98",
-          "96",
-          "97",
-          "99",
-          "101"
+          "75",
+          "79",
+          "82",
+          "72",
+          "69",
+          "67",
+          "73"
         ]
       },
       {
         "label": "BI-X  (Actual Number 1-352)",
         "values": [
-          "196",
-          "193",
-          "208",
-          "245",
-          "231",
-          "219",
-          "233"
+          "127",
+          "127",
+          "153",
+          "140",
+          "136",
+          "121",
+          "129"
         ]
       }
     ]
   },
   "watchout": {
-    "met": 5,
+    "met": 2,
     "total": 7,
-    "isWatchout": true
+    "isWatchout": false
   },
   "raws": "The Low Elevation Fire Danger Rating Area uses the following Remote Automated Weather Stations (RAWS) which are equally weighted in value, using Fuel Model X (Brush) incorporating data years 2005-2024 are:  \n52407: Pine Ridge, 52410: Little Dolores, 51504: Rifle, 51507: Demaree",
   "pocketCard": {
@@ -1549,7 +1549,7 @@
         ],
         [
           8,
-          32
+          27
         ],
         [
           9,
@@ -1769,15 +1769,15 @@
         ],
         [
           63,
-          66
+          65
         ],
         [
           64,
-          26
+          22
         ],
         [
           65,
-          20
+          22
         ],
         [
           66,
@@ -1865,7 +1865,7 @@
         ],
         [
           87,
-          89
+          90
         ],
         [
           88,
@@ -1893,7 +1893,7 @@
         ],
         [
           94,
-          79
+          80
         ],
         [
           95,
@@ -1909,7 +1909,7 @@
         ],
         [
           98,
-          87
+          88
         ],
         [
           99,
@@ -1921,11 +1921,11 @@
         ],
         [
           101,
-          76
+          77
         ],
         [
           102,
-          75
+          76
         ],
         [
           103,
@@ -1933,135 +1933,135 @@
         ],
         [
           104,
-          48
+          49
         ],
         [
           105,
-          75
+          77
         ],
         [
           106,
-          59
+          56
         ],
         [
           107,
-          52
-        ],
-        [
-          108,
-          76
-        ],
-        [
-          109,
-          83
-        ],
-        [
-          110,
-          80
-        ],
-        [
-          111,
-          84
-        ],
-        [
-          112,
-          70
-        ],
-        [
-          113,
-          74
-        ],
-        [
-          114,
-          73
-        ],
-        [
-          115,
-          32
-        ],
-        [
-          116,
-          29
-        ],
-        [
-          117,
-          41
-        ],
-        [
-          118,
-          48
-        ],
-        [
-          119,
-          46
-        ],
-        [
-          120,
           53
         ],
         [
-          121,
-          58
+          108,
+          78
         ],
         [
-          122,
-          59
+          109,
+          85
         ],
         [
-          123,
-          45
+          110,
+          83
         ],
         [
-          124,
-          34
+          111,
+          88
         ],
         [
-          125,
-          35
-        ],
-        [
-          126,
-          50
-        ],
-        [
-          127,
-          58
-        ],
-        [
-          128,
-          64
-        ],
-        [
-          129,
-          62
-        ],
-        [
-          130,
-          69
-        ],
-        [
-          131,
+          112,
           73
         ],
         [
-          132,
-          71
+          113,
+          78
         ],
         [
-          133,
-          71
+          114,
+          76
         ],
         [
-          134,
-          75
+          115,
+          33
         ],
         [
-          135,
+          116,
+          32
+        ],
+        [
+          117,
+          45
+        ],
+        [
+          118,
+          52
+        ],
+        [
+          119,
+          50
+        ],
+        [
+          120,
+          56
+        ],
+        [
+          121,
+          63
+        ],
+        [
+          122,
+          64
+        ],
+        [
+          123,
+          49
+        ],
+        [
+          124,
+          38
+        ],
+        [
+          125,
+          37
+        ],
+        [
+          126,
+          52
+        ],
+        [
+          127,
+          62
+        ],
+        [
+          128,
+          69
+        ],
+        [
+          129,
           68
         ],
         [
+          130,
+          74
+        ],
+        [
+          131,
+          79
+        ],
+        [
+          132,
+          76
+        ],
+        [
+          133,
+          76
+        ],
+        [
+          134,
+          79
+        ],
+        [
+          135,
+          71
+        ],
+        [
           136,
-          34
+          37
         ],
         [
           137,
@@ -2069,91 +2069,91 @@
         ],
         [
           138,
-          37
-        ],
-        [
-          139,
-          55
-        ],
-        [
-          140,
-          60
-        ],
-        [
-          141,
-          54
-        ],
-        [
-          142,
-          57
-        ],
-        [
-          143,
-          62
-        ],
-        [
-          144,
-          61
-        ],
-        [
-          145,
           39
         ],
         [
+          139,
+          58
+        ],
+        [
+          140,
+          63
+        ],
+        [
+          141,
+          57
+        ],
+        [
+          142,
+          60
+        ],
+        [
+          143,
+          66
+        ],
+        [
+          144,
+          64
+        ],
+        [
+          145,
+          42
+        ],
+        [
           146,
-          62
+          65
         ],
         [
           147,
-          69
+          72
         ],
         [
           148,
-          69
+          72
         ],
         [
           149,
-          41
+          43
         ],
         [
           150,
-          59
+          62
         ],
         [
           151,
-          68
+          71
         ],
         [
           152,
-          75
-        ],
-        [
-          153,
-          76
-        ],
-        [
-          154,
           78
         ],
         [
+          153,
+          79
+        ],
+        [
+          154,
+          82
+        ],
+        [
           155,
-          81
+          83
         ],
         [
           156,
-          84
+          87
         ],
         [
           157,
-          84
+          87
         ],
         [
           158,
-          84
+          86
         ],
         [
           159,
-          86
+          88
         ],
         [
           160,
@@ -2161,31 +2161,31 @@
         ],
         [
           161,
-          86
-        ],
-        [
-          162,
           87
         ],
         [
-          163,
+          162,
           88
         ],
         [
-          164,
-          81
-        ],
-        [
-          165,
-          86
-        ],
-        [
-          166,
+          163,
           90
         ],
         [
+          164,
+          82
+        ],
+        [
+          165,
+          88
+        ],
+        [
+          166,
+          92
+        ],
+        [
           167,
-          95
+          96
         ],
         [
           168,
@@ -2193,7 +2193,7 @@
         ],
         [
           169,
-          100
+          101
         ],
         [
           170,
@@ -2201,11 +2201,11 @@
         ],
         [
           171,
-          98
+          97
         ],
         [
           172,
-          102
+          101
         ],
         [
           173,
@@ -2241,11 +2241,11 @@
         ],
         [
           181,
-          85
+          100
         ],
         [
           182,
-          99
+          100
         ],
         [
           183,
@@ -2253,33 +2253,89 @@
         ],
         [
           184,
-          101
+          102
+        ],
+        [
+          185,
+          104
+        ],
+        [
+          186,
+          100
+        ],
+        [
+          187,
+          93
+        ],
+        [
+          188,
+          92
+        ],
+        [
+          189,
+          90
+        ],
+        [
+          190,
+          99
+        ],
+        [
+          191,
+          104
+        ],
+        [
+          192,
+          104
+        ],
+        [
+          193,
+          97
+        ],
+        [
+          194,
+          94
+        ],
+        [
+          195,
+          90
+        ],
+        [
+          196,
+          82
+        ],
+        [
+          197,
+          80
+        ],
+        [
+          198,
+          75
         ]
       ],
       "forecasted": [
         [
-          184,
-          101
+          198,
+          75
         ],
         [
-          185,
-          101
+          199,
+          79
         ],
         [
-          186,
-          98
+          200,
+          82
         ],
         [
-          187,
-          96
+          201,
+          72
         ],
         [
-          188,
-          97
+          202,
+          69
         ],
         [
-          189,
-          99
+          203,
+          67
         ]
       ]
     },
