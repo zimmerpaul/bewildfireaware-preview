@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Craig Zone 1 FDRA — ERC &amp; Largest Fires on Record</title>
+<style>
+  :root{
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --fire-1:#2a78d6; --fire-2:#1baf7a; --fire-3:#eda100; --fire-4:#008300;
+    --ord-1:#86b6ef; --ord-2:#5598e7; --ord-3:#2a78d6; --ord-4:#1c5cab; --ord-5:#104281;
+    --erc-line:#52514e; --clim-line:#898781;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+      --fire-1:#3987e5; --fire-2:#199e70; --fire-3:#c98500; --fire-4:#008300;
+      --ord-1:#b7d3f6; --ord-2:#86b6ef; --ord-3:#5598e7; --ord-4:#2a78d6; --ord-5:#184f95;
+      --erc-line:#c3c2b7; --clim-line:#898781;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--text-primary);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:32px 20px 64px}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:19px;margin:44px 0 4px}
+  h3{font-size:16px;margin:0 0 2px}
+  .sub{color:var(--text-secondary);margin:0 0 8px;max-width:76ch}
+  .note{color:var(--muted);font-size:13px;max-width:80ch}
+  .crumb{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .crumb a{color:var(--text-secondary)}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+        padding:18px 20px;margin-top:14px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:18px}
+  .tile{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .tile .label{font-size:13px;color:var(--text-secondary)}
+  .tile .value{font-size:40px;font-weight:600;line-height:1.15;margin:2px 0}
+  .tile .detail{font-size:13px;color:var(--muted)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:860px){.row2{grid-template-columns:1fr}}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--text-secondary);margin:6px 0 2px}
+  .legend .key{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .linekey{width:16px;height:0;border-top:2px solid;display:inline-block}
+  svg{display:block;width:100%;height:auto}
+  svg text{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted)}
+  svg .lbl{fill:var(--text-secondary)}
+  svg .lbl-strong{fill:var(--text-primary);font-weight:600}
+  .tick{font-variant-numeric:tabular-nums}
+  #tooltip{position:fixed;pointer-events:none;z-index:10;display:none;
+    background:var(--surface-1);border:1px solid var(--border);border-radius:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);padding:9px 12px;font-size:13px;max-width:280px}
+  #tooltip .tt-title{color:var(--text-secondary);margin-bottom:4px}
+  #tooltip .tt-row{display:flex;align-items:center;gap:7px;margin:2px 0}
+  #tooltip .tt-val{font-weight:600;color:var(--text-primary)}
+  #tooltip .tt-name{color:var(--text-secondary)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+  th{text-align:left;color:var(--text-secondary);font-weight:600;border-bottom:1px solid var(--baseline);padding:6px 10px 6px 0}
+  td{border-bottom:1px solid var(--grid);padding:6px 10px 6px 0;font-variant-numeric:tabular-nums}
+  td.name,th.name{font-variant-numeric:normal}
+  details{margin-top:10px}
+  summary{cursor:pointer;color:var(--text-secondary);font-size:13.5px}
+  .firehead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+  .firehead .meta{color:var(--muted);font-size:13px}
+  .runnote{font-size:13.5px;color:var(--text-secondary);margin:6px 0 10px;max-width:80ch}
+  .facts{font-size:13.5px;color:var(--text-secondary);margin:8px 0 2px;padding-left:18px}
+  .facts li{margin:3px 0}
+  .badge{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.02em;
+    color:var(--text-secondary);border:1px solid var(--baseline);border-radius:999px;
+    padding:1px 9px;vertical-align:2px}
+  p{max-width:80ch}
+  a{color:inherit}
+  .foot{margin-top:40px;color:var(--muted);font-size:12.5px}
+
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0 2px}
+    h1{font-size:23px}
+    h2{font-size:17px;break-after:avoid;margin-top:26px}
+    .tiles{grid-template-columns:repeat(4,1fr);gap:10px}
+    .tile{padding:12px 14px}
+    .tile .value{font-size:30px}
+    .card,.tile{break-inside:avoid;box-shadow:none}
+    .row2{grid-template-columns:1fr 1fr}
+    details{display:none}
+    #tooltip{display:none !important}
+    .foot{margin-top:20px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap viz-root">
+  <p class="crumb"><a href="index.html">All FDRA reports</a> · Craig FDOP</p>
+  <h1>Craig Zone 1 FDRA — ERC &amp; Largest Fires on Record</h1>
+  <p class="sub">Energy Release Component vs. daily fire growth for the largest fires on record in the <strong>Craig Zone 1 FDRA</strong> (no pocket card exists for this FDRA) — Mayberry (2008), Alkali (2014), Dead Dog (2017), the three largest fires by final acres inside the FDRA polygon in federal records, 2005–2024. Daily fire sizes come from ICS-209 incident situation reports; daily ERC is the FEMS station record for the FDRA's SIG — Lodore (50104), Calico (50108), Dragon Road (51407), Hunter Creek (51406), Pinto (51402) — fuel model X — Brush, averaged across stations, 2005–2024.</p>
+  <p class="note"><strong>No pocket card exists for this FDRA</strong> — the fires shown are the largest fires on record in this FDRA (the three largest by final acres with a point of origin inside the FDRA polygon, federal fire records 2005–2024), not pocket-card “fires to remember.”</p><p class="note">Mayberry (2008), Alkali (2014), Dead Dog (2017): too little daily data for correlation claims (stub or &lt;4 situation reports) — shown as timeline facts only, excluded from pooled statistics.</p>
+
+  <div class="tiles" id="tiles"></div>
+
+
+  <h2>Fire by fire</h2>
+  <p class="sub">No fire here has a usable pairing of daily station ERC and daily growth, so the cards below give timeline facts (and daily growth bars where sitrep data exists) without ERC overlays.</p>
+  <div id="fireCards"></div>
+
+  <h2>What it shows</h2>
+  <div class="card">
+    <p><strong>No fire in this FDRA supports day-by-day ERC comparison.</strong> The matched fires here are too small or too briefly documented for daily analysis — none has 4 or more days of usable growth reporting — so they are shown as timeline facts only and no correlation or pooled statistics are claimed.</p><p>This is a small, size-selected sample — the 3 largest fires on record in this FDRA (no pocket card exists) — so these numbers describe these incidents, not a general model for Craig Zone 1 FDRA.</p>
+  </div>
+
+  <h2>Data tables</h2>
+  <div class="card">
+    <h3>Per-fire summary</h3>
+    <div id="fireTable"></div>
+    
+    <h3 style="margin-top:22px" id="topTableHead">Top growth days</h3>
+    <div id="topTable"></div>
+    <details><summary>Full daily records (all active days)</summary><div id="fullTable"></div></details>
+  </div>
+
+  <h2>Method &amp; caveats</h2>
+  <div class="card note" style="font-size:13.5px;color:var(--text-secondary)">
+    <p><strong>Fire growth.</strong> Cumulative acreage per ICS-209 incident situation report (ICS-209-PLUS v2.0 research dataset, 1999–2020). Where reports skip days, the acreage gain is spread evenly across the gap. Final acreages shown match the fire-matching manifest: Mayberry 25,385; Alkali 19,569; Dead Dog 17,731.</p>
+    <p><strong>ERC.</strong> FEMS daily NFDR summaries (fuel model X — Brush) for the FDRA's stations — Lodore (50104), Calico (50108), Dragon Road (51407), Hunter Creek (51406), Pinto (51402) — downloaded from the FEMS climatology API. SIG daily ERC is the mean of stations reporting that day. Unlike the earlier UCR Middle Elevation report, which had to substitute gridMET ERC-G, this report uses <em>station</em> ERC on the FDRA's own fuel-model scale, so thresholds here are the FDRA's own percentiles: Mar–Oct 2005–2024 90th percentile = 95.1, 97th = 100.1 (4,900 station-mean days). FEMS returns no NFDR records for these stations before 2005-01-01 (1999–2004 queried, empty), so pre-2005 fires appear without ERC.</p>
+    <p><strong>Statistics.</strong> “Significant growth day” = daily gain ≥2% of final fire size (min 100 ac). ρ is Spearman rank correlation between daily ERC and daily growth over each fire's active days; group differences (significant vs. other days) use a Mann–Whitney U normal approximation. Fires with fewer than 4 situation reports, stub timelines, or no station ERC for their year are shown for context and excluded from pooled statistics. This is a small, non-random sample of memorable fires — results describe these incidents, not a general model.</p>
+  </div>
+
+  <div class="foot">Sources: ICS-209-PLUS v2.0 (figshare 19858927; Nature Sci. Data 2023) ·
+    FEMS (fems.fs2c.usda.gov) NFDR daily summaries · NWCG pocket cards · WFIGS and
+    contemporary news coverage where noted. Generated July 2026 for bewildfireaware.com.</div>
+</div>
+<div id="tooltip" role="status"></div>
+<script id="data" type="application/json">{"p90":95.1,"p97":100.1,"season_n":4900,"season_q":[0.0,0.0,1.04,7.28,11.76,14.49,19.53,22.83,26.58,30.63,34.38,37.42,39.11,41.01,43.39,45.22,47.14,48.98,50.72,52.19,53.48,54.56,55.49,56.67,57.81,58.79,59.66,60.52,61.49,62.61,63.41,64.45,65.17,65.75,66.79,67.39,67.99,68.59,69.2,69.8,70.44,70.93,71.58,72.01,72.58,73.11,73.62,74.14,74.74,75.12,75.63,76.15,76.71,77.24,77.77,78.23,78.74,79.2,79.65,80.19,80.57,80.92,81.33,81.78,82.2,82.63,83.08,83.57,84.06,84.47,84.96,85.49,85.88,86.41,86.94,87.38,87.68,88.08,88.5,88.98,89.48,89.88,90.55,91.08,91.55,92.21,92.73,93.39,93.79,94.42,95.13,95.66,96.16,96.76,97.42,98.28,99.08,100.09,101.29,102.87,110.06],"pooled":null,"fires":{"mayberry":{"name":"Mayberry","year":2008,"final_acres":25385.0,"n_report_days":4,"date_range":["2008-08-25","2008-08-28"],"status":"ok","note":"Largest fire in polygon 2005-2024 (FPA-FOD 25,385 ac). No pocket card exists for this FDRA.","sig_threshold":508,"kind":"simple","reason":"only 2 active growth days \u2014 too few for correlation claims","timeline":[["2008-08-25",8000.0],["2008-08-26",25385.0],["2008-08-27",25385.0],["2008-08-28",25385.0]]},"alkali":{"name":"Alkali","year":2014,"final_acres":19569.0,"n_report_days":7,"date_range":["2014-07-24","2014-12-17"],"status":"ok","note":"2nd largest in polygon (19,569 ac). No pocket card exists for this FDRA.","sig_threshold":391,"kind":"simple","reason":"only 2 active growth days \u2014 too few for correlation claims","timeline":[["2014-07-24",8000.0],["2014-07-25",19569.0],["2014-07-26",19569.0],["2014-07-27",19569.0],["2014-08-20",19569.0],["2014-08-21",19569.0],["2014-12-17",19569.0]]},"dead_dog":{"name":"Dead Dog","year":2017,"final_acres":17731.0,"n_report_days":8,"date_range":["2017-06-12","2017-06-19"],"status":"ok","note":"3rd largest in polygon; ICS-209 final 17,731 vs FPA-FOD 18,804 ac (5.7% diff, ICS-209 used). No pocket card exists for this FDRA.","sig_threshold":355,"kind":"simple","reason":"only 2 active growth days \u2014 too few for correlation claims","timeline":[["2017-06-12",1500.0],["2017-06-13",17731.0],["2017-06-14",17731.0],["2017-06-15",17731.0],["2017-06-16",17731.0],["2017-06-17",17731.0],["2017-06-18",17731.0],["2017-06-19",17731.0]]}},"order":["mayberry","alkali","dead_dog"],"fire_color":{"mayberry":"--fire-1","alkali":"--fire-2","dead_dog":"--fire-3"},"climatology":[[1,11.9],[2,12.9],[3,13.9],[4,13.3],[5,10.2],[6,8.7],[7,7.5],[8,8.8],[9,8.0],[10,9.4],[11,10.6],[12,9.9],[13,11.0],[14,13.2],[15,14.1],[16,12.5],[17,11.2],[18,12.6],[19,14.5],[20,15.8],[21,13.5],[22,10.8],[23,8.9],[24,7.4],[25,8.1],[26,8.0],[27,9.0],[28,9.3],[29,12.9],[30,13.2],[31,15.1],[32,18.4],[33,17.2],[34,17.3],[35,20.1],[36,22.3],[37,25.6],[38,25.4],[39,26.2],[40,25.8],[41,23.3],[42,20.9],[43,20.9],[44,20.2],[45,19.8],[46,22.5],[47,22.0],[48,25.6],[49,28.0],[50,29.3],[51,26.8],[52,27.4],[53,26.7],[54,26.5],[55,26.1],[56,30.6],[57,31.1],[58,32.5],[59,36.6],[60,31.9],[61,32.2],[62,34.0],[63,37.9],[64,36.5],[65,39.7],[66,37.9],[67,36.1],[68,40.6],[69,39.3],[70,42.0],[71,45.9],[72,46.7],[73,46.0],[74,49.7],[75,50.1],[76,54.8],[77,52.5],[78,50.7],[79,55.9],[80,52.8],[81,56.2],[82,46.7],[83,45.9],[84,48.7],[85,45.4],[86,50.7],[87,53.4],[88,51.6],[89,50.6],[90,50.5],[91,52.8],[92,53.1],[93,55.0],[94,57.2],[95,63.3],[96,61.2],[97,64.0],[98,71.1],[99,67.3],[100,65.6],[101,67.6],[102,68.5],[103,65.2],[104,62.8],[105,62.7],[106,58.2],[107,58.1],[108,61.1],[109,63.5],[110,65.5],[111,67.9],[112,72.7],[113,69.1],[114,66.1],[115,66.0],[116,62.9],[117,62.9],[118,69.0],[119,66.9],[120,67.0],[121,67.0],[122,63.7],[123,67.9],[124,68.7],[125,71.0],[126,68.1],[127,67.1],[128,65.9],[129,67.9],[130,66.9],[131,65.2],[132,67.2],[133,70.0],[134,69.7],[135,68.7],[136,71.9],[137,70.3],[138,67.4],[139,63.0],[140,62.7],[141,65.5],[142,63.8],[143,58.3],[144,61.1],[145,64.3],[146,69.0],[147,68.0],[148,66.7],[149,63.0],[150,61.6],[151,66.3],[152,67.7],[153,65.4],[154,67.8],[155,69.1],[156,69.2],[157,68.7],[158,66.7],[159,68.2],[160,71.5],[161,71.9],[162,69.7],[163,70.1],[164,72.9],[165,73.2],[166,74.4],[167,75.6],[168,74.9],[169,76.7],[170,79.6],[171,80.6],[172,79.3],[173,81.6],[174,82.1],[175,82.8],[176,83.1],[177,83.3],[178,84.9],[179,87.2],[180,85.6],[181,78.9],[182,82.0],[183,84.4],[184,87.1],[185,86.1],[186,82.3],[187,83.4],[188,84.6],[189,83.8],[190,88.4],[191,88.9],[192,88.5],[193,86.7],[194,89.2],[195,89.5],[196,89.6],[197,90.8],[198,91.8],[199,90.5],[200,89.5],[201,88.3],[202,88.4],[203,89.7],[204,90.9],[205,87.0],[206,82.9],[207,83.8],[208,85.1],[209,86.3],[210,85.0],[211,86.9],[212,85.5],[213,81.4],[214,83.2],[215,82.2],[216,82.5],[217,84.7],[218,84.0],[219,83.5],[220,85.4],[221,87.5],[222,87.1],[223,88.4],[224,89.5],[225,86.3],[226,86.1],[227,83.6],[228,85.4],[229,87.9],[230,86.9],[231,80.7],[232,84.4],[233,85.2],[234,84.1],[235,78.7],[236,82.6],[237,79.7],[238,79.9],[239,78.5],[240,83.8],[241,87.0],[242,87.5],[243,84.8],[244,81.7],[245,82.9],[246,83.9],[247,84.4],[248,84.9],[249,83.1],[250,84.7],[251,77.8],[252,72.1],[253,70.8],[254,69.2],[255,76.9],[256,79.9],[257,74.5],[258,65.9],[259,72.2],[260,72.0],[261,77.9],[262,78.6],[263,76.3],[264,71.9],[265,67.6],[266,67.0],[267,69.4],[268,73.2],[269,76.0],[270,74.3],[271,70.9],[272,67.3],[273,66.6],[274,63.7],[275,62.9],[276,62.5],[277,58.1],[278,57.3],[279,53.4],[280,61.6],[281,62.6],[282,57.5],[283,58.6],[284,62.3],[285,66.4],[286,66.9],[287,64.3],[288,69.5],[289,71.9],[290,70.4],[291,65.0],[292,64.0],[293,66.6],[294,63.9],[295,61.8],[296,63.5],[297,64.5],[298,61.6],[299,55.6],[300,50.3],[301,47.1],[302,51.5],[303,51.9],[304,54.2],[305,58.4],[306,58.0],[307,54.7],[308,48.6],[309,46.2],[310,50.4],[311,51.3],[312,56.7],[313,56.1],[314,50.0],[315,46.0],[316,44.7],[317,42.7],[318,43.5],[319,47.0],[320,46.1],[321,45.3],[322,46.1],[323,51.4],[324,51.1],[325,48.0],[326,49.5],[327,45.4],[328,43.8],[329,39.7],[330,37.7],[331,36.6],[332,33.1],[333,30.1],[334,29.5],[335,24.7],[336,29.8],[337,27.8],[338,27.4],[339,27.7],[340,27.5],[341,29.3],[342,27.2],[343,25.7],[344,27.2],[345,27.4],[346,26.7],[347,23.5],[348,18.5],[349,17.6],[350,15.5],[351,13.2],[352,13.9],[353,13.8],[354,15.6],[355,14.8],[356,14.3],[357,12.7],[358,10.7],[359,8.4],[360,7.8],[361,8.2],[362,8.1],[363,11.3],[364,12.9],[365,13.1]],"erc_years":{},"run_notes":{},"tiles":[{"label":"Season 90th percentile ERC (this FDRA)","value":"95","detail":"97th = 100 \u00b7 fuel model X, mean of 5 stations, Mar\u2013Oct 2005\u20132024"},{"label":"Largest fires on record","value":"3","detail":"3 shown here; 0 with usable daily ERC + growth data"},{"label":"Pooled statistics","value":"\u2014","detail":"fewer than 2 fires with usable ERC + growth data; pooled section omitted"}]}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const FIRE_ORDER = DATA.order;
+const FIRE_COLOR = DATA.fire_color;
+const RUN_NOTES = DATA.run_notes;
+const fmt = n => n>=100 ? Math.round(n).toLocaleString('en-US')
+              : Math.round(n*10)/10;
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const pd = s => { const [y,m,d]=s.split('-').map(Number); return Date.UTC(y,m-1,d); };
+const dlabel = s => { const [y,m,d]=s.split('-').map(Number); return MONTHS[m-1]+" "+d; };
+const doyOf = s => { const [y,m,d]=s.split('-').map(Number);
+  let doy=Math.round((Date.UTC(y,m-1,d)-Date.UTC(y,0,1))/864e5)+1;
+  if(y%4===0 && doy>59) doy-=1; return doy; };
+const CLIM = new Map(DATA.climatology);
+const ord = n => { n=Math.round(n); const s=(n%100>=10&&n%100<=20)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'); return n+s; };
+
+// ---------- tooltip ----------
+const tt = document.getElementById('tooltip');
+function ttShow(x,y,title,rows){
+  tt.textContent='';
+  const t=document.createElement('div'); t.className='tt-title'; t.textContent=title; tt.appendChild(t);
+  for(const r of rows){
+    const div=document.createElement('div'); div.className='tt-row';
+    if(r.color){ const k=document.createElement('span');
+      k.style.cssText='display:inline-block;width:14px;border-top:2.5px solid '+r.color; div.appendChild(k); }
+    const v=document.createElement('span'); v.className='tt-val'; v.textContent=r.value; div.appendChild(v);
+    const n=document.createElement('span'); n.className='tt-name'; n.textContent=r.name; div.appendChild(n);
+    tt.appendChild(div);
+  }
+  tt.style.display='block';
+  const w=tt.offsetWidth,h=tt.offsetHeight;
+  tt.style.left=Math.min(x+14, innerWidth-w-8)+'px';
+  tt.style.top=Math.max(8, Math.min(y-h-12, innerHeight-h-8))+'px';
+}
+const ttHide=()=>{ tt.style.display='none'; };
+
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){ const e=document.createElementNS(NS,tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function roundTopRect(x,yy,w,h,r){ r=Math.min(r,h,w/2);
+  return `M${x},${yy+h} L${x},${yy+r} Q${x},${yy} ${x+r},${yy} L${x+w-r},${yy} Q${x+w},${yy} ${x+w},${yy+r} L${x+w},${yy+h} Z`; }
+function niceStep(max){ const raw=max/3, p=Math.pow(10,Math.floor(Math.log10(raw)));
+  for(const k of [1,2,5,10]) if(raw<=k*p) return k*p; return 10*p; }
+
+// ---------- stat tiles ----------
+(function(){
+  const host=document.getElementById('tiles');
+  for(const t of DATA.tiles){ const d=document.createElement('div'); d.className='tile';
+    d.innerHTML='<div class="label"></div><div class="value"></div><div class="detail"></div>';
+    d.children[0].textContent=t.label; d.children[1].textContent=t.value; d.children[2].textContent=t.detail;
+    host.appendChild(d); }
+})();
+
+// ---------- band chart (ordinal ramp) ----------
+if(DATA.pooled && document.getElementById('bandChart'))(function(){
+  const bands=DATA.pooled.bands;
+  const W=480,H=260,m={l:44,r:10,t:18,b:44};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img',
+    'aria-label':'Bar chart: probability of a significant growth day by ERC percentile band'});
+  document.getElementById('bandChart').appendChild(svg);
+  const maxp=Math.max(...bands.map(b=>b.p_sig||0),10);
+  const ymax=Math.min(100,Math.ceil((maxp*1.15)/10)*10);
+  const y=v=>m.t+ih-(v/ymax)*ih;
+  const step=niceStep(ymax);
+  for(let g=0;g<=ymax;g+=step){
+    el('line',{x1:m.l,x2:W-m.r,y1:y(g),y2:y(g),stroke:'var(--grid)','stroke-width':1},svg);
+    el('text',{x:m.l-8,y:y(g)+4,'text-anchor':'end',class:'tick'},svg).textContent=g+'%';
+  }
+  el('line',{x1:m.l,x2:W-m.r,y1:y(0),y2:y(0),stroke:'var(--baseline)'},svg);
+  const bw=Math.min(24, iw/bands.length-18);
+  bands.forEach((b,i)=>{
+    const cx=m.l+iw*(i+0.5)/bands.length;
+    const p=b.p_sig||0;
+    const h=Math.max((p/ymax)*ih, p>0? 3:1.2);
+    const bar=el('path',{d:roundTopRect(cx-bw/2, y(0)-h, bw, h, p>0?4:0), fill:`var(--ord-${i+1})`},svg);
+    el('text',{x:cx,y:y(0)-h-6,'text-anchor':'middle',class:'lbl-strong'},svg).textContent=(b.p_sig==null?'—':p+'%');
+    el('text',{x:cx,y:y(0)+16,'text-anchor':'middle'},svg).textContent=b.band;
+    if(i===0) el('text',{x:cx,y:y(0)+31,'text-anchor':'middle'},svg).textContent='ERC percentile band';
+    const hit=el('rect',{x:cx-bw/2-9,y:m.t,width:bw+18,height:ih+m.b,fill:'transparent',tabindex:0},svg);
+    const show=(e)=>{const pt=e.touches?e.touches[0]:e;
+      ttShow(pt.clientX??innerWidth/2,pt.clientY??innerHeight/2,'ERC percentile '+b.band,[
+      {value:(b.p_sig==null?'no days':b.p_sig+'%'),name:'of days had significant growth'},
+      {value:b.n_sig+' of '+b.n,name:'active fire days'},
+      {value:fmt(b.mean_growth||0)+' ac',name:'mean daily growth'}]);
+      bar.setAttribute('opacity','0.85');};
+    hit.addEventListener('pointermove',show); hit.addEventListener('focus',show);
+    hit.addEventListener('pointerleave',()=>{ttHide();bar.removeAttribute('opacity');});
+    hit.addEventListener('blur',()=>{ttHide();bar.removeAttribute('opacity');});
+  });
+})();
+
+// ---------- scatter ----------
+if(DATA.pooled && document.getElementById('scatter'))(function(){
+  const pts=[];
+  for(const k of FIRE_ORDER){ const f=DATA.fires[k];
+    if(f.kind!=='full') continue;
+    for(const d of f.days) if(d.growth>=1) pts.push({...d,fire:k,fname:f.name}); }
+  const W=480,H=260,m={l:52,r:14,t:12,b:40};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const gmax=Math.max(...pts.map(p=>p.growth),100);
+  const ymin=0, ymax=Math.log10(gmax*1.3);
+  const x=p=>m.l+(p/100)*iw;
+  const y=g=>m.t+ih-((Math.log10(Math.max(g,1))-ymin)/(ymax-ymin))*ih;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img',
+    'aria-label':'Scatter plot of daily acres gained versus ERC percentile, colored by fire'});
+  document.getElementById('scatter').appendChild(svg);
+  const gl=[1,10,100,1000,10000,100000].filter(g=>Math.log10(g)<=ymax);
+  gl.forEach(g=>{
+    el('line',{x1:m.l,x2:W-m.r,y1:y(g),y2:y(g),stroke:'var(--grid)'},svg);
+    el('text',{x:m.l-8,y:y(g)+4,'text-anchor':'end',class:'tick'},svg).textContent=g.toLocaleString('en-US');
+  });
+  [0,25,50,75,90,100].forEach(p=>{
+    el('text',{x:x(p),y:m.t+ih+18,'text-anchor':'middle',class:'tick'},svg).textContent=p;
+  });
+  el('text',{x:m.l+iw/2,y:m.t+ih+33,'text-anchor':'middle'},svg).textContent='ERC percentile that day';
+  el('text',{x:12,y:m.t+2},svg).textContent='ac/day';
+  el('line',{x1:m.l,x2:W-m.r,y1:y(1),y2:y(1),stroke:'var(--baseline)'},svg);
+  el('line',{x1:x(90),x2:x(90),y1:m.t,y2:m.t+ih,stroke:'var(--baseline)','stroke-width':1},svg);
+  el('text',{x:x(90)-4,y:m.t+10,'text-anchor':'end'},svg).textContent='90th';
+  const dots=[];
+  for(const p of pts){
+    const c=`var(${FIRE_COLOR[p.fire]})`;
+    const dot=el('circle',{cx:x(p.erc_pct),cy:y(p.growth),r:4.5,fill:c,
+      stroke:'var(--surface-1)','stroke-width':2},svg);
+    dots.push({p,dot,X:x(p.erc_pct),Y:y(p.growth),c});
+  }
+  const hit=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'},svg);
+  let lit=null;
+  hit.addEventListener('pointermove',e=>{
+    const r=svg.getBoundingClientRect(), sx=(e.clientX-r.left)*W/r.width, sy=(e.clientY-r.top)*H/r.height;
+    let best=null,bd=1e9;
+    for(const d of dots){ const dd=(d.X-sx)**2+(d.Y-sy)**2; if(dd<bd){bd=dd;best=d;} }
+    if(!best || bd>45**2){ ttHide(); if(lit){lit.dot.setAttribute('r',4.5);lit=null;} return; }
+    if(lit&&lit!==best) lit.dot.setAttribute('r',4.5);
+    best.dot.setAttribute('r',6.5); lit=best;
+    ttShow(e.clientX,e.clientY, best.p.fname+' · '+dlabel(best.p.date)+', '+best.p.date.slice(0,4),[
+      {value:'+'+fmt(best.p.growth)+' ac',name:'gained that day',color:best.c},
+      {value:'ERC '+fmt(best.p.erc),name:ord(best.p.erc_pct)+' percentile'},
+      {value:best.p.sig?'yes':'no',name:'significant growth day'}]);
+  });
+  hit.addEventListener('pointerleave',()=>{ ttHide(); if(lit){lit.dot.setAttribute('r',4.5);lit=null;} });
+  const leg=document.getElementById('scatterLegend');
+  for(const k of FIRE_ORDER){ if(DATA.fires[k].kind!=='full') continue;
+    const s=document.createElement('span'); s.className='key';
+    const sw=document.createElement('span'); sw.className='swatch';
+    sw.style.background=`var(${FIRE_COLOR[k]})`; sw.style.borderRadius='50%';
+    s.appendChild(sw); s.appendChild(document.createTextNode(DATA.fires[k].name+' '+DATA.fires[k].year));
+    leg.appendChild(s); }
+})();
+
+// ---------- per-fire cards ----------
+(function(){
+  const host=document.getElementById('fireCards');
+  for(const key of FIRE_ORDER){
+    const f=DATA.fires[key], color=`var(${FIRE_COLOR[key]})`;
+    const card=document.createElement('div'); card.className='card'; host.appendChild(card);
+    const head=document.createElement('div'); head.className='firehead'; card.appendChild(head);
+    const h3=document.createElement('h3'); h3.textContent=f.name+' — '+f.year; head.appendChild(h3);
+    const meta=document.createElement('span'); meta.className='meta';
+    meta.textContent=Math.round(f.final_acres).toLocaleString('en-US')+' acres'
+      +(f.kind==='full'?' · '+f.n_sig+' significant growth day'+(f.n_sig!==1?'s':'')
+        +(f.spearman_rho!=null?' · ERC↔growth ρ = '+f.spearman_rho.toFixed(2):''):'');
+    head.appendChild(meta);
+    if(f.kind!=='full'){ const b=document.createElement('span'); b.className='badge';
+      b.textContent=f.kind==='growth_only'?'growth only — no ERC':'limited data'; head.appendChild(b); }
+    if(RUN_NOTES[key]){ const rn=document.createElement('div'); rn.className='runnote';
+      rn.textContent=RUN_NOTES[key]; card.appendChild(rn); }
+
+    if(f.kind==='simple'){ drawSimple(card,f); continue; }
+
+    const leg=document.createElement('div'); leg.className='legend'; card.appendChild(leg);
+    const keys=f.kind==='full'
+      ?[['ERC (daily)','var(--erc-line)','line'],['2005–24 average for the date','var(--clim-line)','line'],
+        ['season 90th percentile','var(--baseline)','line'],
+        ['significant growth day',color,'rect',1],['other active day',color,'rect',0.33]]
+      :[['significant growth day',color,'rect',1],['other active day',color,'rect',0.33]];
+    for(const [name,c,kind,op] of keys){ const s=document.createElement('span'); s.className='key';
+      const sw=document.createElement('span'); sw.className=kind==='line'?'linekey':'swatch';
+      if(kind==='line') sw.style.borderTopColor=c; else sw.style.background=c;
+      if(op!=null) sw.style.opacity=op;
+      s.appendChild(sw); s.appendChild(document.createTextNode(name)); leg.appendChild(s); }
+    drawFire(card,f,key,color);
+  }
+
+  function drawSimple(card,f){
+    const ul=document.createElement('ul'); ul.className='facts';
+    const facts=[];
+    if(f.date_range) facts.push('Reported '+dlabel(f.date_range[0])+', '+f.date_range[0].slice(0,4)
+      +' — last report '+dlabel(f.date_range[1])+', '+f.date_range[1].slice(0,4));
+    facts.push('Final size '+Math.round(f.final_acres).toLocaleString('en-US')+' acres');
+    if(f.timeline&&f.timeline.length>1){
+      const pts=f.timeline.map(t=>dlabel(t[0])+': '+Math.round(t[1]).toLocaleString('en-US')+' ac');
+      facts.push('Reported size: '+pts.join(' → '));
+    }
+    facts.push(f.reason.charAt(0).toUpperCase()+f.reason.slice(1)+' — excluded from pooled statistics');
+    for(const t of facts){ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); }
+    card.appendChild(ul);
+  }
+
+  function drawFire(card,f,key,color){
+    const days=f.days;
+    const t0=pd(days[0].date)-12*864e5, t1=pd(days[days.length-1].date)+12*864e5;
+    const W=980,H1=190,H2=130,m={l:52,r:16,t:14,b:6},mb={l:52,r:16,t:8,b:34};
+    const iw=W-m.l-m.r;
+    const x=t=>m.l+((t-t0)/(t1-t0))*iw;
+    let s1=null,ercSeries=[],ih1=0,y1=null;
+
+    if(f.kind==='full'){
+      const year=String(f.year);
+      ercSeries=DATA.erc_years[year].filter(([d])=>pd(d)>=t0&&pd(d)<=t1);
+      const eVals=ercSeries.map(p=>p[1]);
+      const eMax=Math.ceil(Math.max(...eVals,DATA.p90*1.12)/10)*10;
+      ih1=H1-m.t-m.b; y1=v=>m.t+ih1-(v/eMax)*ih1;
+      s1=el('svg',{viewBox:`0 0 ${W} ${H1}`,role:'img','aria-label':'Daily ERC for '+f.name+' season'});
+      card.appendChild(s1);
+      const es=niceStep(eMax);
+      for(let g=0;g<=eMax;g+=es){ el('line',{x1:m.l,x2:W-m.r,y1:y1(g),y2:y1(g),stroke:'var(--grid)'},s1);
+        el('text',{x:m.l-8,y:y1(g)+4,'text-anchor':'end',class:'tick'},s1).textContent=g; }
+      el('rect',{x:x(pd(days[0].date)),y:m.t,width:x(pd(days[days.length-1].date))-x(pd(days[0].date)),
+        height:ih1,fill:color,opacity:0.07},s1);
+      el('line',{x1:m.l,x2:W-m.r,y1:y1(DATA.p90),y2:y1(DATA.p90),stroke:'var(--baseline)','stroke-width':1.5},s1);
+      const climPath=ercSeries.map(([d],i)=>(i?'L':'M')+x(pd(d)).toFixed(1)+','+y1(Math.min(CLIM.get(doyOf(d))||0,eMax)).toFixed(1)).join('');
+      el('path',{d:climPath,fill:'none',stroke:'var(--clim-line)','stroke-width':1.5,'stroke-linejoin':'round'},s1);
+      const ercPath=ercSeries.map(([d,v],i)=>(i?'L':'M')+x(pd(d)).toFixed(1)+','+y1(v).toFixed(1)).join('');
+      el('path',{d:ercPath,fill:'none',stroke:'var(--erc-line)','stroke-width':2,
+        'stroke-linejoin':'round','stroke-linecap':'round'},s1);
+      el('text',{x:W-m.r-4,y:y1(DATA.p90)-5,'text-anchor':'end',stroke:'var(--surface-1)','stroke-width':4,'paint-order':'stroke'},s1).textContent='90th pct ('+DATA.p90+')';
+    }
+
+    // --- growth panel ---
+    const gMax=Math.max(...days.map(d=>d.growth),10);
+    const ih2=H2-mb.t-mb.b, y2=v=>mb.t+ih2-(v/gMax)*ih2;
+    const s2=el('svg',{viewBox:`0 0 ${W} ${H2}`,role:'img','aria-label':'Daily acres gained, '+f.name});
+    card.appendChild(s2);
+    const gstep=niceStep(gMax);
+    for(let g=0;g<=gMax;g+=gstep){ el('line',{x1:mb.l,x2:W-mb.r,y1:y2(g),y2:y2(g),stroke:'var(--grid)'},s2);
+      if(y2(g)>mb.t+16) // skip a top tick label that would collide with the ac/day label
+        el('text',{x:mb.l-8,y:y2(g)+4,'text-anchor':'end',class:'tick'},s2).textContent=g.toLocaleString('en-US'); }
+    el('line',{x1:mb.l,x2:W-mb.r,y1:y2(0),y2:y2(0),stroke:'var(--baseline)'},s2);
+    const dayW=iw*(864e5/(t1-t0));
+    const bw=Math.max(2.5,Math.min(18,dayW-2));
+    for(const d of days){
+      if(d.growth<=0) continue;
+      const h=Math.max(y2(0)-y2(d.growth),1.5), cx=x(pd(d.date));
+      el('path',{d:roundTopRect(cx-bw/2,y2(0)-h,bw,h,Math.min(4,h)),
+        fill:color,opacity:d.sig?1:0.33},s2);
+    }
+    const first=new Date(t0), months=[];
+    let mm=Date.UTC(first.getUTCFullYear(),first.getUTCMonth()+1,1);
+    while(mm<t1){ months.push(mm); mm=Date.UTC(new Date(mm).getUTCFullYear(),new Date(mm).getUTCMonth()+1,1); }
+    for(const t of months){
+      el('line',{x1:x(t),x2:x(t),y1:y2(0),y2:y2(0)+4,stroke:'var(--baseline)'},s2);
+      el('text',{x:x(t),y:y2(0)+18,'text-anchor':'middle'},s2).textContent=MONTHS[new Date(t).getUTCMonth()]+' '+String(new Date(t).getUTCFullYear());
+    }
+    // label the starting partial month when the first boundary sits well into the window
+    if(!months.length || x(months[0])-m.l>120){
+      const d0=new Date(t0), xm=(m.l+(months.length?x(months[0]):W-mb.r))/2;
+      el('text',{x:xm,y:y2(0)+18,'text-anchor':'middle'},s2).textContent=MONTHS[d0.getUTCMonth()]+' '+d0.getUTCFullYear();
+    }
+    el('text',{x:12,y:mb.t+2},s2).textContent='ac/day';
+    const top=days.reduce((a,b)=>b.growth>a.growth?b:a);
+    el('text',{x:Math.min(Math.max(x(pd(top.date))+bw/2+6,mb.l+4),W-160),y:Math.max(y2(top.growth)+11,mb.t+12),class:'lbl-strong',stroke:'var(--surface-1)','stroke-width':4,'paint-order':'stroke'},s2)
+      .textContent='+'+Math.round(top.growth).toLocaleString('en-US')+' ac · '+dlabel(top.date);
+
+    // --- shared crosshair ---
+    const byDate=new Map(days.map(d=>[d.date,d]));
+    const ercByDate=new Map(ercSeries.map(([d,v])=>[d,v]));
+    const dates=(f.kind==='full'?ercSeries.map(([d])=>d):days.map(d=>d.date));
+    const panels=f.kind==='full'?[[s1,m.t,m.t+ih1,H1],[s2,mb.t,mb.t+ih2,H2]]:[[s2,mb.t,mb.t+ih2,H2]];
+    const chs=[];
+    for(const [svg,yy0,yy1,HH] of panels){
+      const ch=el('line',{x1:-9,x2:-9,y1:yy0,y2:yy1,stroke:'var(--baseline)','stroke-width':1,opacity:0},svg);
+      chs.push([svg,ch]);
+      const hit=el('rect',{x:m.l,y:0,width:iw,height:HH,fill:'transparent'},svg);
+      hit.addEventListener('pointermove',e=>{
+        const r=svg.getBoundingClientRect(), sx=(e.clientX-r.left)*W/r.width;
+        const t=t0+((sx-m.l)/iw)*(t1-t0);
+        let best=dates[0],bd=Infinity;
+        for(const d of dates){ const dd=Math.abs(pd(d)-t); if(dd<bd){bd=dd;best=d;} }
+        const X=x(pd(best));
+        for(const [,c2] of chs){ c2.setAttribute('x1',X); c2.setAttribute('x2',X); c2.setAttribute('opacity',1); }
+        const rec=byDate.get(best);
+        const rows=[];
+        if(f.kind==='full'){
+          const ercv=ercByDate.get(best);
+          if(ercv!=null) rows.push({value:'ERC '+fmt(ercv),name:ord(pct(ercv))+' pctile · normal '+fmt(CLIM.get(doyOf(best))||0),
+            color:css('--erc-line')||'#52514e'});
+        }
+        if(rec) rows.push({value:'+'+fmt(rec.growth)+' ac',name:rec.sig?'significant growth day':'gained that day',
+          color:getComputedStyle(document.documentElement).getPropertyValue(FIRE_COLOR[key]).trim()});
+        ttShow(e.clientX,e.clientY,dlabel(best)+', '+best.slice(0,4),rows);
+      });
+      hit.addEventListener('pointerleave',()=>{ ttHide(); for(const [,c2] of chs) c2.setAttribute('opacity',0); });
+    }
+    function pct(v){ const q=DATA.season_q; let lo=0,hi=100;
+      while(lo<hi){ const mid=(lo+hi+1>>1); if(q[mid]<=v) lo=mid; else hi=mid-1; }
+      return lo; }
+  }
+})();
+
+// ---------- tables ----------
+(function(){
+  function table(host,cols,rows){
+    const t=document.createElement('table'), tr=document.createElement('tr');
+    for(const c of cols){ const th=document.createElement('th'); th.textContent=c;
+      if(cols.indexOf(c)===0) th.className='name'; tr.appendChild(th); }
+    t.appendChild(tr);
+    for(const r of rows){ const tr2=document.createElement('tr');
+      r.forEach((v,i)=>{ const td=document.createElement('td'); td.textContent=v;
+        if(i===0) td.className='name'; tr2.appendChild(td); });
+      t.appendChild(tr2); }
+    document.getElementById(host).appendChild(t);
+  }
+  table('fireTable',
+    ['Fire','Year','Final acres','Data','Active days','Sig. days','Sig. threshold','Mean ERC pctile — sig days','— other days','Spearman ρ','Mann–Whitney p'],
+    FIRE_ORDER.map(k=>{const f=DATA.fires[k];
+      const kindTxt=f.kind==='full'?'full':f.kind==='growth_only'?'growth only (no ERC)':'limited';
+      return [f.name,f.year,
+      Math.round(f.final_acres).toLocaleString('en-US'),kindTxt,
+      f.kind==='simple'?'—':f.days?f.days.length:'—',
+      f.kind==='full'?f.n_sig:'—',
+      f.kind==='simple'?'—':'≥ '+f.sig_threshold.toLocaleString('en-US')+' ac',
+      f.pct_sig_mean??'—',f.pct_non_mean??'—',
+      f.spearman_rho!=null?f.spearman_rho.toFixed(2):'—',
+      f.mannwhitney_p!=null?f.mannwhitney_p.toFixed(3):'—'];}));
+  if(DATA.pooled)
+    table('bandTable',['ERC percentile band','Active days','Significant-growth days','P(significant)','Mean daily growth (ac)'],
+      DATA.pooled.bands.map(b=>[b.band,b.n,b.n_sig,(b.p_sig??'—')+(b.p_sig!=null?'%':''),fmt(b.mean_growth??0)]));
+  const tops=[];
+  for(const k of FIRE_ORDER){const f=DATA.fires[k];
+    if(f.kind==='simple'||!f.top_days) continue;
+    for(const d of f.top_days.slice(0,3)) tops.push([f.name,dlabel(d.date)+', '+d.date.slice(0,4),
+      '+'+Math.round(d.growth).toLocaleString('en-US'),
+      d.erc!=null?fmt(d.erc):'—',d.erc_pct!=null?ord(d.erc_pct):'—']);}
+  if(tops.length) table('topTable',['Fire','Date','Acres gained','ERC','ERC percentile'],tops);
+  else { const h=document.getElementById('topTableHead'); if(h) h.remove();
+         document.getElementById('topTable').remove(); }
+  const full=[];
+  for(const k of FIRE_ORDER){const f=DATA.fires[k];
+    if(f.kind==='simple') continue;
+    for(const d of f.days) full.push([f.name,d.date,'+'+fmt(d.growth),
+      d.erc!=null?fmt(d.erc):'—',d.erc_pct!=null?ord(d.erc_pct):'—',d.sig?'yes':'']);}
+  if(full.length) table('fullTable',['Fire','Date','Acres gained (est./day)','ERC','ERC percentile','Significant'],full);
+  else document.getElementById('fullTable').closest('details').remove();
+})();
+</script>
+</body>
+</html>

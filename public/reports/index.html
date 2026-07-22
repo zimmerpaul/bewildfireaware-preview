@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERC &amp; Fires to Remember — FDRA Reports</title>
+<style>
+  :root{
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --fire-1:#2a78d6; --fire-2:#1baf7a; --fire-3:#eda100; --fire-4:#008300;
+    --ord-1:#86b6ef; --ord-2:#5598e7; --ord-3:#2a78d6; --ord-4:#1c5cab; --ord-5:#104281;
+    --erc-line:#52514e; --clim-line:#898781;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+      --fire-1:#3987e5; --fire-2:#199e70; --fire-3:#c98500; --fire-4:#008300;
+      --ord-1:#b7d3f6; --ord-2:#86b6ef; --ord-3:#5598e7; --ord-4:#2a78d6; --ord-5:#184f95;
+      --erc-line:#c3c2b7; --clim-line:#898781;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--text-primary);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:32px 20px 64px}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:19px;margin:44px 0 4px}
+  h3{font-size:16px;margin:0 0 2px}
+  .sub{color:var(--text-secondary);margin:0 0 8px;max-width:76ch}
+  .note{color:var(--muted);font-size:13px;max-width:80ch}
+  .crumb{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .crumb a{color:var(--text-secondary)}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+        padding:18px 20px;margin-top:14px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:18px}
+  .tile{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .tile .label{font-size:13px;color:var(--text-secondary)}
+  .tile .value{font-size:40px;font-weight:600;line-height:1.15;margin:2px 0}
+  .tile .detail{font-size:13px;color:var(--muted)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:860px){.row2{grid-template-columns:1fr}}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--text-secondary);margin:6px 0 2px}
+  .legend .key{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .linekey{width:16px;height:0;border-top:2px solid;display:inline-block}
+  svg{display:block;width:100%;height:auto}
+  svg text{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted)}
+  svg .lbl{fill:var(--text-secondary)}
+  svg .lbl-strong{fill:var(--text-primary);font-weight:600}
+  .tick{font-variant-numeric:tabular-nums}
+  #tooltip{position:fixed;pointer-events:none;z-index:10;display:none;
+    background:var(--surface-1);border:1px solid var(--border);border-radius:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);padding:9px 12px;font-size:13px;max-width:280px}
+  #tooltip .tt-title{color:var(--text-secondary);margin-bottom:4px}
+  #tooltip .tt-row{display:flex;align-items:center;gap:7px;margin:2px 0}
+  #tooltip .tt-val{font-weight:600;color:var(--text-primary)}
+  #tooltip .tt-name{color:var(--text-secondary)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+  th{text-align:left;color:var(--text-secondary);font-weight:600;border-bottom:1px solid var(--baseline);padding:6px 10px 6px 0}
+  td{border-bottom:1px solid var(--grid);padding:6px 10px 6px 0;font-variant-numeric:tabular-nums}
+  td.name,th.name{font-variant-numeric:normal}
+  details{margin-top:10px}
+  summary{cursor:pointer;color:var(--text-secondary);font-size:13.5px}
+  .firehead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+  .firehead .meta{color:var(--muted);font-size:13px}
+  .runnote{font-size:13.5px;color:var(--text-secondary);margin:6px 0 10px;max-width:80ch}
+  .facts{font-size:13.5px;color:var(--text-secondary);margin:8px 0 2px;padding-left:18px}
+  .facts li{margin:3px 0}
+  .badge{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.02em;
+    color:var(--text-secondary);border:1px solid var(--baseline);border-radius:999px;
+    padding:1px 9px;vertical-align:2px}
+  p{max-width:80ch}
+  a{color:inherit}
+  .foot{margin-top:40px;color:var(--muted);font-size:12.5px}
+
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0 2px}
+    h1{font-size:23px}
+    h2{font-size:17px;break-after:avoid;margin-top:26px}
+    .tiles{grid-template-columns:repeat(4,1fr);gap:10px}
+    .tile{padding:12px 14px}
+    .tile .value{font-size:30px}
+    .card,.tile{break-inside:avoid;box-shadow:none}
+    .row2{grid-template-columns:1fr 1fr}
+    details{display:none}
+    #tooltip{display:none !important}
+    .foot{margin-top:20px}
+  }
+
+  .idx{display:block;text-decoration:none;transition:border-color .15s}
+  .idx:hover{border-color:var(--baseline)}
+  .idx h3{margin:0 0 4px}
+  .idx .meta{font-size:13px;color:var(--text-secondary)}
+  .idx .meta2{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:14px}
+  .grid .card{margin-top:0}
+  h2.grp{margin:34px 0 0;font-size:17px;color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ERC &amp; Fires to Remember</h1>
+  <p class="sub">Station Energy Release Component vs. daily growth of each FDRA's key fires —
+    the pocket-card “fires to remember” where a card exists, otherwise the largest fires on
+    record in the FDRA — one report per Fire Danger Rating Area, grouped by dispatch zone:
+    Grand Junction (UCR), Durango (DRC), GMUG/Montrose, Craig, and Middle Park. Each report
+    uses the FDRA's own station SIG and fuel model, with percentile thresholds computed from
+    its own Mar–Oct 2005–2024 record.</p>
+  
+  <h2 class="grp">Grand Junction / Upper Colorado River (UCR)</h2>
+  <div class="grid">
+    <a class="card idx" href="gj_high_erc_fires.html">
+      <h3>UCR High Elevation FDRA</h3>
+      <div class="meta">Grand Junction FDOP · fuel model Y · P90 = 44.5 · P97 = 49.6</div>
+      <div class="meta">Spring Creek (2002), Big Fish (2002)</div>
+      <div class="meta2">2 fires shown · pooled stats omitted (&lt;2 fires with usable data)</div>
+    </a>
+    <a class="card idx" href="gj_middle_erc_fires.html">
+      <h3>UCR Middle Elevation FDRA</h3>
+      <div class="meta">Grand Junction FDOP · fuel model Y · P90 = 53.3 · P97 = 59.7</div>
+      <div class="meta">Coal Seam (2002), Cabin Lake (2018), Middle Mamm (2019), Pine Gulch (2020)</div>
+      <div class="meta2">4 fires shown · 3 fires pooled · sig-day mean ERC pctile 94th</div>
+    </a>
+    <a class="card idx" href="gj_low_erc_fires.html">
+      <h3>UCR Low Elevation FDRA</h3>
+      <div class="meta">Grand Junction FDOP · fuel model X · P90 = 94.0 · P97 = 99.4</div>
+      <div class="meta">Coal Seam (2002), Pine Ridge (2012), Grizzly Creek (2020)</div>
+      <div class="meta2">3 fires shown · 2 fires pooled · sig-day mean ERC pctile 96th</div>
+    </a>
+  </div>
+  <h2 class="grp">Durango (DRC)</h2>
+  <div class="grid">
+    <a class="card idx" href="drc_upper_erc_fires.html">
+      <h3>DRC Upper FDRA</h3>
+      <div class="meta">Durango FDOP · fuel model Z · P90 = 111.6 · P97 = 120.8</div>
+      <div class="meta">West Fork (2013), 416 (2018), Ice (2020)</div>
+      <div class="meta2">3 fires shown · 3 fires pooled · sig-day mean ERC pctile 97th</div>
+    </a>
+    <a class="card idx" href="drc_lower_erc_fires.html">
+      <h3>DRC Lower FDRA</h3>
+      <div class="meta">Durango FDOP · fuel model X · P90 = 88.4 · P97 = 95.5</div>
+      <div class="meta">Horse Park (2018), East Canyon (2020), Toe (2015)</div>
+      <div class="meta2">3 fires shown · 2 fires pooled · sig-day mean ERC pctile 91st</div>
+    </a>
+  </div>
+  <h2 class="grp">GMUG / Montrose</h2>
+  <div class="grid">
+    <a class="card idx" href="mtc_high_erc_fires.html">
+      <h3>GMUG High Elevation FDRA</h3>
+      <div class="meta">Montrose FDOP · fuel model Y · P90 = 45.7 · P97 = 52.6</div>
+      <div class="meta">Green Mountain (2018), Cow Creek (2019), Low Line (2023)</div>
+      <div class="meta2">3 fires shown · pooled stats omitted (&lt;2 fires with usable data) · 1 card fire not found</div>
+    </a>
+    <a class="card idx" href="mtc_uncompahgre_erc_fires.html">
+      <h3>GMUG Uncompahgre FDRA</h3>
+      <div class="meta">Montrose FDOP · fuel model Y · P90 = 56.4 · P97 = 63.2</div>
+      <div class="meta">Love (2018), Sawmill (2017)</div>
+      <div class="meta2">2 fires shown · pooled stats omitted (&lt;2 fires with usable data)</div>
+    </a>
+    <a class="card idx" href="mtc_montrose_erc_fires.html">
+      <h3>GMUG Montrose FDRA</h3>
+      <div class="meta">Montrose FDOP · fuel model Y · P90 = 62.3 · P97 = 68.9</div>
+      <div class="meta">Buttermilk (2018)</div>
+      <div class="meta2">1 fire shown · pooled stats omitted (&lt;2 fires with usable data) · 1 card fire not found</div>
+    </a>
+    <a class="card idx" href="mtc_west_erc_fires.html">
+      <h3>GMUG West FDRA</h3>
+      <div class="meta">Montrose FDOP · fuel model Y · P90 = 64.1 · P97 = 70.7</div>
+      <div class="meta">Sunrise Mine (2012), Bull Draw (2018)</div>
+      <div class="meta2">2 fires shown · 2 fires pooled · sig-day mean ERC pctile 86th</div>
+    </a>
+  </div>
+  <h2 class="grp">Craig</h2>
+  <div class="grid">
+    <a class="card idx" href="crc_zone1_erc_fires.html">
+      <h3>Craig Zone 1 FDRA</h3>
+      <div class="meta">Craig FDOP · fuel model X · P90 = 95.1 · P97 = 100.1</div>
+      <div class="meta">Mayberry (2008), Alkali (2014), Dead Dog (2017)</div>
+      <div class="meta2">3 fires shown · pooled stats omitted (&lt;2 fires with usable data) · largest fires on record (no pocket card)</div>
+    </a>
+    <a class="card idx" href="crc_zone2_erc_fires.html">
+      <h3>Craig Zone 2 FDRA</h3>
+      <div class="meta">Craig FDOP · fuel model Y · P90 = 51.0 · P97 = 56.3</div>
+      <div class="meta">Pine Tree (2017), Divide (2018), Iron (2023)</div>
+      <div class="meta2">3 fires shown · pooled stats omitted (&lt;2 fires with usable data) · largest fires on record (no pocket card)</div>
+    </a>
+    <a class="card idx" href="crc_zone3_erc_fires.html">
+      <h3>Craig Zone 3 FDRA</h3>
+      <div class="meta">Craig FDOP · fuel model Z · P90 = 92.6 · P97 = 101.1</div>
+      <div class="meta">Beaver Creek (2016), Ryan (2018), East Troublesome (2020)</div>
+      <div class="meta2">3 fires shown · 3 fires pooled · sig-day mean ERC pctile 87th · largest fires on record (no pocket card)</div>
+    </a>
+  </div>
+  <h2 class="grp">Middle Park (Fort Collins FDOP — west of the Divide)</h2>
+  <div class="grid">
+    <a class="card idx" href="ftc_west_divide_erc_fires.html">
+      <h3>ARF West Divide FDRA</h3>
+      <div class="meta">Fort Collins FDOP · fuel model Y · P90 = 37.4 · P97 = 42.5</div>
+      <div class="meta">Churches Park (2010), Sugarloaf (2018), Williams Fork (2020)</div>
+      <div class="meta2">3 fires shown · 2 fires pooled · sig-day mean ERC pctile 98th</div>
+    </a>
+  </div>
+  <div class="foot">ICS-209-PLUS v2.0 · FEMS NFDR daily summaries · NWCG pocket cards ·
+    WFIGS and contemporary news coverage where noted. Generated July 2026 for bewildfireaware.com.</div>
+</div>
+</body>
+</html>

@@ -1,13 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
 import areas from '../data/dispatch_areas.json';
+import fdraConfig from '../data/fdra_config.json';
 
 const dataFiles = import.meta.glob('../data/areas/*.json', { eager: true });
-const areaCards = areas.map((a) => {
-  const d = dataFiles[`../data/areas/${a.slug}.json`];
-  const data = d?.default ?? d ?? {};
-  return { ...a, danger: data.danger ?? 'Unknown', dateLabel: data.dateLabel ?? '' };
-});
+const femsFiles = import.meta.glob('../data/fems_current/*.json', { eager: true });
+const areaCards = [
+  ...areas.map((a) => {
+    const d = dataFiles[`../data/areas/${a.slug}.json`];
+    const data = d?.default ?? d ?? {};
+    return { ...a, danger: data.danger ?? 'Unknown', dateLabel: data.dateLabel ?? '' };
+  }),
+  // FEMS-backed FDRAs (Craig zones, West Divide) — see scripts/fetch-fems.mjs
+  ...fdraConfig.filter((f) => f.backend === 'fems').map((f) => {
+    const d = femsFiles[`../data/fems_current/${f.slug}.json`];
+    const cur = d?.default ?? d;
+    return { slug: f.slug, name: f.displayName, danger: cur?.today?.adjective ?? 'Unknown', dateLabel: '' };
+  }),
+];
 const dangerClass = (level) => 'danger-' + (level ?? 'unknown').toLowerCase().replace(/\s+/g, '-');
 const dateLabel = areaCards.find((a) => a.dateLabel)?.dateLabel;
 

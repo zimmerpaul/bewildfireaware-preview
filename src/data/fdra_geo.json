@@ -142,5 +142,59 @@
       38.4999,
       -107.2465
     ]
+  },
+  "crc_zone1": {
+    "counties": [
+      "Garfield",
+      "Moffat",
+      "Rio Blanco"
+    ],
+    "centroid": [
+      39.8556,
+      -108.3043
+    ]
+  },
+  "crc_zone2": {
+    "counties": [
+      "Routt",
+      "Moffat",
+      "Rio Blanco",
+      "Garfield"
+    ],
+    "centroid": [
+      40.3242,
+      -107.4926
+    ]
+  },
+  "crc_zone3": {
+    "counties": [
+      "Grand",
+      "Routt",
+      "Jackson",
+      "Rio Blanco",
+      "Larimer",
+      "Garfield",
+      "Eagle",
+      "Moffat",
+      "Summit"
+    ],
+    "centroid": [
+      40.2796,
+      -106.406
+    ]
+  },
+  "ftc_west_divide": {
+    "counties": [
+      "Grand",
+      "Summit",
+      "Boulder",
+      "Larimer",
+      "Clear Creek",
+      "Jackson"
+    ],
+    "centroid": [
+      40.1055,
+      -105.8871
+    ]
   }
 }

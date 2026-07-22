@@ -1,5 +1,9 @@
 ---
 import areas from '../data/dispatch_areas.json';
+import fdraConfig from '../data/fdra_config.json';
+const femsAreas = fdraConfig
+  .filter((f) => f.backend === 'fems')
+  .map((f) => ({ slug: f.slug, name: f.displayName }));
 const { active = '' } = Astro.props;
 const learnLinks = [
   ['/learn-more.html', 'Overview'],
@@ -27,6 +31,7 @@ const learnLinks = [
     <div class="dropdown-content">
       <a href="/dispatch_areas/dispatch_areas.html">Dispatch Area Map</a>
       {areas.map((a) => <a href={`/dispatch_areas/${a.slug}.html`}>{a.name}</a>)}
+      {femsAreas.map((a) => <a href={`/dispatch_areas/${a.slug}.html`}>{a.name}</a>)}
     </div>
   </li>
 </ul>

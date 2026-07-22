@@ -1,0 +1,157 @@
+{
+ "2026-07-21": {
+  "gj_high": {
+   "fdra": "gj_high",
+   "siteSlug": "grand_junction_high",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "Very High",
+    "ercPct": 96
+   },
+   "fems": {
+    "adjective": "Very High",
+    "erc": 44.6,
+    "pctile": 93.4
+   },
+   "adjectiveMatch": true,
+   "pctDelta": -2.6,
+   "status": "pass"
+  },
+  "gj_middle": {
+   "fdra": "gj_middle",
+   "siteSlug": "grand_junction_middle",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "Very High",
+    "ercPct": 92
+   },
+   "fems": {
+    "adjective": "Very High",
+    "erc": 49.3,
+    "pctile": 88.2
+   },
+   "adjectiveMatch": true,
+   "pctDelta": -3.8,
+   "status": "pass"
+  },
+  "gj_low": {
+   "fdra": "gj_low",
+   "siteSlug": "grand_junction_low",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "High",
+    "ercPct": 83
+   },
+   "fems": {
+    "adjective": "Very High",
+    "erc": 88.9,
+    "pctile": 87.6
+   },
+   "adjectiveMatch": false,
+   "pctDelta": 4.6,
+   "status": "warn"
+  },
+  "drc_upper": {
+   "fdra": "drc_upper",
+   "siteSlug": "durango_upper",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "High",
+    "ercPct": 58
+   },
+   "fems": {
+    "adjective": "High",
+    "erc": 77.6,
+    "pctile": 59.3
+   },
+   "adjectiveMatch": true,
+   "pctDelta": 1.3,
+   "status": "pass"
+  },
+  "drc_lower": {
+   "fdra": "drc_lower",
+   "siteSlug": "durango_lower",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "High",
+    "ercPct": 74
+   },
+   "fems": {
+    "adjective": "High",
+    "erc": 76.5,
+    "pctile": 79.7
+   },
+   "adjectiveMatch": true,
+   "pctDelta": 5.7,
+   "status": "warn"
+  },
+  "mtc_high": {
+   "fdra": "mtc_high",
+   "siteSlug": "montrose_high",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "Very High",
+    "ercPct": 91
+   },
+   "fems": {
+    "adjective": "Very High",
+    "erc": 42.6,
+    "pctile": 90.1
+   },
+   "adjectiveMatch": true,
+   "pctDelta": -0.9,
+   "status": "pass"
+  },
+  "mtc_uncompahgre": {
+   "fdra": "mtc_uncompahgre",
+   "siteSlug": "montrose_uncompaghre",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "High",
+    "ercPct": 72
+   },
+   "fems": {
+    "adjective": "High",
+    "erc": 39.7,
+    "pctile": 66.8
+   },
+   "adjectiveMatch": true,
+   "pctDelta": -5.2,
+   "status": "warn"
+  },
+  "mtc_montrose": {
+   "fdra": "mtc_montrose",
+   "siteSlug": "montrose_montrose",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "Very High",
+    "ercPct": 83
+   },
+   "fems": {
+    "adjective": "Very High",
+    "erc": 55,
+    "pctile": 83.5
+   },
+   "adjectiveMatch": true,
+   "pctDelta": 0.5,
+   "status": "pass"
+  },
+  "mtc_west": {
+   "fdra": "mtc_west",
+   "siteSlug": "montrose_west",
+   "date": "2026-07-21",
+   "sheets": {
+    "adjective": "Moderate",
+    "ercPct": 54
+   },
+   "fems": {
+    "adjective": "High",
+    "erc": 42.2,
+    "pctile": 52.5
+   },
+   "adjectiveMatch": false,
+   "pctDelta": -1.5,
+   "status": "warn"
+  }
+ }
+}

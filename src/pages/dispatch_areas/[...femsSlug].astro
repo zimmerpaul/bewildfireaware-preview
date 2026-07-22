@@ -1,0 +1,293 @@
+---
+// FDRA pages for the FEMS-backed areas (Craig Zones 1-3, Middle Park West
+// Divide). These render from src/data/fems_current/<slug>.json (written by
+// scripts/fetch-fems.mjs) + the 2005-2024 climatology — a parallel data path
+// to the 9 sheets-backed pages in [slug].astro, which are untouched.
+//
+// Rest route (lower priority than [slug].astro) so the two dynamic routes
+// under /dispatch_areas never collide.
+import Base from '../../layouts/Base.astro';
+import config from '../../data/fdra_config.json';
+import climatology from '../../data/fems_climatology.json';
+import fdraGeo from '../../data/fdra_geo.json';
+
+export function getStaticPaths() {
+  const dataFiles = import.meta.glob('../../data/fems_current/*.json', { eager: true });
+  return config
+    .filter((f) => f.backend === 'fems')
+    .map((fdra) => {
+      const d = dataFiles[`../../data/fems_current/${fdra.slug}.json`];
+      if (!d) throw new Error(`No data file for ${fdra.slug} — run \`npm run fetch-fems\` first`);
+      return { params: { femsSlug: fdra.slug }, props: { fdra, data: d.default ?? d } };
+    });
+}
+
+const { fdra, data } = Astro.props;
+const climo = climatology[fdra.slug];
+
+const dangerClass = (level) => 'danger-' + (level ?? '').toLowerCase().replace(/\s+/g, '-');
+const today = data.today;
+const provisional = data.breakpoints.source === 'provisional_ladder';
+const breakpointNote = provisional
+  ? 'Provisional — pending review'
+  : 'Breakpoints: Craig FDOP 2024';
+
+const dateLabel = new Date(`${today.date}T12:00:00Z`).toLocaleDateString('en-US', {
+  timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric',
+});
+
+// Per-FDRA geography (same source as the sheets-backed pages)
+const geo = fdraGeo[fdra.slug] ?? {};
+const [lat, lon] = geo.centroid ?? [];
+const counties = geo.counties ?? [];
+
+// ---- Season ERC chart (inline SVG, PocketCard-style) ----
+// X axis is leap-calendar day-of-year (366 slots) so the climatology mean and
+// the current-year series share an axis.
+const CUM = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
+const doy = (date) => {
+  const [, m, d] = date.split('-').map(Number);
+  return CUM[m - 1] + d - 1; // 0..365
+};
+
+const bounds = data.breakpoints.values; // [b1,b2,b3,b4] class upper bounds
+const seriesPts = data.series.map(([date, erc]) => [doy(date), erc]);
+const meanPts = (climo?.doyMean ?? [])
+  .map((v, i) => (v == null ? null : [i, v]))
+  .filter(Boolean);
+const seriesMax = Math.max(...seriesPts.map(([, v]) => v), 0);
+const yMax = Math.max(20, Math.ceil(Math.max(seriesMax, climo?.quantiles?.[100] ?? 0, bounds[3] * 1.1) / 20) * 20);
+
+const W = 1000, H = 560;
+const M = { l: 60, r: 25, t: 70, b: 45 };
+const pw = W - M.l - M.r, ph = H - M.t - M.b;
+const x = (d) => M.l + (d / 365) * pw;
+const y = (v) => M.t + ph - (v / yMax) * ph;
+const path = (pts) => (pts?.length ? 'M' + pts.map(([d, v]) => `${x(d).toFixed(1)},${y(v).toFixed(1)}`).join('L') : '');
+
+const BAND_COLORS = ['#2e7d32', '#1565c0', '#f9a825', '#ef6c00', '#c62828'];
+const bands = [0, ...bounds, yMax]; // class edges, bottom to top
+const ticks = [[0, '1-Jan'], [60, '1-Mar'], [121, '1-May'], [182, '1-Jul'], [244, '1-Sep'], [305, '1-Nov']];
+const yStep = yMax > 100 ? 40 : 20;
+const yTicks = [];
+for (let v = 0; v <= yMax; v += yStep) yTicks.push(v);
+
+// Season window markers (vertical dashed lines), if defined
+const season = fdra.seasonWindow
+  ? [doy(`0000-${fdra.seasonWindow.start}`), doy(`0000-${fdra.seasonWindow.end}`)]
+  : null;
+
+const classRows = data.breakpoints.adjectives.map((adj, i) => ({
+  adjective: adj,
+  range: i === 0 ? `0–${bounds[0]}` : i < bounds.length ? `${bounds[i - 1] + 1}–${bounds[i]}` : `${bounds[3] + 1}+`,
+}));
+
+const reportUrl = `/reports/${fdra.slug}_erc_fires.html`;
+
+const localLinks = [
+  { name: 'ERC & Fire History Report', url: reportUrl, desc: `The full analysis behind this page: 2005–2024 ERC climatology, fire-day statistics, and the ${provisional ? 'provisional' : 'published'} danger class breakpoints for ${fdra.displayName}.` },
+  { name: 'Watch Duty', url: 'https://app.watchduty.org/', desc: 'Live wildfire tracking and real-time incident updates.' },
+  { name: 'NWS Forecast Here', url: lat ? `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lon}` : 'https://www.weather.gov/wrh/fire?wfo=gjt', desc: 'National Weather Service point forecast for this rating area.' },
+  { name: 'AirNow Fire & Smoke', url: lat ? `https://fire.airnow.gov/#9/${lat}/${lon}` : 'https://fire.airnow.gov/', desc: 'Smoke plumes and air quality, centered on this area.' },
+  { name: 'InciWeb', url: 'https://inciweb.wildfire.gov/', desc: 'Official interagency information on active large incidents.' },
+];
+---
+<Base title={`Be Wildfire Aware - ${fdra.displayName}`} active="dispatch">
+  <main class="area-page">
+    <p class="dispatch-title">{fdra.fdopGroup} Fire Danger Operating Plan area</p>
+    <h1>{fdra.displayName}</h1>
+    <p class="area-date">{dateLabel}</p>
+
+    <div class={`danger-banner ${dangerClass(today.adjective)}`} role="status">
+      <span class="danger-label">Today's Fire Danger is</span>
+      <span class="danger-value">{today.adjective}</span>
+      <span class={`bp-badge${provisional ? ' bp-badge-provisional' : ''}`}>{breakpointNote}</span>
+    </div>
+
+    <div class="area-meta">
+      <span>Latest observation: {today.date}</span>
+      {counties.length > 0 && <span>Covers parts of: {counties.join(', ')} {counties.length === 1 ? 'county' : 'counties'}</span>}
+      <span>Fuel model {data.fuelModel}</span>
+    </div>
+
+    <h2>Today's Conditions</h2>
+    <div class="obs-grid">
+      <div class="obs-card">
+        <span class="obs-value">{today.erc}</span>
+        <span class="obs-label">ERC (fuel model {data.fuelModel})</span>
+        <span class="obs-limit">area average across {fdra.stations.length} station{fdra.stations.length === 1 ? '' : 's'}</span>
+      </div>
+      <div class="obs-card">
+        <span class="obs-value">{today.pctile}%</span>
+        <span class="obs-label">ERC Percentile</span>
+        <span class="obs-limit">vs. all days 2005–2024</span>
+      </div>
+      <div class="obs-card">
+        <span class="obs-value">{today.adjective}</span>
+        <span class="obs-label">Danger Class</span>
+        <span class="obs-limit">{provisional ? 'provisional breakpoints' : 'Craig FDOP 2024 breakpoints'}</span>
+      </div>
+    </div>
+
+    <h2>Season ERC</h2>
+    <p class="area-date">
+      Daily Energy Release Component for {today.date.slice(0, 4)} against the 2005–2024 average.
+      Colored bands are this area's danger classes{provisional ? ' (provisional — pending review)' : ' (Craig FDOP 2024)'}.
+    </p>
+    <figure class="pocket-card">
+      <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" role="img"
+        aria-label={`${fdra.displayName} season ERC chart`}>
+        <rect width={W} height={H} fill="#ffffff" rx="8" />
+        <text x={W / 2} y="34" text-anchor="middle" font-size="28" fill="#757575" font-family="Arial, sans-serif">{fdra.displayName} — ERC (fuel model {data.fuelModel})</text>
+
+        {/* danger class bands */}
+        {bands.slice(0, -1).map((lo, i) => {
+          const hi = Math.min(bands[i + 1], yMax);
+          return hi > lo && (
+            <rect x={M.l} y={y(hi)} width={pw} height={y(lo) - y(hi)} fill={BAND_COLORS[i]} opacity="0.14" />
+          );
+        })}
+        {bounds.filter((b) => b <= yMax).map((b) => (
+          <line x1={M.l} y1={y(b)} x2={W - M.r} y2={y(b)} stroke="#999" stroke-width="1" stroke-dasharray="4 4" />
+        ))}
+        {bands.slice(0, -1).map((lo, i) => {
+          const hi = Math.min(bands[i + 1], yMax);
+          return hi > lo + yMax * 0.04 && (
+            <text x={W - M.r - 8} y={y((lo + hi) / 2) + 6} text-anchor="end" font-size="17"
+              fill={BAND_COLORS[i]} font-weight="bold" font-family="Arial, sans-serif">{data.breakpoints.adjectives[i]}</text>
+          );
+        })}
+
+        {/* gridlines + y labels */}
+        {yTicks.map((v) => (
+          <g>
+            <line x1={M.l} y1={y(v)} x2={W - M.r} y2={y(v)} stroke={v === 0 ? '#333' : '#00000018'} stroke-width={v === 0 ? 2 : 1} />
+            <text x={M.l - 10} y={y(v) + 6} text-anchor="end" font-size="20" fill="#333" font-family="Arial, sans-serif">{v}</text>
+          </g>
+        ))}
+        {/* x tick labels */}
+        {ticks.map(([d, label]) => (
+          <text x={x(d)} y={H - 12} text-anchor="middle" font-size="20" fill="#333" font-family="Arial, sans-serif">{label}</text>
+        ))}
+
+        {/* season window markers */}
+        {season && season.map((d) => (
+          <line x1={x(d)} y1={M.t} x2={x(d)} y2={M.t + ph} stroke="#888" stroke-width="2" stroke-dasharray="8 6" />
+        ))}
+
+        {/* climatology mean, then this year's observations on top */}
+        {meanPts.length > 0 && (
+          <path d={path(meanPts)} fill="none" stroke="#9e9e9e" stroke-width="3" stroke-linejoin="round" />
+        )}
+        <path d={path(seriesPts)} fill="none" stroke="#1e3fd0" stroke-width="3.5" stroke-linejoin="round" />
+
+        {/* legend */}
+        <g>
+          <line x1="70" y1="60" x2="106" y2="60" stroke="#1e3fd0" stroke-width="8" />
+          <text x="116" y="66" font-size="20" fill="#333" font-family="Arial, sans-serif">{today.date.slice(0, 4)} Observed</text>
+          <line x1="330" y1="60" x2="366" y2="60" stroke="#9e9e9e" stroke-width="8" />
+          <text x="376" y="66" font-size="20" fill="#333" font-family="Arial, sans-serif">2005–2024 Average</text>
+          {season && (
+            <>
+              <line x1="640" y1="52" x2="640" y2="70" stroke="#888" stroke-width="2" stroke-dasharray="6 4" />
+              <text x="652" y="66" font-size="20" fill="#333" font-family="Arial, sans-serif">Fire season ({fdra.seasonWindow.start} to {fdra.seasonWindow.end})</text>
+            </>
+          )}
+        </g>
+      </svg>
+    </figure>
+
+    <h2>Danger Class Breakpoints</h2>
+    <p class="area-date">
+      {provisional
+        ? 'Provisional breakpoints from a year-round 2005–2024 climatological ladder — pending local review, not an official product.'
+        : 'Published ERC staffing breakpoints from the Craig Interagency Fire Danger Operating Plan (2024).'}
+    </p>
+    <div class="table-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr><th scope="col">Class</th><th scope="col">ERC ({data.fuelModel})</th></tr>
+        </thead>
+        <tbody>
+          {classRows.map((r) => (
+            <tr>
+              <td><span class={`danger-chip ${dangerClass(r.adjective)}`}>{r.adjective}</span></td>
+              <td>{r.range}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {lat && (
+      <>
+        <h2>Where Is This Area?</h2>
+        <div id="area-map" data-slug={fdra.slug}></div>
+        <p class="wx-credit">
+          The {fdra.displayName} Fire Danger Rating Area
+          {counties.length > 0 && `, spanning parts of ${counties.join(', ')} ${counties.length === 1 ? 'county' : 'counties'}`}.
+        </p>
+      </>
+    )}
+
+    <h2>Weather Stations</h2>
+    <p class="area-date">Daily ERC is the average of these NFDRS stations (fuel model {data.fuelModel}):</p>
+    <div class="table-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr><th scope="col">Station</th><th scope="col">FEMS ID</th></tr>
+        </thead>
+        <tbody>
+          {fdra.stations.map((s) => (
+            <tr><th scope="row">{s.name}</th><td>{s.id}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {lat && (
+      <>
+        <h2>Weather &amp; Air Quality</h2>
+        <div class="wx-strip" data-wx data-lat={lat} data-lon={lon}></div>
+      </>
+    )}
+
+    <h2>Local Fire Information</h2>
+    <div class="local-links">
+      {localLinks.map((l) => (
+        <a class="local-link" href={l.url} target={l.url.startsWith('/') ? undefined : '_blank'} rel={l.url.startsWith('/') ? undefined : 'noopener'}>
+          <strong>{l.name} {l.url.startsWith('/') ? '→' : '↗'}</strong>
+          <span>{l.desc}</span>
+        </a>
+      ))}
+    </div>
+
+    <p class="raws-note">
+      Data source: FEMS (Fire Environment Mapping System) daily NFDRS observations, fuel model {data.fuelModel},
+      averaged across this area's stations. Percentiles compare each day against every day from 2005–2024.
+      {provisional && ' Danger class breakpoints for this area are provisional and pending review by local fire managers.'}
+    </p>
+  </main>
+
+  <style is:inline>
+    .bp-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: 0.78em;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      color: #fff;
+    }
+    .bp-badge-provisional { background: rgba(0, 0, 0, 0.28); }
+  </style>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <script is:inline src="/map.js" defer></script>
+  <script is:inline src="/weather.js" defer></script>
+</Base>

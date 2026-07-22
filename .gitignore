@@ -6,3 +6,4 @@ dist/
 keys/
 .secrets/
 .env
+_to_delete/

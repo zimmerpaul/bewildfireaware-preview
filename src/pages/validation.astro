@@ -1,0 +1,166 @@
+---
+// Sheets-vs-FEMS parity dashboard for the 9 sheets-backed FDRAs.
+// Data: src/data/validation/history.json, appended daily by
+// scripts/validate-parity.mjs (npm run validate-parity).
+import Base from '../layouts/Base.astro';
+import config from '../data/fdra_config.json';
+import history from '../data/validation/history.json';
+
+const SHEETS_FDRAS = config.filter((f) => f.backend === 'sheets');
+const dates = Object.keys(history).sort(); // ascending YYYY-MM-DD
+const last60 = dates.slice(-60);
+
+// ---- summary tiles ----
+const allRecords = dates.flatMap((d) => Object.values(history[d]));
+const scored = allRecords.filter((r) => r.status !== 'nodata');
+const passRate = scored.length
+  ? Math.round((scored.filter((r) => r.status === 'pass').length / scored.length) * 100)
+  : null;
+
+// Current streak: consecutive most-recent days where no scored record failed
+// (nodata-only days don't extend or break the streak — they're skipped).
+let streak = 0;
+for (let i = dates.length - 1; i >= 0; i--) {
+  const recs = Object.values(history[dates[i]]).filter((r) => r.status !== 'nodata');
+  if (!recs.length) continue;
+  if (recs.some((r) => r.status === 'fail')) break;
+  streak++;
+}
+
+// ---- per-FDRA daily grid (last 60 days) ----
+const grid = SHEETS_FDRAS.map((f) => ({
+  slug: f.slug,
+  name: f.displayName,
+  cells: last60.map((d) => {
+    const r = history[d]?.[f.slug];
+    return { date: d, status: r?.status ?? 'nodata', r };
+  }),
+}));
+
+// ---- recent mismatches ----
+const mismatches = dates
+  .slice()
+  .reverse()
+  .flatMap((d) =>
+    Object.values(history[d])
+      .filter((r) => r.status === 'warn' || r.status === 'fail')
+      .map((r) => ({ ...r, date: d })),
+  )
+  .slice(0, 40);
+
+const STATUS_COLORS = { pass: '#2e7d32', warn: '#f9a825', fail: '#c62828', nodata: '#cfcfcf' };
+const nameOf = (slug) => SHEETS_FDRAS.find((f) => f.slug === slug)?.displayName ?? slug;
+const fmtCell = (r) =>
+  r?.sheets && r?.fems
+    ? `${r.date} — sheets ${r.sheets.adjective} ${r.sheets.ercPct}% | FEMS ${r.fems.adjective} P${r.fems.pctile} (Δ${r.pctDelta})`
+    : `${r?.date ?? ''} — no matching data`;
+---
+<Base title="Data Validation — BeWildfireAware" active="">
+  <main class="area-page">
+    <h1>Sheets ↔ FEMS Parity Validation</h1>
+    <p class="area-date">
+      Daily comparison of the production Google-Sheets pipeline against this site's direct-from-FEMS
+      pipeline for the 9 sheets-backed Fire Danger Rating Areas.
+    </p>
+
+    <div class="obs-grid">
+      <div class="obs-card">
+        <span class="obs-value">{dates.length}</span>
+        <span class="obs-label">Days Running</span>
+      </div>
+      <div class="obs-card">
+        <span class="obs-value">{passRate == null ? '—' : `${passRate}%`}</span>
+        <span class="obs-label">Pass Rate</span>
+        <span class="obs-limit">{scored.length} scored comparisons</span>
+      </div>
+      <div class="obs-card">
+        <span class="obs-value">{streak}</span>
+        <span class="obs-label">Current Streak</span>
+        <span class="obs-limit">days without a fail</span>
+      </div>
+    </div>
+
+    <h2>Daily Status (last 60 days)</h2>
+    <div class="legend-row">
+      <span><i style={`background:${STATUS_COLORS.pass}`}></i> pass</span>
+      <span><i style={`background:${STATUS_COLORS.warn}`}></i> warn</span>
+      <span><i style={`background:${STATUS_COLORS.fail}`}></i> fail</span>
+      <span><i style={`background:${STATUS_COLORS.nodata}`}></i> no data</span>
+    </div>
+    <div class="table-wrap">
+      <table class="parity-grid">
+        <tbody>
+          {grid.map((row) => (
+            <tr>
+              <th scope="row">{row.name}</th>
+              {row.cells.map((c) => (
+                <td>
+                  <span class="cell" style={`background:${STATUS_COLORS[c.status]}`} title={fmtCell(c.r ?? { date: c.date })}></span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Recent Mismatches</h2>
+    {mismatches.length === 0 ? (
+      <p>None recorded yet.</p>
+    ) : (
+      <div class="table-wrap">
+        <table class="forecast-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">FDRA</th>
+              <th scope="col">Sheets</th>
+              <th scope="col">FEMS</th>
+              <th scope="col">Δ pct</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mismatches.map((m) => (
+              <tr>
+                <td>{m.date}</td>
+                <th scope="row">{nameOf(m.fdra)}</th>
+                <td>{m.sheets ? `${m.sheets.adjective} — ERC ${m.sheets.ercPct}%` : '—'}</td>
+                <td>{m.fems ? `${m.fems.adjective} — ERC ${m.fems.erc} (P${m.fems.pctile})` : '—'}</td>
+                <td>{m.pctDelta ?? '—'}</td>
+                <td class={m.status === 'fail' ? 'danger-extreme' : 'danger-high'}>{m.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+
+    <h2>How to Read This</h2>
+    <p class="raws-note">
+      <strong>Adjective mapping.</strong> Both pipelines use the same five NFDRS classes
+      (Low, Moderate, High, Very High, Extreme), but they classify differently: the sheets pipeline
+      uses FireFamilyPlus percentile class bounds, while the FEMS pipeline applies this repo's
+      5-class ERC breakpoints (published Craig FDOP values for the Craig zones, provisional
+      climatological ladders elsewhere). A one-class disagreement near a boundary is expected
+      and recorded as <em>warn</em>, not <em>fail</em>.
+    </p>
+    <p class="raws-note">
+      <strong>Percentile tolerance.</strong> The sheets ERC% is a FireFamilyPlus percentile
+      (its own period-of-record and percentile convention); the FEMS ERC percentile is computed
+      against a 2005–2024 all-days climatology ladder. Small deltas are therefore expected:
+      |Δ| ≤ 5 points with matching adjectives = <em>pass</em>, |Δ| ≤ 10 points or adjectives one
+      class apart = <em>warn</em>, anything worse = <em>fail</em>. Days where either side is
+      missing (e.g. the FEMS observation for a date hasn't posted yet) are <em>no data</em>.
+    </p>
+  </main>
+
+  <style is:inline>
+    .parity-grid { border-collapse: collapse; font-size: 0.8em; }
+    .parity-grid th { text-align: left; padding: 2px 10px 2px 0; white-space: nowrap; }
+    .parity-grid td { padding: 1px; }
+    .parity-grid .cell { display: block; width: 13px; height: 13px; border-radius: 3px; }
+    .legend-row { display: flex; gap: 18px; margin: 6px 0 12px; font-size: 0.85em; }
+    .legend-row i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  </style>
+</Base>

@@ -1,0 +1,28 @@
+name: CI build check
+
+# Verifies the site builds from committed data — no fetches, no deploy.
+# deploy.yml (main) owns production; data-fems.yml (dev) owns data refreshes.
+
+on:
+  push:
+    branches: [dev, staging]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build from committed data
+        run: npm run build

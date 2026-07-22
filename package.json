@@ -12,7 +12,10 @@
     "derive-counties": "node scripts/derive-counties.mjs",
     "generate-overviews": "node scripts/generate-overviews.mjs",
     "fetch-sitrep": "node scripts/fetch-sitrep.mjs",
-    "snapshot-history": "node scripts/snapshot-history.mjs"
+    "snapshot-history": "node scripts/snapshot-history.mjs",
+    "fetch-fems": "node scripts/fetch-fems.mjs",
+    "build-climatology": "node scripts/build-climatology.mjs",
+    "validate-parity": "node scripts/validate-parity.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0",

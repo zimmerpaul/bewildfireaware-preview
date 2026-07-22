@@ -1,0 +1,72 @@
+name: FEMS data + parity (dev)
+
+# Dev-branch data pipeline for the FEMS-backed FDRAs and the sheets↔FEMS
+# parity validation. Never deploys — deploy.yml (main) owns production.
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'scripts/**'
+      - 'src/data/fdra_config.json'
+  schedule:
+    # 09:40 UTC = 3:40am MDT — just after the sheets refresh (~3:11am), so
+    # parity has a fresh sheets side. FEMS observations for the new day post
+    # around 13:00 local, so this run typically scores *yesterday*.
+    - cron: '40 9 * * *'
+    # 21:40 UTC = 3:40pm MDT — after the day's ~13:00 local FEMS observation,
+    # so the same-date sheets-vs-FEMS comparison can actually be scored
+    # (the morning run records it as nodata; this run overwrites it).
+    - cron: '40 21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-fems-dev
+  cancel-in-progress: false
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Fetch sheets data (fresh both sides for parity)
+        run: npm run fetch-data
+
+      - name: Fetch FEMS current-year data
+        run: npm run fetch-fems
+
+      - name: Validate sheets vs FEMS parity
+        run: npm run validate-parity
+
+      - name: Commit refreshed data back to dev
+        # Production repo only — mirrors deploy.yml's rebase-then-push pattern
+        # so re-runs can't fail as non-fast-forward, but targets dev.
+        if: github.repository == 'zimmerpaul/bewildfireaware-website'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for p in src/data/areas src/data/fems_current src/data/validation; do git add "$p" 2>/dev/null || true; done
+          if ! git diff --cached --quiet; then
+            git commit -m "FEMS data refresh + parity check"
+            git fetch origin dev
+            git rebase origin/dev
+            git push origin HEAD:dev
+          else
+            echo "No data changes — nothing to commit."
+          fi
+
+      - name: Build check (no deploy)
+        run: npm run build

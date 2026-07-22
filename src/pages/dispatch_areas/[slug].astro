@@ -6,6 +6,7 @@ import LocalInfo from '../../components/LocalInfo.astro';
 import areas from '../../data/dispatch_areas.json';
 import fdraGeo from '../../data/fdra_geo.json';
 import localInfo from '../../data/local_info.json';
+import fdraConfig from '../../data/fdra_config.json';
 
 const overviewFiles = import.meta.glob('../../data/overviews/*.json', { eager: true });
 
@@ -77,6 +78,10 @@ const localLinks = [
   { name: 'InciWeb', url: 'https://inciweb.wildfire.gov/', desc: 'Official interagency information on active large incidents.' },
   ...(area.links ?? []),
 ];
+
+// ERC & fire history report for this FDRA (built by the fdra_pipeline,
+// served from /reports). Internal link, so rendered without target=_blank.
+const pipelineSlug = fdraConfig.find((f) => f.siteSlug === area.slug)?.slug;
 ---
 <Base title={`Be Wildfire Aware - ${area.name}`} active="dispatch">
   <main class="area-page">
@@ -233,6 +238,12 @@ const localLinks = [
 
     <h2>Local Fire Information</h2>
     <div class="local-links">
+      {pipelineSlug && (
+        <a class="local-link" href={`/reports/${pipelineSlug}_erc_fires.html`}>
+          <strong>ERC &amp; Fire History Report →</strong>
+          <span>Deep-dive analysis for this area: 2005–2024 ERC climatology and the fires that shaped its danger thresholds.</span>
+        </a>
+      )}
       {localLinks.map((l) => (
         <a class="local-link" href={l.url} target="_blank" rel="noopener">
           <strong>{l.name} ↗</strong>

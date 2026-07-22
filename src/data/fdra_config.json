@@ -1,0 +1,529 @@
+[
+  {
+    "slug": "gj_high",
+    "displayName": "Grand Junction (High)",
+    "fdopGroup": "Grand Junction",
+    "stations": [
+      {
+        "id": "51510",
+        "name": "DEEP CREEK"
+      },
+      {
+        "id": "51606",
+        "name": "DOWD JUNCTION"
+      },
+      {
+        "id": "51703",
+        "name": "SODA CREEK"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        1,
+        14,
+        37,
+        46
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "grand_junction_high"
+  },
+  {
+    "slug": "gj_middle",
+    "displayName": "Grand Junction (Middle)",
+    "fdopGroup": "Grand Junction",
+    "stations": [
+      {
+        "id": "52409",
+        "name": "JACKS CANYON"
+      },
+      {
+        "id": "51607",
+        "name": "GYPSUM"
+      },
+      {
+        "id": "51506",
+        "name": "THE CROWN"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        14,
+        29,
+        45,
+        55
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "grand_junction_middle"
+  },
+  {
+    "slug": "gj_low",
+    "displayName": "Grand Junction (Low)",
+    "fdopGroup": "Grand Junction",
+    "stations": [
+      {
+        "id": "52410",
+        "name": "LITTLE DOLORES"
+      },
+      {
+        "id": "51507",
+        "name": "DEMAREE"
+      },
+      {
+        "id": "51504",
+        "name": "RIFLE"
+      },
+      {
+        "id": "52407",
+        "name": "PINE RIDGE"
+      }
+    ],
+    "fuelModel": "X",
+    "breakpoints": {
+      "values": [
+        41,
+        64,
+        84,
+        96
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "grand_junction_low"
+  },
+  {
+    "slug": "drc_upper",
+    "displayName": "Durango (Upper)",
+    "fdopGroup": "Durango",
+    "stations": [
+      {
+        "id": "55205",
+        "name": "SALTER"
+      },
+      {
+        "id": "55901",
+        "name": "DEVIL MTN."
+      },
+      {
+        "id": "55902",
+        "name": "SANDOVAL MESA"
+      },
+      {
+        "id": "55808",
+        "name": "LOG CHUTE"
+      }
+    ],
+    "fuelModel": "Z",
+    "breakpoints": {
+      "values": [
+        43,
+        69,
+        95,
+        115
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "durango_upper"
+  },
+  {
+    "slug": "drc_lower",
+    "displayName": "Durango (Lower)",
+    "fdopGroup": "Durango",
+    "stations": [
+      {
+        "id": "55807",
+        "name": "BIG BEAR PARK"
+      },
+      {
+        "id": "55704",
+        "name": "CHAPIN"
+      },
+      {
+        "id": "55710",
+        "name": "MOCKINGBIRD"
+      },
+      {
+        "id": "55805",
+        "name": "MESA MTN"
+      }
+    ],
+    "fuelModel": "X",
+    "breakpoints": {
+      "values": [
+        46,
+        57,
+        77,
+        90
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "durango_lower"
+  },
+  {
+    "slug": "mtc_high",
+    "displayName": "Montrose (High Elevation)",
+    "fdopGroup": "Montrose",
+    "stations": [
+      {
+        "id": "52812",
+        "name": "TAYLOR PARK"
+      },
+      {
+        "id": "52813",
+        "name": "HUNTSMAN MESA"
+      },
+      {
+        "id": "54702",
+        "name": "LUJAN"
+      },
+      {
+        "id": "54704",
+        "name": "NEEDLE CREEK"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        5,
+        17,
+        37,
+        48
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "montrose_high"
+  },
+  {
+    "slug": "mtc_uncompahgre",
+    "displayName": "Montrose (Uncompaghre)",
+    "fdopGroup": "Montrose",
+    "stations": [
+      {
+        "id": "52409",
+        "name": "JACKS CANYON"
+      },
+      {
+        "id": "53804",
+        "name": "SANBORN PARK"
+      },
+      {
+        "id": "53808",
+        "name": "CARPENTER RIDGE"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        16,
+        32,
+        47,
+        58
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "montrose_uncompaghre"
+  },
+  {
+    "slug": "mtc_montrose",
+    "displayName": "Montrose (Montrose)",
+    "fdopGroup": "Montrose",
+    "stations": [
+      {
+        "id": "53805",
+        "name": "COTTONWOOD BASIN"
+      },
+      {
+        "id": "52704",
+        "name": "JAY"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        27,
+        38,
+        53,
+        64
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "montrose_montrose"
+  },
+  {
+    "slug": "mtc_west",
+    "displayName": "Montrose (West)",
+    "fdopGroup": "Montrose",
+    "stations": [
+      {
+        "id": "55710",
+        "name": "MOCKINGBIRD"
+      },
+      {
+        "id": "53807",
+        "name": "NUCLA"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        33,
+        41,
+        54,
+        66
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": null,
+    "backend": "sheets",
+    "siteSlug": "montrose_west"
+  },
+  {
+    "slug": "crc_zone1",
+    "displayName": "Craig (Zone 1)",
+    "fdopGroup": "Craig",
+    "stations": [
+      {
+        "id": "50104",
+        "name": "LODORE"
+      },
+      {
+        "id": "50108",
+        "name": "CALICO"
+      },
+      {
+        "id": "51407",
+        "name": "DRAGON ROAD"
+      },
+      {
+        "id": "51406",
+        "name": "HUNTER CREEK"
+      },
+      {
+        "id": "51402",
+        "name": "PINTO"
+      }
+    ],
+    "fuelModel": "X",
+    "breakpoints": {
+      "values": [
+        39,
+        55,
+        78,
+        94
+      ],
+      "source": "fdop_published",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": {
+      "start": "05-15",
+      "end": "10-15"
+    },
+    "backend": "fems"
+  },
+  {
+    "slug": "crc_zone2",
+    "displayName": "Craig (Zone 2)",
+    "fdopGroup": "Craig",
+    "stations": [
+      {
+        "id": "50106",
+        "name": "GREAT DIVIDE"
+      },
+      {
+        "id": "50207",
+        "name": "DRY LAKE"
+      },
+      {
+        "id": "51510",
+        "name": "DEEP CREEK"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        30,
+        40,
+        50,
+        60
+      ],
+      "source": "fdop_published",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": {
+      "start": "06-01",
+      "end": "10-31"
+    },
+    "backend": "fems"
+  },
+  {
+    "slug": "crc_zone3",
+    "displayName": "Craig (Zone 3)",
+    "fdopGroup": "Craig",
+    "stations": [
+      {
+        "id": "50207",
+        "name": "DRY LAKE"
+      },
+      {
+        "id": "50404",
+        "name": "GUNSIGHT"
+      },
+      {
+        "id": "482012",
+        "name": "SANDSTONE"
+      },
+      {
+        "id": "482105",
+        "name": "SAWMILL PARK"
+      }
+    ],
+    "fuelModel": "Z",
+    "breakpoints": {
+      "values": [
+        43,
+        74,
+        88,
+        111
+      ],
+      "source": "fdop_published",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": {
+      "start": "06-01",
+      "end": "10-31"
+    },
+    "backend": "fems"
+  },
+  {
+    "slug": "ftc_west_divide",
+    "displayName": "Middle Park (West Divide)",
+    "fdopGroup": "Middle Park",
+    "stations": [
+      {
+        "id": "50402",
+        "name": "HARBISON MEADOW"
+      }
+    ],
+    "fuelModel": "Y",
+    "breakpoints": {
+      "values": [
+        2,
+        17,
+        32,
+        39
+      ],
+      "source": "provisional_ladder",
+      "adjectives": [
+        "Low",
+        "Moderate",
+        "High",
+        "Very High",
+        "Extreme"
+      ]
+    },
+    "seasonWindow": {
+      "start": "05-01",
+      "end": "10-31"
+    },
+    "backend": "fems"
+  }
+]

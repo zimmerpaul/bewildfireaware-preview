@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GMUG Montrose FDRA — ERC &amp; Fires to Remember</title>
+<style>
+  :root{
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --fire-1:#2a78d6; --fire-2:#1baf7a; --fire-3:#eda100; --fire-4:#008300;
+    --ord-1:#86b6ef; --ord-2:#5598e7; --ord-3:#2a78d6; --ord-4:#1c5cab; --ord-5:#104281;
+    --erc-line:#52514e; --clim-line:#898781;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+      --fire-1:#3987e5; --fire-2:#199e70; --fire-3:#c98500; --fire-4:#008300;
+      --ord-1:#b7d3f6; --ord-2:#86b6ef; --ord-3:#5598e7; --ord-4:#2a78d6; --ord-5:#184f95;
+      --erc-line:#c3c2b7; --clim-line:#898781;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--text-primary);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:32px 20px 64px}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:19px;margin:44px 0 4px}
+  h3{font-size:16px;margin:0 0 2px}
+  .sub{color:var(--text-secondary);margin:0 0 8px;max-width:76ch}
+  .note{color:var(--muted);font-size:13px;max-width:80ch}
+  .crumb{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .crumb a{color:var(--text-secondary)}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+        padding:18px 20px;margin-top:14px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:18px}
+  .tile{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .tile .label{font-size:13px;color:var(--text-secondary)}
+  .tile .value{font-size:40px;font-weight:600;line-height:1.15;margin:2px 0}
+  .tile .detail{font-size:13px;color:var(--muted)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:860px){.row2{grid-template-columns:1fr}}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--text-secondary);margin:6px 0 2px}
+  .legend .key{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .linekey{width:16px;height:0;border-top:2px solid;display:inline-block}
+  svg{display:block;width:100%;height:auto}
+  svg text{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted)}
+  svg .lbl{fill:var(--text-secondary)}
+  svg .lbl-strong{fill:var(--text-primary);font-weight:600}
+  .tick{font-variant-numeric:tabular-nums}
+  #tooltip{position:fixed;pointer-events:none;z-index:10;display:none;
+    background:var(--surface-1);border:1px solid var(--border);border-radius:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);padding:9px 12px;font-size:13px;max-width:280px}
+  #tooltip .tt-title{color:var(--text-secondary);margin-bottom:4px}
+  #tooltip .tt-row{display:flex;align-items:center;gap:7px;margin:2px 0}
+  #tooltip .tt-val{font-weight:600;color:var(--text-primary)}
+  #tooltip .tt-name{color:var(--text-secondary)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+  th{text-align:left;color:var(--text-secondary);font-weight:600;border-bottom:1px solid var(--baseline);padding:6px 10px 6px 0}
+  td{border-bottom:1px solid var(--grid);padding:6px 10px 6px 0;font-variant-numeric:tabular-nums}
+  td.name,th.name{font-variant-numeric:normal}
+  details{margin-top:10px}
+  summary{cursor:pointer;color:var(--text-secondary);font-size:13.5px}
+  .firehead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+  .firehead .meta{color:var(--muted);font-size:13px}
+  .runnote{font-size:13.5px;color:var(--text-secondary);margin:6px 0 10px;max-width:80ch}
+  .facts{font-size:13.5px;color:var(--text-secondary);margin:8px 0 2px;padding-left:18px}
+  .facts li{margin:3px 0}
+  .badge{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.02em;
+    color:var(--text-secondary);border:1px solid var(--baseline);border-radius:999px;
+    padding:1px 9px;vertical-align:2px}
+  p{max-width:80ch}
+  a{color:inherit}
+  .foot{margin-top:40px;color:var(--muted);font-size:12.5px}
+
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0 2px}
+    h1{font-size:23px}
+    h2{font-size:17px;break-after:avoid;margin-top:26px}
+    .tiles{grid-template-columns:repeat(4,1fr);gap:10px}
+    .tile{padding:12px 14px}
+    .tile .value{font-size:30px}
+    .card,.tile{break-inside:avoid;box-shadow:none}
+    .row2{grid-template-columns:1fr 1fr}
+    details{display:none}
+    #tooltip{display:none !important}
+    .foot{margin-top:20px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap viz-root">
+  <p class="crumb"><a href="index.html">All FDRA reports</a> · Montrose FDOP</p>
+  <h1>GMUG Montrose FDRA — ERC &amp; Fires to Remember</h1>
+  <p class="sub">Energy Release Component vs. daily fire growth for the fires to remember on the <strong>GMUG Montrose FDRA</strong> pocket card — Buttermilk (2018). Daily fire sizes come from ICS-209 incident situation reports; daily ERC is the FEMS station record for the FDRA's SIG — Cottonwood Basin (53805), Jay (52704) — fuel model Y — Timber, averaged across stations, 2005–2024.</p>
+  <p class="note"><strong>Ute Trail</strong> appears on the pocket card but not found in ICS-209 (1999–2020), WFIGS, or news archives; likely predates 1999 federal records; omitted.</p>
+
+  <div class="tiles" id="tiles"></div>
+
+
+  <h2>Fire by fire</h2>
+  <p class="sub">For each fire with station ERC: daily ERC through the season against the 20-year daily average, with this FDRA's season 90th percentile marked, and daily acreage growth below on the same dates. Solid bars are significant growth days; pale bars are other active days.</p>
+  <div id="fireCards"></div>
+
+  <h2>What it shows</h2>
+  <div class="card">
+    <p><strong>Only one fire here supports day-by-day ERC comparison.</strong> Buttermilk (2018) is the single fire in this FDRA with a usable daily growth timeline paired with station ERC, so no pooled statistics are shown. Its 3 significant growth days averaged the 85th percentile of the FDRA's Mar–Oct ERC record, versus the 87th on its other active days.</p><p><strong>The biggest runs cluster on high-ERC days.</strong> Buttermilk's biggest run (+211 ac on Jul 27, 2018) came at the 89th percentile of ERC. </p><p><strong>Within-fire, day-to-day correlation varies</strong> (Buttermilk ρ = -0.47). ERC measures fuel dryness, not wind — the day-to-day trigger for the largest runs is often wind on top of dry fuels, which is exactly the pocket card's point that wind is not part of the ERC calculation. This is a small, non-random sample — 1 fire chosen for a pocket card because they were memorable — so these numbers describe these incidents, not a general model for GMUG Montrose FDRA.</p>
+  </div>
+
+  <h2>Data tables</h2>
+  <div class="card">
+    <h3>Per-fire summary</h3>
+    <div id="fireTable"></div>
+    
+    <h3 style="margin-top:22px" id="topTableHead">Top growth days</h3>
+    <div id="topTable"></div>
+    <details><summary>Full daily records (all active days)</summary><div id="fullTable"></div></details>
+  </div>
+
+  <h2>Method &amp; caveats</h2>
+  <div class="card note" style="font-size:13.5px;color:var(--text-secondary)">
+    <p><strong>Fire growth.</strong> Cumulative acreage per ICS-209 incident situation report (ICS-209-PLUS v2.0 research dataset, 1999–2020). Where reports skip days, the acreage gain is spread evenly across the gap. Final acreages shown match the fire-matching manifest: Buttermilk 747.</p>
+    <p><strong>ERC.</strong> FEMS daily NFDR summaries (fuel model Y — Timber) for the FDRA's stations — Cottonwood Basin (53805), Jay (52704) — downloaded from the FEMS climatology API. SIG daily ERC is the mean of stations reporting that day. Unlike the earlier UCR Middle Elevation report, which had to substitute gridMET ERC-G, this report uses <em>station</em> ERC on the FDRA's own fuel-model scale, so thresholds here are the FDRA's own percentiles: Mar–Oct 2005–2024 90th percentile = 62.3, 97th = 68.9 (4,900 station-mean days). FEMS returns no NFDR records for these stations before 2005-01-01 (1999–2004 queried, empty), so pre-2005 fires appear without ERC.</p>
+    <p><strong>Statistics.</strong> “Significant growth day” = daily gain ≥2% of final fire size (min 100 ac). ρ is Spearman rank correlation between daily ERC and daily growth over each fire's active days; group differences (significant vs. other days) use a Mann–Whitney U normal approximation. Fires with fewer than 4 situation reports, stub timelines, or no station ERC for their year are shown for context and excluded from pooled statistics. This is a small, non-random sample of memorable fires — results describe these incidents, not a general model.</p>
+  </div>
+
+  <div class="foot">Sources: ICS-209-PLUS v2.0 (figshare 19858927; Nature Sci. Data 2023) ·
+    FEMS (fems.fs2c.usda.gov) NFDR daily summaries · NWCG pocket cards · WFIGS and
+    contemporary news coverage where noted. Generated July 2026 for bewildfireaware.com.</div>
+</div>
+<div id="tooltip" role="status"></div>
+<script id="data" type="application/json">{"p90":62.3,"p97":68.9,"season_n":4900,"season_q":[0.77,7.26,11.65,15.92,18.86,20.47,21.82,23.23,24.11,25.26,26.35,27.12,28.0,28.67,29.58,30.21,30.88,31.42,31.97,32.6,33.04,33.51,34.06,34.64,35.17,35.73,36.21,36.68,37.05,37.4,37.8,38.27,38.69,39.07,39.43,39.77,40.09,40.52,40.84,41.19,41.58,41.94,42.26,42.55,42.91,43.23,43.61,43.93,44.33,44.7,45.08,45.45,45.74,46.1,46.43,46.74,47.15,47.54,47.82,48.22,48.62,49.0,49.36,49.8,50.37,50.82,51.15,51.61,51.99,52.37,52.74,53.24,53.71,54.16,54.53,54.88,55.23,55.68,56.08,56.56,57.08,57.54,58.04,58.47,59.05,59.64,60.23,60.66,61.3,61.75,62.34,62.97,63.58,64.46,65.29,66.48,67.69,68.88,70.1,71.93,77.65],"pooled":null,"fires":{"buttermilk":{"name":"Buttermilk","year":2018,"final_acres":747.0,"n_report_days":9,"date_range":["2018-07-25","2018-08-13"],"status":"ok","note":"","sig_threshold":100,"kind":"full","n_days":9,"n_sig":3,"erc_sig_mean":59.7,"erc_non_mean":60.9,"pct_sig_mean":85.1,"pct_non_mean":87.4,"spearman_rho":-0.472,"mannwhitney_p":0.3017,"top_days":[{"date":"2018-07-27","growth":211.0,"sig":true,"erc":61.5,"erc_pct":88.6},{"date":"2018-07-28","growth":211.0,"sig":true,"erc":58.4,"erc_pct":82.7},{"date":"2018-07-25","growth":163.0,"sig":true,"erc":59.1,"erc_pct":84.1},{"date":"2018-07-26","growth":86.0,"sig":false,"erc":60.9,"erc_pct":87.4},{"date":"2018-07-29","growth":16.8,"sig":false,"erc":57.1,"erc_pct":80.0}],"days":[{"date":"2018-07-25","growth":163.0,"sig":true,"erc":59.1,"erc_pct":84.1},{"date":"2018-07-26","growth":86.0,"sig":false,"erc":60.9,"erc_pct":87.4},{"date":"2018-07-27","growth":211.0,"sig":true,"erc":61.5,"erc_pct":88.6},{"date":"2018-07-28","growth":211.0,"sig":true,"erc":58.4,"erc_pct":82.7},{"date":"2018-07-29","growth":16.8,"sig":false,"erc":57.1,"erc_pct":80.0},{"date":"2018-07-30","growth":16.8,"sig":false,"erc":60.7,"erc_pct":87.0},{"date":"2018-07-31","growth":16.8,"sig":false,"erc":62.0,"erc_pct":89.6},{"date":"2018-08-01","growth":16.8,"sig":false,"erc":62.2,"erc_pct":89.8},{"date":"2018-08-02","growth":9.0,"sig":false,"erc":62.5,"erc_pct":90.3}],"timeline":[["2018-07-25",163.0],["2018-07-26",249.0],["2018-07-28",671.0],["2018-08-01",738.0],["2018-08-02",747.0],["2018-08-07",747.0],["2018-08-09",747.0],["2018-08-11",747.0],["2018-08-13",747.0]]}},"order":["buttermilk"],"fire_color":{"buttermilk":"--fire-1"},"climatology":[[1,7.6],[2,8.1],[3,8.4],[4,8.5],[5,7.6],[6,7.5],[7,7.1],[8,6.4],[9,6.2],[10,6.4],[11,6.8],[12,6.6],[13,6.6],[14,6.7],[15,7.0],[16,6.4],[17,6.5],[18,6.3],[19,6.9],[20,7.5],[21,6.4],[22,5.4],[23,4.8],[24,4.9],[25,6.0],[26,6.0],[27,6.2],[28,6.0],[29,6.7],[30,6.9],[31,6.8],[32,7.2],[33,6.8],[34,7.0],[35,7.7],[36,8.6],[37,9.6],[38,10.0],[39,10.8],[40,10.9],[41,10.8],[42,10.6],[43,9.5],[44,9.2],[45,9.2],[46,11.1],[47,11.7],[48,12.7],[49,13.2],[50,14.5],[51,13.3],[52,13.6],[53,13.5],[54,13.1],[55,13.0],[56,12.1],[57,12.5],[58,12.7],[59,14.2],[60,15.1],[61,15.8],[62,17.1],[63,17.0],[64,17.8],[65,19.6],[66,20.0],[67,19.3],[68,19.8],[69,20.4],[70,21.5],[71,23.2],[72,23.1],[73,24.6],[74,25.3],[75,26.3],[76,27.5],[77,28.6],[78,28.4],[79,28.4],[80,28.2],[81,29.6],[82,29.3],[83,28.0],[84,28.4],[85,29.1],[86,29.4],[87,29.7],[88,30.7],[89,30.8],[90,31.5],[91,32.2],[92,33.2],[93,33.8],[94,35.1],[95,36.0],[96,35.5],[97,36.4],[98,38.3],[99,37.9],[100,37.7],[101,38.7],[102,39.4],[103,39.8],[104,39.5],[105,39.5],[106,39.4],[107,38.9],[108,39.4],[109,39.5],[110,40.1],[111,41.3],[112,42.0],[113,42.4],[114,42.0],[115,42.0],[116,41.4],[117,40.7],[118,41.8],[119,42.2],[120,43.1],[121,43.2],[122,42.6],[123,43.1],[124,43.3],[125,43.8],[126,43.6],[127,44.2],[128,43.6],[129,43.6],[130,43.7],[131,43.2],[132,43.6],[133,44.0],[134,45.5],[135,45.6],[136,46.6],[137,47.2],[138,46.5],[139,45.6],[140,46.7],[141,46.6],[142,46.2],[143,45.5],[144,45.7],[145,46.5],[146,47.5],[147,48.6],[148,49.6],[149,50.1],[150,50.4],[151,51.6],[152,52.8],[153,53.7],[154,54.4],[155,54.9],[156,55.3],[157,54.6],[158,55.1],[159,55.6],[160,56.0],[161,56.0],[162,56.4],[163,56.5],[164,56.6],[165,56.6],[166,57.5],[167,58.0],[168,57.6],[169,58.1],[170,58.7],[171,59.0],[172,58.7],[173,59.0],[174,59.6],[175,59.8],[176,60.4],[177,59.5],[178,59.9],[179,60.6],[180,60.4],[181,59.9],[182,59.5],[183,59.3],[184,59.4],[185,60.1],[186,59.5],[187,58.1],[188,58.5],[189,57.8],[190,58.1],[191,58.4],[192,58.5],[193,56.7],[194,57.4],[195,56.3],[196,56.7],[197,56.3],[198,56.8],[199,57.0],[200,56.9],[201,56.8],[202,55.2],[203,55.9],[204,56.6],[205,54.6],[206,52.5],[207,51.5],[208,50.5],[209,49.2],[210,49.0],[211,49.2],[212,49.4],[213,48.0],[214,47.3],[215,47.5],[216,46.4],[217,45.4],[218,45.8],[219,46.4],[220,46.9],[221,48.2],[222,48.8],[223,49.0],[224,49.4],[225,50.1],[226,49.8],[227,49.7],[228,50.0],[229,50.5],[230,51.2],[231,50.6],[232,51.1],[233,51.8],[234,51.1],[235,50.4],[236,50.0],[237,48.6],[238,47.6],[239,46.4],[240,47.6],[241,48.8],[242,49.9],[243,50.7],[244,51.0],[245,50.4],[246,50.9],[247,51.1],[248,51.5],[249,52.1],[250,51.8],[251,50.8],[252,48.5],[253,46.9],[254,46.8],[255,46.8],[256,47.6],[257,46.3],[258,44.7],[259,44.6],[260,44.2],[261,45.3],[262,45.7],[263,46.2],[264,44.9],[265,42.8],[266,41.2],[267,42.5],[268,43.4],[269,44.4],[270,44.8],[271,43.7],[272,44.1],[273,43.7],[274,43.9],[275,42.7],[276,42.4],[277,40.7],[278,39.9],[279,38.4],[280,39.3],[281,39.9],[282,39.2],[283,38.4],[284,38.8],[285,39.9],[286,39.7],[287,39.6],[288,40.2],[289,41.4],[290,41.2],[291,40.3],[292,40.1],[293,40.6],[294,40.0],[295,39.7],[296,39.4],[297,39.6],[298,39.0],[299,37.0],[300,36.1],[301,35.2],[302,33.9],[303,31.9],[304,32.8],[305,33.8],[306,34.9],[307,34.4],[308,33.2],[309,32.9],[310,32.9],[311,33.7],[312,34.5],[313,35.3],[314,34.1],[315,32.7],[316,32.3],[317,33.3],[318,32.8],[319,33.0],[320,32.0],[321,31.7],[322,32.2],[323,32.5],[324,33.0],[325,32.8],[326,32.2],[327,31.3],[328,30.4],[329,29.5],[330,29.3],[331,28.3],[332,26.8],[333,26.0],[334,25.5],[335,23.6],[336,23.4],[337,22.3],[338,22.3],[339,22.1],[340,21.7],[341,20.5],[342,19.8],[343,18.6],[344,17.9],[345,17.5],[346,17.9],[347,17.2],[348,15.7],[349,14.5],[350,12.6],[351,12.2],[352,11.9],[353,10.8],[354,10.2],[355,10.1],[356,9.5],[357,9.1],[358,9.3],[359,9.3],[360,8.8],[361,8.2],[362,7.9],[363,7.8],[364,7.9],[365,8.0]],"erc_years":{"2018":[["2018-01-01",30.6],["2018-01-02",31.0],["2018-01-03",32.8],["2018-01-04",34.0],["2018-01-05",33.3],["2018-01-06",25.8],["2018-01-07",19.8],["2018-01-08",14.7],["2018-01-09",13.5],["2018-01-10",18.8],["2018-01-11",13.6],["2018-01-12",10.3],["2018-01-13",14.9],["2018-01-14",15.6],["2018-01-15",15.4],["2018-01-16",15.3],["2018-01-17",21.9],["2018-01-18",23.2],["2018-01-19",25.7],["2018-01-20",24.9],["2018-01-21",14.6],["2018-01-22",10.3],["2018-01-23",9.5],["2018-01-24",8.8],["2018-01-25",15.1],["2018-01-26",20.1],["2018-01-27",20.3],["2018-01-28",15.1],["2018-01-29",21.8],["2018-01-30",23.7],["2018-01-31",25.2],["2018-02-01",25.8],["2018-02-02",26.4],["2018-02-03",27.3],["2018-02-04",28.7],["2018-02-05",29.6],["2018-02-06",23.6],["2018-02-07",17.3],["2018-02-08",18.9],["2018-02-09",26.4],["2018-02-10",26.0],["2018-02-11",19.7],["2018-02-12",12.4],["2018-02-13",11.4],["2018-02-14",10.6],["2018-02-15",9.8],["2018-02-16",14.6],["2018-02-17",15.8],["2018-02-18",16.5],["2018-02-19",20.8],["2018-02-20",16.7],["2018-02-21",8.6],["2018-02-22",8.0],["2018-02-23",7.5],["2018-02-24",6.9],["2018-02-25",6.3],["2018-02-26",5.8],["2018-02-27",5.3],["2018-02-28",17.0],["2018-03-01",17.5],["2018-03-02",20.7],["2018-03-03",23.5],["2018-03-04",23.6],["2018-03-05",25.0],["2018-03-06",26.6],["2018-03-07",28.5],["2018-03-08",30.0],["2018-03-09",30.9],["2018-03-10",31.8],["2018-03-11",32.3],["2018-03-12",32.0],["2018-03-13",33.8],["2018-03-14",35.3],["2018-03-15",33.8],["2018-03-16",23.6],["2018-03-17",31.4],["2018-03-18",31.1],["2018-03-19",24.8],["2018-03-20",15.5],["2018-03-21",21.5],["2018-03-22",28.1],["2018-03-23",23.2],["2018-03-24",28.2],["2018-03-25",30.9],["2018-03-26",32.0],["2018-03-27",32.7],["2018-03-28",33.3],["2018-03-29",33.8],["2018-03-30",36.3],["2018-03-31",38.9],["2018-04-01",41.2],["2018-04-02",42.6],["2018-04-03",42.9],["2018-04-04",44.6],["2018-04-05",43.6],["2018-04-06",41.5],["2018-04-07",37.6],["2018-04-08",33.2],["2018-04-09",35.8],["2018-04-10",38.0],["2018-04-11",40.6],["2018-04-12",41.9],["2018-04-13",37.9],["2018-04-14",39.8],["2018-04-15",42.4],["2018-04-16",44.9],["2018-04-17",44.9],["2018-04-18",46.4],["2018-04-19",48.6],["2018-04-20",44.4],["2018-04-21",36.2],["2018-04-22",41.0],["2018-04-23",43.7],["2018-04-24",42.3],["2018-04-25",45.1],["2018-04-26",46.4],["2018-04-27",48.6],["2018-04-28",48.5],["2018-04-29",49.0],["2018-04-30",49.8],["2018-05-01",48.1],["2018-05-02",43.8],["2018-05-03",40.8],["2018-05-04",44.6],["2018-05-05",47.3],["2018-05-06",48.9],["2018-05-07",50.4],["2018-05-08",52.5],["2018-05-09",53.7],["2018-05-10",55.7],["2018-05-11",55.9],["2018-05-12",57.1],["2018-05-13",57.8],["2018-05-14",59.1],["2018-05-15",60.2],["2018-05-16",62.0],["2018-05-17",62.9],["2018-05-18",63.4],["2018-05-19",60.4],["2018-05-20",58.8],["2018-05-21",60.3],["2018-05-22",56.5],["2018-05-23",56.4],["2018-05-24",58.3],["2018-05-25",60.7],["2018-05-26",61.6],["2018-05-27",61.8],["2018-05-28",61.2],["2018-05-29",60.2],["2018-05-30",60.0],["2018-05-31",62.1],["2018-06-01",63.2],["2018-06-02",63.9],["2018-06-03",62.5],["2018-06-04",61.4],["2018-06-05",63.8],["2018-06-06",65.1],["2018-06-07",66.4],["2018-06-08",67.8],["2018-06-09",69.2],["2018-06-10",69.5],["2018-06-11",69.5],["2018-06-12",70.5],["2018-06-13",71.6],["2018-06-14",70.1],["2018-06-15",70.2],["2018-06-16",67.3],["2018-06-17",48.6],["2018-06-18",51.1],["2018-06-19",51.9],["2018-06-20",52.0],["2018-06-21",54.6],["2018-06-22",57.1],["2018-06-23",58.1],["2018-06-24",58.5],["2018-06-25",60.2],["2018-06-26",62.7],["2018-06-27",64.8],["2018-06-28",66.4],["2018-06-29",67.5],["2018-06-30",67.0],["2018-07-01",67.7],["2018-07-02",69.2],["2018-07-03",69.5],["2018-07-04",70.2],["2018-07-05",69.6],["2018-07-06",68.3],["2018-07-07",66.6],["2018-07-08",64.1],["2018-07-09",64.0],["2018-07-10",63.8],["2018-07-11",62.7],["2018-07-12",59.7],["2018-07-13",61.5],["2018-07-14",59.0],["2018-07-15",56.1],["2018-07-16",53.8],["2018-07-17",54.6],["2018-07-18",53.6],["2018-07-19",57.5],["2018-07-20",57.6],["2018-07-21",58.6],["2018-07-22",59.7],["2018-07-23",60.4],["2018-07-24",60.2],["2018-07-25",59.1],["2018-07-26",60.9],["2018-07-27",61.5],["2018-07-28",58.4],["2018-07-29",57.1],["2018-07-30",60.7],["2018-07-31",62.0],["2018-08-01",62.2],["2018-08-02",62.5],["2018-08-03",58.3],["2018-08-04",60.0],["2018-08-05",59.9],["2018-08-06",62.9],["2018-08-07",64.4],["2018-08-08",65.5],["2018-08-09",66.2],["2018-08-10",65.3],["2018-08-11",65.6],["2018-08-12",66.5],["2018-08-13",65.2],["2018-08-14",65.0],["2018-08-15",63.7],["2018-08-16",63.0],["2018-08-17",59.1],["2018-08-18",56.0],["2018-08-19",56.8],["2018-08-20",58.1],["2018-08-21",55.7],["2018-08-22",44.0],["2018-08-23",43.3],["2018-08-24",46.0],["2018-08-25",46.5],["2018-08-26",45.2],["2018-08-27",46.4],["2018-08-28",50.4],["2018-08-29",52.6],["2018-08-30",54.2],["2018-08-31",54.4],["2018-09-01",53.8],["2018-09-02",53.3],["2018-09-03",51.6],["2018-09-04",52.5],["2018-09-05",47.9],["2018-09-06",47.9],["2018-09-07",49.2],["2018-09-08",51.3],["2018-09-09",50.2],["2018-09-10",52.6],["2018-09-11",55.0],["2018-09-12",57.1],["2018-09-13",58.9],["2018-09-14",60.3],["2018-09-15",60.5],["2018-09-16",60.9],["2018-09-17",60.9],["2018-09-18",61.8],["2018-09-19",59.1],["2018-09-20",53.3],["2018-09-21",55.2],["2018-09-22",55.9],["2018-09-23",55.5],["2018-09-24",53.6],["2018-09-25",55.2],["2018-09-26",56.8],["2018-09-27",58.2],["2018-09-28",59.0],["2018-09-29",59.5],["2018-09-30",59.0],["2018-10-01",56.3],["2018-10-02",38.2],["2018-10-03",35.8],["2018-10-04",28.1],["2018-10-05",28.2],["2018-10-06",23.8],["2018-10-07",20.3],["2018-10-08",18.2],["2018-10-09",19.9],["2018-10-10",21.7],["2018-10-11",20.4],["2018-10-12",19.8],["2018-10-13",22.0],["2018-10-14",21.0],["2018-10-15",23.1],["2018-10-16",25.0],["2018-10-17",25.6],["2018-10-18",24.3],["2018-10-19",24.1],["2018-10-20",27.4],["2018-10-21",29.3],["2018-10-22",30.1],["2018-10-23",24.1],["2018-10-24",24.1],["2018-10-25",25.1],["2018-10-26",25.9],["2018-10-27",28.3],["2018-10-28",31.1],["2018-10-29",33.9],["2018-10-30",32.9],["2018-10-31",28.2],["2018-11-01",29.2],["2018-11-02",29.8],["2018-11-03",28.9],["2018-11-04",29.6],["2018-11-05",31.0],["2018-11-06",33.3],["2018-11-07",34.3],["2018-11-08",34.7],["2018-11-09",35.9],["2018-11-10",37.6],["2018-11-11",36.4],["2018-11-12",37.1],["2018-11-13",38.4],["2018-11-14",38.8],["2018-11-15",39.3],["2018-11-16",39.9],["2018-11-17",40.4],["2018-11-18",37.8],["2018-11-19",39.3],["2018-11-20",41.2],["2018-11-21",42.3],["2018-11-22",41.5],["2018-11-23",38.0],["2018-11-24",36.8],["2018-11-25",35.2],["2018-11-26",37.1],["2018-11-27",38.9],["2018-11-28",37.6],["2018-11-29",36.0],["2018-11-30",36.5],["2018-12-01",28.1],["2018-12-02",20.2],["2018-12-03",18.3],["2018-12-04",16.9],["2018-12-05",15.7],["2018-12-06",14.2],["2018-12-07",12.8],["2018-12-08",11.5],["2018-12-09",10.3],["2018-12-10",9.3],["2018-12-11",8.5],["2018-12-12",7.7],["2018-12-13",7.1],["2018-12-14",6.5],["2018-12-15",6.0],["2018-12-16",5.6],["2018-12-17",5.2],["2018-12-18",4.8],["2018-12-19",4.4],["2018-12-20",4.1],["2018-12-21",3.9],["2018-12-22",3.6],["2018-12-23",8.8],["2018-12-24",8.6],["2018-12-25",9.2],["2018-12-26",5.4],["2018-12-27",3.8],["2018-12-28",3.6],["2018-12-29",3.4],["2018-12-30",3.2],["2018-12-31",3.0]]},"run_notes":{"buttermilk":"Biggest run: Jul 27, 2018 \u2014 +211 ac on ERC 62, the 89th percentile of this FDRA's 2005\u201324 Mar\u2013Oct record (normal for the date \u2248 50, +11). Across its 9 active days, ERC\u2194growth Spearman \u03c1 = -0.47."},"tiles":[{"label":"Season 90th percentile ERC (this FDRA)","value":"62","detail":"97th = 69 \u00b7 fuel model Y, mean of 2 stations, Mar\u2013Oct 2005\u20132024"},{"label":"Fires on the pocket card","value":"2","detail":"1 shown here; 1 with usable daily ERC + growth data"},{"label":"Significant growth days \u2014 Buttermilk","value":"3","detail":"of 9 active days (\u2265100 ac/day)"},{"label":"Pooled statistics","value":"\u2014","detail":"fewer than 2 fires with usable ERC + growth data; pooled section omitted"}]}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const FIRE_ORDER = DATA.order;
+const FIRE_COLOR = DATA.fire_color;
+const RUN_NOTES = DATA.run_notes;
+const fmt = n => n>=100 ? Math.round(n).toLocaleString('en-US')
+              : Math.round(n*10)/10;
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const pd = s => { const [y,m,d]=s.split('-').map(Number); return Date.UTC(y,m-1,d); };
+const dlabel = s => { const [y,m,d]=s.split('-').map(Number); return MONTHS[m-1]+" "+d; };
+const doyOf = s => { const [y,m,d]=s.split('-').map(Number);
+  let doy=Math.round((Date.UTC(y,m-1,d)-Date.UTC(y,0,1))/864e5)+1;
+  if(y%4===0 && doy>59) doy-=1; return doy; };
+const CLIM = new Map(DATA.climatology);
+const ord = n => { n=Math.round(n); const s=(n%100>=10&&n%100<=20)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'); return n+s; };
+
+// ---------- tooltip ----------
+const tt = document.getElementById('tooltip');
+function ttShow(x,y,title,rows){
+  tt.textContent='';
+  const t=document.createElement('div'); t.className='tt-title'; t.textContent=title; tt.appendChild(t);
+  for(const r of rows){
+    const div=document.createElement('div'); div.className='tt-row';
+    if(r.color){ const k=document.createElement('span');
+      k.style.cssText='display:inline-block;width:14px;border-top:2.5px solid '+r.color; div.appendChild(k); }
+    const v=document.createElement('span'); v.className='tt-val'; v.textContent=r.value; div.appendChild(v);
+    const n=document.createElement('span'); n.className='tt-name'; n.textContent=r.name; div.appendChild(n);
+    tt.appendChild(div);
+  }
+  tt.style.display='block';
+  const w=tt.offsetWidth,h=tt.offsetHeight;
+  tt.style.left=Math.min(x+14, innerWidth-w-8)+'px';
+  tt.style.top=Math.max(8, Math.min(y-h-12, innerHeight-h-8))+'px';
+}
+const ttHide=()=>{ tt.style.display='none'; };
+
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){ const e=document.createElementNS(NS,tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function roundTopRect(x,yy,w,h,r){ r=Math.min(r,h,w/2);
+  return `M${x},${yy+h} L${x},${yy+r} Q${x},${yy} ${x+r},${yy} L${x+w-r},${yy} Q${x+w},${yy} ${x+w},${yy+r} L${x+w},${yy+h} Z`; }
+function niceStep(max){ const raw=max/3, p=Math.pow(10,Math.floor(Math.log10(raw)));
+  for(const k of [1,2,5,10]) if(raw<=k*p) return k*p; return 10*p; }
+
+// ---------- stat tiles ----------
+(function(){
+  const host=document.getElementById('tiles');
+  for(const t of DATA.tiles){ const d=document.createElement('div'); d.className='tile';
+    d.innerHTML='<div class="label"></div><div class="value"></div><div class="detail"></div>';
+    d.children[0].textContent=t.label; d.children[1].textContent=t.value; d.children[2].textContent=t.detail;
+    host.appendChild(d); }
+})();
+
+// ---------- band chart (ordinal ramp) ----------
+if(DATA.pooled && document.getElementById('bandChart'))(function(){
+  const bands=DATA.pooled.bands;
+  const W=480,H=260,m={l:44,r:10,t:18,b:44};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img',
+    'aria-label':'Bar chart: probability of a significant growth day by ERC percentile band'});
+  document.getElementById('bandChart').appendChild(svg);
+  const maxp=Math.max(...bands.map(b=>b.p_sig||0),10);
+  const ymax=Math.min(100,Math.ceil((maxp*1.15)/10)*10);
+  const y=v=>m.t+ih-(v/ymax)*ih;
+  const step=niceStep(ymax);
+  for(let g=0;g<=ymax;g+=step){
+    el('line',{x1:m.l,x2:W-m.r,y1:y(g),y2:y(g),stroke:'var(--grid)','stroke-width':1},svg);
+    el('text',{x:m.l-8,y:y(g)+4,'text-anchor':'end',class:'tick'},svg).textContent=g+'%';
+  }
+  el('line',{x1:m.l,x2:W-m.r,y1:y(0),y2:y(0),stroke:'var(--baseline)'},svg);
+  const bw=Math.min(24, iw/bands.length-18);
+  bands.forEach((b,i)=>{
+    const cx=m.l+iw*(i+0.5)/bands.length;
+    const p=b.p_sig||0;
+    const h=Math.max((p/ymax)*ih, p>0? 3:1.2);
+    const bar=el('path',{d:roundTopRect(cx-bw/2, y(0)-h, bw, h, p>0?4:0), fill:`var(--ord-${i+1})`},svg);
+    el('text',{x:cx,y:y(0)-h-6,'text-anchor':'middle',class:'lbl-strong'},svg).textContent=(b.p_sig==null?'—':p+'%');
+    el('text',{x:cx,y:y(0)+16,'text-anchor':'middle'},svg).textContent=b.band;
+    if(i===0) el('text',{x:cx,y:y(0)+31,'text-anchor':'middle'},svg).textContent='ERC percentile band';
+    const hit=el('rect',{x:cx-bw/2-9,y:m.t,width:bw+18,height:ih+m.b,fill:'transparent',tabindex:0},svg);
+    const show=(e)=>{const pt=e.touches?e.touches[0]:e;
+      ttShow(pt.clientX??innerWidth/2,pt.clientY??innerHeight/2,'ERC percentile '+b.band,[
+      {value:(b.p_sig==null?'no days':b.p_sig+'%'),name:'of days had significant growth'},
+      {value:b.n_sig+' of '+b.n,name:'active fire days'},
+      {value:fmt(b.mean_growth||0)+' ac',name:'mean daily growth'}]);
+      bar.setAttribute('opacity','0.85');};
+    hit.addEventListener('pointermove',show); hit.addEventListener('focus',show);
+    hit.addEventListener('pointerleave',()=>{ttHide();bar.removeAttribute('opacity');});
+    hit.addEventListener('blur',()=>{ttHide();bar.removeAttribute('opacity');});
+  });
+})();
+
+// ---------- scatter ----------
+if(DATA.pooled && document.getElementById('scatter'))(function(){
+  const pts=[];
+  for(const k of FIRE_ORDER){ const f=DATA.fires[k];
+    if(f.kind!=='full') continue;
+    for(const d of f.days) if(d.growth>=1) pts.push({...d,fire:k,fname:f.name}); }
+  const W=480,H=260,m={l:52,r:14,t:12,b:40};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const gmax=Math.max(...pts.map(p=>p.growth),100);
+  const ymin=0, ymax=Math.log10(gmax*1.3);
+  const x=p=>m.l+(p/100)*iw;
+  const y=g=>m.t+ih-((Math.log10(Math.max(g,1))-ymin)/(ymax-ymin))*ih;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img',
+    'aria-label':'Scatter plot of daily acres gained versus ERC percentile, colored by fire'});
+  document.getElementById('scatter').appendChild(svg);
+  const gl=[1,10,100,1000,10000,100000].filter(g=>Math.log10(g)<=ymax);
+  gl.forEach(g=>{
+    el('line',{x1:m.l,x2:W-m.r,y1:y(g),y2:y(g),stroke:'var(--grid)'},svg);
+    el('text',{x:m.l-8,y:y(g)+4,'text-anchor':'end',class:'tick'},svg).textContent=g.toLocaleString('en-US');
+  });
+  [0,25,50,75,90,100].forEach(p=>{
+    el('text',{x:x(p),y:m.t+ih+18,'text-anchor':'middle',class:'tick'},svg).textContent=p;
+  });
+  el('text',{x:m.l+iw/2,y:m.t+ih+33,'text-anchor':'middle'},svg).textContent='ERC percentile that day';
+  el('text',{x:12,y:m.t+2},svg).textContent='ac/day';
+  el('line',{x1:m.l,x2:W-m.r,y1:y(1),y2:y(1),stroke:'var(--baseline)'},svg);
+  el('line',{x1:x(90),x2:x(90),y1:m.t,y2:m.t+ih,stroke:'var(--baseline)','stroke-width':1},svg);
+  el('text',{x:x(90)-4,y:m.t+10,'text-anchor':'end'},svg).textContent='90th';
+  const dots=[];
+  for(const p of pts){
+    const c=`var(${FIRE_COLOR[p.fire]})`;
+    const dot=el('circle',{cx:x(p.erc_pct),cy:y(p.growth),r:4.5,fill:c,
+      stroke:'var(--surface-1)','stroke-width':2},svg);
+    dots.push({p,dot,X:x(p.erc_pct),Y:y(p.growth),c});
+  }
+  const hit=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'},svg);
+  let lit=null;
+  hit.addEventListener('pointermove',e=>{
+    const r=svg.getBoundingClientRect(), sx=(e.clientX-r.left)*W/r.width, sy=(e.clientY-r.top)*H/r.height;
+    let best=null,bd=1e9;
+    for(const d of dots){ const dd=(d.X-sx)**2+(d.Y-sy)**2; if(dd<bd){bd=dd;best=d;} }
+    if(!best || bd>45**2){ ttHide(); if(lit){lit.dot.setAttribute('r',4.5);lit=null;} return; }
+    if(lit&&lit!==best) lit.dot.setAttribute('r',4.5);
+    best.dot.setAttribute('r',6.5); lit=best;
+    ttShow(e.clientX,e.clientY, best.p.fname+' · '+dlabel(best.p.date)+', '+best.p.date.slice(0,4),[
+      {value:'+'+fmt(best.p.growth)+' ac',name:'gained that day',color:best.c},
+      {value:'ERC '+fmt(best.p.erc),name:ord(best.p.erc_pct)+' percentile'},
+      {value:best.p.sig?'yes':'no',name:'significant growth day'}]);
+  });
+  hit.addEventListener('pointerleave',()=>{ ttHide(); if(lit){lit.dot.setAttribute('r',4.5);lit=null;} });
+  const leg=document.getElementById('scatterLegend');
+  for(const k of FIRE_ORDER){ if(DATA.fires[k].kind!=='full') continue;
+    const s=document.createElement('span'); s.className='key';
+    const sw=document.createElement('span'); sw.className='swatch';
+    sw.style.background=`var(${FIRE_COLOR[k]})`; sw.style.borderRadius='50%';
+    s.appendChild(sw); s.appendChild(document.createTextNode(DATA.fires[k].name+' '+DATA.fires[k].year));
+    leg.appendChild(s); }
+})();
+
+// ---------- per-fire cards ----------
+(function(){
+  const host=document.getElementById('fireCards');
+  for(const key of FIRE_ORDER){
+    const f=DATA.fires[key], color=`var(${FIRE_COLOR[key]})`;
+    const card=document.createElement('div'); card.className='card'; host.appendChild(card);
+    const head=document.createElement('div'); head.className='firehead'; card.appendChild(head);
+    const h3=document.createElement('h3'); h3.textContent=f.name+' — '+f.year; head.appendChild(h3);
+    const meta=document.createElement('span'); meta.className='meta';
+    meta.textContent=Math.round(f.final_acres).toLocaleString('en-US')+' acres'
+      +(f.kind==='full'?' · '+f.n_sig+' significant growth day'+(f.n_sig!==1?'s':'')
+        +(f.spearman_rho!=null?' · ERC↔growth ρ = '+f.spearman_rho.toFixed(2):''):'');
+    head.appendChild(meta);
+    if(f.kind!=='full'){ const b=document.createElement('span'); b.className='badge';
+      b.textContent=f.kind==='growth_only'?'growth only — no ERC':'limited data'; head.appendChild(b); }
+    if(RUN_NOTES[key]){ const rn=document.createElement('div'); rn.className='runnote';
+      rn.textContent=RUN_NOTES[key]; card.appendChild(rn); }
+
+    if(f.kind==='simple'){ drawSimple(card,f); continue; }
+
+    const leg=document.createElement('div'); leg.className='legend'; card.appendChild(leg);
+    const keys=f.kind==='full'
+      ?[['ERC (daily)','var(--erc-line)','line'],['2005–24 average for the date','var(--clim-line)','line'],
+        ['season 90th percentile','var(--baseline)','line'],
+        ['significant growth day',color,'rect',1],['other active day',color,'rect',0.33]]
+      :[['significant growth day',color,'rect',1],['other active day',color,'rect',0.33]];
+    for(const [name,c,kind,op] of keys){ const s=document.createElement('span'); s.className='key';
+      const sw=document.createElement('span'); sw.className=kind==='line'?'linekey':'swatch';
+      if(kind==='line') sw.style.borderTopColor=c; else sw.style.background=c;
+      if(op!=null) sw.style.opacity=op;
+      s.appendChild(sw); s.appendChild(document.createTextNode(name)); leg.appendChild(s); }
+    drawFire(card,f,key,color);
+  }
+
+  function drawSimple(card,f){
+    const ul=document.createElement('ul'); ul.className='facts';
+    const facts=[];
+    if(f.date_range) facts.push('Reported '+dlabel(f.date_range[0])+', '+f.date_range[0].slice(0,4)
+      +' — last report '+dlabel(f.date_range[1])+', '+f.date_range[1].slice(0,4));
+    facts.push('Final size '+Math.round(f.final_acres).toLocaleString('en-US')+' acres');
+    if(f.timeline&&f.timeline.length>1){
+      const pts=f.timeline.map(t=>dlabel(t[0])+': '+Math.round(t[1]).toLocaleString('en-US')+' ac');
+      facts.push('Reported size: '+pts.join(' → '));
+    }
+    facts.push(f.reason.charAt(0).toUpperCase()+f.reason.slice(1)+' — excluded from pooled statistics');
+    for(const t of facts){ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); }
+    card.appendChild(ul);
+  }
+
+  function drawFire(card,f,key,color){
+    const days=f.days;
+    const t0=pd(days[0].date)-12*864e5, t1=pd(days[days.length-1].date)+12*864e5;
+    const W=980,H1=190,H2=130,m={l:52,r:16,t:14,b:6},mb={l:52,r:16,t:8,b:34};
+    const iw=W-m.l-m.r;
+    const x=t=>m.l+((t-t0)/(t1-t0))*iw;
+    let s1=null,ercSeries=[],ih1=0,y1=null;
+
+    if(f.kind==='full'){
+      const year=String(f.year);
+      ercSeries=DATA.erc_years[year].filter(([d])=>pd(d)>=t0&&pd(d)<=t1);
+      const eVals=ercSeries.map(p=>p[1]);
+      const eMax=Math.ceil(Math.max(...eVals,DATA.p90*1.12)/10)*10;
+      ih1=H1-m.t-m.b; y1=v=>m.t+ih1-(v/eMax)*ih1;
+      s1=el('svg',{viewBox:`0 0 ${W} ${H1}`,role:'img','aria-label':'Daily ERC for '+f.name+' season'});
+      card.appendChild(s1);
+      const es=niceStep(eMax);
+      for(let g=0;g<=eMax;g+=es){ el('line',{x1:m.l,x2:W-m.r,y1:y1(g),y2:y1(g),stroke:'var(--grid)'},s1);
+        el('text',{x:m.l-8,y:y1(g)+4,'text-anchor':'end',class:'tick'},s1).textContent=g; }
+      el('rect',{x:x(pd(days[0].date)),y:m.t,width:x(pd(days[days.length-1].date))-x(pd(days[0].date)),
+        height:ih1,fill:color,opacity:0.07},s1);
+      el('line',{x1:m.l,x2:W-m.r,y1:y1(DATA.p90),y2:y1(DATA.p90),stroke:'var(--baseline)','stroke-width':1.5},s1);
+      const climPath=ercSeries.map(([d],i)=>(i?'L':'M')+x(pd(d)).toFixed(1)+','+y1(Math.min(CLIM.get(doyOf(d))||0,eMax)).toFixed(1)).join('');
+      el('path',{d:climPath,fill:'none',stroke:'var(--clim-line)','stroke-width':1.5,'stroke-linejoin':'round'},s1);
+      const ercPath=ercSeries.map(([d,v],i)=>(i?'L':'M')+x(pd(d)).toFixed(1)+','+y1(v).toFixed(1)).join('');
+      el('path',{d:ercPath,fill:'none',stroke:'var(--erc-line)','stroke-width':2,
+        'stroke-linejoin':'round','stroke-linecap':'round'},s1);
+      el('text',{x:W-m.r-4,y:y1(DATA.p90)-5,'text-anchor':'end',stroke:'var(--surface-1)','stroke-width':4,'paint-order':'stroke'},s1).textContent='90th pct ('+DATA.p90+')';
+    }
+
+    // --- growth panel ---
+    const gMax=Math.max(...days.map(d=>d.growth),10);
+    const ih2=H2-mb.t-mb.b, y2=v=>mb.t+ih2-(v/gMax)*ih2;
+    const s2=el('svg',{viewBox:`0 0 ${W} ${H2}`,role:'img','aria-label':'Daily acres gained, '+f.name});
+    card.appendChild(s2);
+    const gstep=niceStep(gMax);
+    for(let g=0;g<=gMax;g+=gstep){ el('line',{x1:mb.l,x2:W-mb.r,y1:y2(g),y2:y2(g),stroke:'var(--grid)'},s2);
+      if(y2(g)>mb.t+16) // skip a top tick label that would collide with the ac/day label
+        el('text',{x:mb.l-8,y:y2(g)+4,'text-anchor':'end',class:'tick'},s2).textContent=g.toLocaleString('en-US'); }
+    el('line',{x1:mb.l,x2:W-mb.r,y1:y2(0),y2:y2(0),stroke:'var(--baseline)'},s2);
+    const dayW=iw*(864e5/(t1-t0));
+    const bw=Math.max(2.5,Math.min(18,dayW-2));
+    for(const d of days){
+      if(d.growth<=0) continue;
+      const h=Math.max(y2(0)-y2(d.growth),1.5), cx=x(pd(d.date));
+      el('path',{d:roundTopRect(cx-bw/2,y2(0)-h,bw,h,Math.min(4,h)),
+        fill:color,opacity:d.sig?1:0.33},s2);
+    }
+    const first=new Date(t0), months=[];
+    let mm=Date.UTC(first.getUTCFullYear(),first.getUTCMonth()+1,1);
+    while(mm<t1){ months.push(mm); mm=Date.UTC(new Date(mm).getUTCFullYear(),new Date(mm).getUTCMonth()+1,1); }
+    for(const t of months){
+      el('line',{x1:x(t),x2:x(t),y1:y2(0),y2:y2(0)+4,stroke:'var(--baseline)'},s2);
+      el('text',{x:x(t),y:y2(0)+18,'text-anchor':'middle'},s2).textContent=MONTHS[new Date(t).getUTCMonth()]+' '+String(new Date(t).getUTCFullYear());
+    }
+    // label the starting partial month when the first boundary sits well into the window
+    if(!months.length || x(months[0])-m.l>120){
+      const d0=new Date(t0), xm=(m.l+(months.length?x(months[0]):W-mb.r))/2;
+      el('text',{x:xm,y:y2(0)+18,'text-anchor':'middle'},s2).textContent=MONTHS[d0.getUTCMonth()]+' '+d0.getUTCFullYear();
+    }
+    el('text',{x:12,y:mb.t+2},s2).textContent='ac/day';
+    const top=days.reduce((a,b)=>b.growth>a.growth?b:a);
+    el('text',{x:Math.min(Math.max(x(pd(top.date))+bw/2+6,mb.l+4),W-160),y:Math.max(y2(top.growth)+11,mb.t+12),class:'lbl-strong',stroke:'var(--surface-1)','stroke-width':4,'paint-order':'stroke'},s2)
+      .textContent='+'+Math.round(top.growth).toLocaleString('en-US')+' ac · '+dlabel(top.date);
+
+    // --- shared crosshair ---
+    const byDate=new Map(days.map(d=>[d.date,d]));
+    const ercByDate=new Map(ercSeries.map(([d,v])=>[d,v]));
+    const dates=(f.kind==='full'?ercSeries.map(([d])=>d):days.map(d=>d.date));
+    const panels=f.kind==='full'?[[s1,m.t,m.t+ih1,H1],[s2,mb.t,mb.t+ih2,H2]]:[[s2,mb.t,mb.t+ih2,H2]];
+    const chs=[];
+    for(const [svg,yy0,yy1,HH] of panels){
+      const ch=el('line',{x1:-9,x2:-9,y1:yy0,y2:yy1,stroke:'var(--baseline)','stroke-width':1,opacity:0},svg);
+      chs.push([svg,ch]);
+      const hit=el('rect',{x:m.l,y:0,width:iw,height:HH,fill:'transparent'},svg);
+      hit.addEventListener('pointermove',e=>{
+        const r=svg.getBoundingClientRect(), sx=(e.clientX-r.left)*W/r.width;
+        const t=t0+((sx-m.l)/iw)*(t1-t0);
+        let best=dates[0],bd=Infinity;
+        for(const d of dates){ const dd=Math.abs(pd(d)-t); if(dd<bd){bd=dd;best=d;} }
+        const X=x(pd(best));
+        for(const [,c2] of chs){ c2.setAttribute('x1',X); c2.setAttribute('x2',X); c2.setAttribute('opacity',1); }
+        const rec=byDate.get(best);
+        const rows=[];
+        if(f.kind==='full'){
+          const ercv=ercByDate.get(best);
+          if(ercv!=null) rows.push({value:'ERC '+fmt(ercv),name:ord(pct(ercv))+' pctile · normal '+fmt(CLIM.get(doyOf(best))||0),
+            color:css('--erc-line')||'#52514e'});
+        }
+        if(rec) rows.push({value:'+'+fmt(rec.growth)+' ac',name:rec.sig?'significant growth day':'gained that day',
+          color:getComputedStyle(document.documentElement).getPropertyValue(FIRE_COLOR[key]).trim()});
+        ttShow(e.clientX,e.clientY,dlabel(best)+', '+best.slice(0,4),rows);
+      });
+      hit.addEventListener('pointerleave',()=>{ ttHide(); for(const [,c2] of chs) c2.setAttribute('opacity',0); });
+    }
+    function pct(v){ const q=DATA.season_q; let lo=0,hi=100;
+      while(lo<hi){ const mid=(lo+hi+1>>1); if(q[mid]<=v) lo=mid; else hi=mid-1; }
+      return lo; }
+  }
+})();
+
+// ---------- tables ----------
+(function(){
+  function table(host,cols,rows){
+    const t=document.createElement('table'), tr=document.createElement('tr');
+    for(const c of cols){ const th=document.createElement('th'); th.textContent=c;
+      if(cols.indexOf(c)===0) th.className='name'; tr.appendChild(th); }
+    t.appendChild(tr);
+    for(const r of rows){ const tr2=document.createElement('tr');
+      r.forEach((v,i)=>{ const td=document.createElement('td'); td.textContent=v;
+        if(i===0) td.className='name'; tr2.appendChild(td); });
+      t.appendChild(tr2); }
+    document.getElementById(host).appendChild(t);
+  }
+  table('fireTable',
+    ['Fire','Year','Final acres','Data','Active days','Sig. days','Sig. threshold','Mean ERC pctile — sig days','— other days','Spearman ρ','Mann–Whitney p'],
+    FIRE_ORDER.map(k=>{const f=DATA.fires[k];
+      const kindTxt=f.kind==='full'?'full':f.kind==='growth_only'?'growth only (no ERC)':'limited';
+      return [f.name,f.year,
+      Math.round(f.final_acres).toLocaleString('en-US'),kindTxt,
+      f.kind==='simple'?'—':f.days?f.days.length:'—',
+      f.kind==='full'?f.n_sig:'—',
+      f.kind==='simple'?'—':'≥ '+f.sig_threshold.toLocaleString('en-US')+' ac',
+      f.pct_sig_mean??'—',f.pct_non_mean??'—',
+      f.spearman_rho!=null?f.spearman_rho.toFixed(2):'—',
+      f.mannwhitney_p!=null?f.mannwhitney_p.toFixed(3):'—'];}));
+  if(DATA.pooled)
+    table('bandTable',['ERC percentile band','Active days','Significant-growth days','P(significant)','Mean daily growth (ac)'],
+      DATA.pooled.bands.map(b=>[b.band,b.n,b.n_sig,(b.p_sig??'—')+(b.p_sig!=null?'%':''),fmt(b.mean_growth??0)]));
+  const tops=[];
+  for(const k of FIRE_ORDER){const f=DATA.fires[k];
+    if(f.kind==='simple'||!f.top_days) continue;
+    for(const d of f.top_days.slice(0,3)) tops.push([f.name,dlabel(d.date)+', '+d.date.slice(0,4),
+      '+'+Math.round(d.growth).toLocaleString('en-US'),
+      d.erc!=null?fmt(d.erc):'—',d.erc_pct!=null?ord(d.erc_pct):'—']);}
+  if(tops.length) table('topTable',['Fire','Date','Acres gained','ERC','ERC percentile'],tops);
+  else { const h=document.getElementById('topTableHead'); if(h) h.remove();
+         document.getElementById('topTable').remove(); }
+  const full=[];
+  for(const k of FIRE_ORDER){const f=DATA.fires[k];
+    if(f.kind==='simple') continue;
+    for(const d of f.days) full.push([f.name,d.date,'+'+fmt(d.growth),
+      d.erc!=null?fmt(d.erc):'—',d.erc_pct!=null?ord(d.erc_pct):'—',d.sig?'yes':'']);}
+  if(full.length) table('fullTable',['Fire','Date','Acres gained (est./day)','ERC','ERC percentile','Significant'],full);
+  else document.getElementById('fullTable').closest('details').remove();
+})();
+</script>
+</body>
+</html>
