@@ -61,11 +61,11 @@
    },
    "fems": {
     "adjective": "High",
-    "erc": 77.6,
-    "pctile": 59.3
+    "erc": 37.1,
+    "pctile": 58
    },
    "adjectiveMatch": true,
-   "pctDelta": 1.3,
+   "pctDelta": 0,
    "status": "pass"
   },
   "drc_lower": {
@@ -145,13 +145,13 @@
     "ercPct": 54
    },
    "fems": {
-    "adjective": "High",
+    "adjective": "Moderate",
     "erc": 42.2,
     "pctile": 52.5
    },
-   "adjectiveMatch": false,
+   "adjectiveMatch": true,
    "pctDelta": -1.5,
-   "status": "warn"
+   "status": "pass"
   }
  },
  "2026-07-22": {

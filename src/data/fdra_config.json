@@ -20,12 +20,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        1,
-        14,
-        37,
+        17,
+        30,
+        40,
         46
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -59,12 +59,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        14,
-        29,
-        45,
-        55
+        21,
+        37,
+        47,
+        56
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -102,12 +102,12 @@
     "fuelModel": "X",
     "breakpoints": {
       "values": [
-        41,
-        64,
+        33,
+        63,
         84,
         96
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -142,15 +142,15 @@
         "name": "LOG CHUTE"
       }
     ],
-    "fuelModel": "Z",
+    "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        43,
-        69,
-        95,
-        115
+        25,
+        36,
+        51,
+        60
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -188,12 +188,12 @@
     "fuelModel": "X",
     "breakpoints": {
       "values": [
-        46,
-        57,
-        77,
-        90
+        49,
+        67,
+        83,
+        92
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -231,12 +231,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        5,
-        17,
-        37,
-        48
+        18,
+        30,
+        42,
+        50
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -270,12 +270,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        16,
-        32,
-        47,
-        58
+        24,
+        35,
+        48,
+        57
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -305,12 +305,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        27,
+        20,
         38,
         53,
-        64
+        63
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
@@ -340,12 +340,12 @@
     "fuelModel": "Y",
     "breakpoints": {
       "values": [
-        33,
-        41,
-        54,
+        36,
+        45,
+        57,
         66
       ],
-      "source": "provisional_ladder",
+      "source": "ffp_review_2026",
       "adjectives": [
         "Low",
         "Moderate",
