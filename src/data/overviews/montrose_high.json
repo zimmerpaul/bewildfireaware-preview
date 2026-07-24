@@ -1,6 +1,6 @@
 {
-  "overview": "**Fire danger remains High today, driven by dry fuels (ERC 76%, BI 66%) despite scattered afternoon showers.**\n- Danger stays High through the week ahead, with ERC holding near 76-80% and 1000-hr fuels rising slightly to 14%.\n- Storms could bring gusty, erratic outflow winds, with lightning and critically dry fuels remaining a concern.\n- 0 of 7 local watchout thresholds are currently met; no Red Flag Warning is posted for the area today.\n- Stage 1 fire restrictions are in effect on BLM lands across Gunnison, Hinsdale, Montrose, Ouray, Saguache, and San Juan counties, while Montrose County has moved into Stage 2 restrictions and San Miguel County is under Stage 2 restrictions.\n- Nearby: the Gold Mountain Fire near Ouray is 24% contained at 38,044 acres; the Elk Fire 7 miles northwest of Lake City is estimated at 2,307 acres and 0% contained.",
-  "lead": "Fire danger remains High today, driven by dry fuels (ERC 76%, BI 66%) despite scattered afternoon showers.",
+  "overview": "**High fire danger continues today, driven by warm, dry fuels (ERC 80%, BI 66%) despite calm winds.**\n- Adjective fire danger is forecast to stay High through July 30, with ERC/BI easing slightly by midweek as rain chances rise into next week.\n- Winds stay light (NE 5-7 mph), with a 30% chance of afternoon showers/storms today and highs near 85; no Red Flag Warning is in effect.\n- Local watchout status: 0 of 7 thresholds met.\n- Grand Mesa, Uncompahgre and Gunnison National Forests are under Stage 2 Fire Restrictions; BLM Gunnison Field Office has Stage 1 restrictions in Gunnison, Hinsdale, Montrose, Ouray, Saguache, and San Juan counties.\n- Nearby: Gold Mountain Fire near Ouray is 38,044 acres, 24% contained; Elk Fire, 7 miles northwest of Lake City, is 2,307 acres and 0% contained.",
+  "lead": "High fire danger continues today, driven by warm, dry fuels (ERC 80%, BI 66%) despite calm winds.",
   "sources": [
     {
       "name": "FEMS / NFDRS via BeWildfireAware",
@@ -15,21 +15,21 @@
       "url": "https://www.nifc.gov/nicc-files/sitreprt.pdf"
     },
     {
-      "name": "Gold Mountain Fire: Containment remains at 24% for Ouray County fire",
-      "url": "https://www.denver7.com/news/wildfire/gold-mountain-fire-latest-new-evacuations-issued-in-gunnison-county-as-fire-grows-to-27k-acres"
+      "name": "Grand Mesa, Uncompahgre and Gunnison National Forests | Grand Mesa, Uncompahgre and Gunnison National Forests Stage 2 Fire Restrictions | Forest Service",
+      "url": "https://www.fs.usda.gov/r02/gmug/alerts/grand-mesa-uncompahgre-and-gunnison-national-forests-stage-2-fire-restrictions"
     },
     {
-      "name": "Southwest District Fire Restrictions | Bureau of Land Management",
-      "url": "https://www.blm.gov/programs/public-safety-and-fire/fire-and-aviation/regional-information/colorado/southwest-district"
+      "name": "BLM Gunnison Field Office Implements Stage 1 Fire Restrictions | Bureau of Land Management",
+      "url": "https://www.blm.gov/announcement/blm-gunnison-field-office-implements-stage-1-fire-restrictions"
     },
     {
-      "name": "Montrose County Implements Stage 2 Fire Restrictions Beginning July 1 • Montrose County",
-      "url": "https://www.montrosecounty.net/CivicAlerts.aspx?AID=1255"
+      "name": "Gold Mountain Fire incident information - InciWeb",
+      "url": "https://inciweb.wildfire.gov/incident-information/cogmf-gold-mountain-fire"
     },
     {
-      "name": "Fire Information | San Miguel County, CO - Official Website",
-      "url": "https://www.sanmiguelcountyco.gov/471/Fire-Information"
+      "name": "Aspen Acres fire crews patrol western edge, after hot, dry conditions test defenses",
+      "url": "https://coloradosun.com/2026/07/21/colorado-wildfires-aspen-acres-fire-gold-mountain-elk-tuesday-update/"
     }
   ],
-  "generated": "Thursday, July 23"
+  "generated": "Friday, July 24"
 }
